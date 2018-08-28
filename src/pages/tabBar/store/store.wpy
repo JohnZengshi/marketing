@@ -24,11 +24,15 @@
     text-align: center;
   }
 
+  .classes-item-wrap{
+    background-color: #fff;
+    padding-left: 26rpx;
+    border-bottom: 1rpx solid #ededed;
+  }
 </style>
 <template>
   <view class="flex flex_column margin_left margin_right font_normal">
-    我的界面
-    <button bindtap="toMineActivty">我的活动</button>
+    商城
   </view>
 </template>
 
@@ -39,6 +43,40 @@ import wepy from 'wepy';
   export default class Index extends wepy.page {
       //可用于页面模板绑定的数据
       data = {
+          classesList: [
+            {
+              classesId: 'classesId',
+              classesName: 'classesName'
+            },
+            {
+              classesId: 'classesId',
+              classesName: 'classesName'
+            },
+            {
+              classesId: 'classesId',
+              classesName: 'classesName'
+            },
+            {
+              classesId: 'classesId',
+              classesName: 'classesName'
+            },
+            {
+              classesId: 'classesId',
+              classesName: 'classesName'
+            },
+            {
+              classesId: 'classesId',
+              classesName: 'classesName'
+            },
+            {
+              classesId: 'classesId',
+              classesName: 'classesName'
+            },
+            {
+              classesId: 'classesId',
+              classesName: 'classesName'
+            }
+          ],
           motto: 'Hello World',
           userInfo: {}
       };
@@ -47,11 +85,6 @@ import wepy from 'wepy';
       methods = {
           bindViewTap () {
               console.log('button clicked');
-          },
-          toMineActivty() {
-            wx.navigateTo({
-              url: '/pages/my/view/mineActivity'
-            })
           }
       };
 

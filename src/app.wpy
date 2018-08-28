@@ -23,12 +23,12 @@ setStore(store)
 export default class extends wepy.app {
   config = {
     pages: [
-      'pages/store/store',
-      'pages/my/my',
+      'pages/tabBar/store/store',
+      'pages/tabBar/my/my',
+      'pages/tabBar/integralStore/integralStore',
+      'pages/my/record/record',
       'pages/my/view/mineActivity',
       'pages/my/view/bargainSucceed',
-      'pages/integralStore/integralStore',
-      'pages/record/record',
       'pages/discountCoupon/discountCoupon',
       'pages/shopList/shopList',
       'pages/location/location',
@@ -39,17 +39,17 @@ export default class extends wepy.app {
       "selectedColor": '#FB684C',
       "color": "#666",
       "list": [{
-        "pagePath": "pages/store/store",
+        "pagePath": "pages/tabBar/store/store",
         "iconPath": "./images/store-icon.png",
         "selectedIconPath": "./images/store-icon-actions.png",
         "text": "商城"
       }, {
-        "pagePath": "pages/integralStore/integralStore",
+        "pagePath": "pages/tabBar/integralStore/integralStore",
         "iconPath": "./images/integral-store-icon.png",
         "selectedIconPath": "./images/integral-store-icon-actions.png",
         "text": "积分商城"
       }, {
-        "pagePath": "pages/my/my",
+        "pagePath": "pages/tabBar/my/my",
         "iconPath": "./images/my-icon.png",
         "selectedIconPath": "./images/my-icon-actions.png",
         "text": "我的"

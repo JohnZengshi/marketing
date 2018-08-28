@@ -1,0 +1,34 @@
+<style lang="less">
+
+
+</style>
+<template>
+  <view class="flex flex_column margin_left margin_right font_normal">
+    我的界面
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+
+  //通过继承自wepy.page的类创建页面逻辑
+  export default class Index extends wepy.page {
+      //可用于页面模板绑定的数据
+      data = {
+          motto: 'Hello World',
+          userInfo: {}
+      };
+
+      //事件处理函数(集中保存在methods对象中)
+      methods = {
+          bindViewTap () {
+              console.log('button clicked');
+          }
+      };
+
+      //页面的生命周期函数
+      onLoad() {
+          console.log('onLoad');
+      };
+  }
+</script>

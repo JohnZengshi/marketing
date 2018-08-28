@@ -50,17 +50,38 @@
 
 
     components
-      ├── common                // 公共组件
-      ├── my                    //我的的私有组件
+      ├── common                //公共组件
       ├── 
 
 
     pages
-      ├── my                    //我的
-      ├── store                 //商城
-      ├── integralStore         //积分商城
-      ├── record                //积分记录
-      ├── discountCoupon        //优惠券
-      ├── shopList              //店铺列表
-      ├── location              //门店地址
-      ├──
+      │
+      ├─ tabBar
+      │    ├── my                   //我的主页面
+      │    ├── store                //商城主页面
+      │    ├── integralStore        //积分商城主页
+      │    └── 
+      │
+      │
+      │
+      ├── my                    //我的下的子路由
+      │   ├── record                //积分记录
+      │   ├── location              //门店地址
+      │   ├── discountCoupon        //优惠券
+      │   ├── shopList              //店铺列表
+      │   ├── location              //门店地址
+      │
+      ├── store                 //商城下的子路由
+      │   ├── 
+      │   ├── 
+      │   ├── 
+      │   ├── 
+      │   ├── 
+      │
+      ├── integralStore         //积分商城下的子路由
+      │   ├── 
+      │   ├── 
+      │   ├── 
+      │   ├── 
+      │   ├── 
+
