@@ -1,0 +1,92 @@
+<!-- 头部切换组件 -->
+<template>
+    <view class="contents flex flex-r flex-pack-justify">
+        <view  
+            class="tab"
+            wx:for="{{tabs}}" 
+            wx:key="index" 
+            wx:for-index="index" 
+            wx:for-item="item"
+            id="_{{index}}"
+            bindtap="clickItem({{index}})"
+            style="font-size:{{fontSize}}rpx;height:{{height}}rpx;line-height:{{height}}rpx;color:{{color}}">{{item}}</view>
+        <view class="line" style="width:{{sliderWidth}}px;transform: translateX({{translateX}}px)"></view>
+    </view>
+</template>
+<script>
+  import wepy from "wepy";
+  import {_getDomRect} from "@utils/getDom";
+  export default class Tabs extends wepy.component {
+    // 底部线条的宽度初始化 // 底部线条的移动 
+    async sliderLineMove(tabIndex) {
+      let sliderDom = await _getDomRect(`#_${tabIndex}`);
+      this.sliderWidth = sliderDom.width;
+      this.translateX = sliderDom.left;
+      this.$apply();
+    }
+    props = {
+      tabs: {
+        type: Array,
+        default: []
+      },
+      height: {
+        type: String,
+        default: "35"
+      },
+      fontSize: {
+        type: String,
+        default: "15",
+      },
+      color: {
+        type: String,
+        default: "#333333"
+      },
+      currentIndex: {
+        type: String,
+        default: "0"
+      }
+    };
+    data = {
+      sliderWidth: "",
+      translateX: 0,
+    };
+    watch = {
+        currentIndex(val){ //监听当前index
+            this.sliderLineMove(val);
+        }
+    };
+    computed = {
+    };
+    methods = {
+      clickItem(index) {
+        this.sliderLineMove(index);
+        this.$emit("changeSliderLine",index);
+      }
+    };
+    events = {}
+    onLoad() {
+      this.sliderLineMove(0);
+    };
+    onReady() {
+      
+    }
+  }
+</script>
+<style lang="less" scoped>
+.contents {
+  position: relative;
+  padding: 0 30rpx 0 50rpx;
+  .tab {
+    text-align: center;
+  }
+  .line {
+    position: absolute;
+    // width: 168rpx;
+    height: 4rpx;
+    background-color: #FB684C;
+    bottom: 0;
+    left: 0;
+    transition: all 0.3s;
+  }
+}
+</style>

@@ -1,0 +1,37 @@
+<!-- 左右滑动组件 -->
+<template>
+  <swiper duration="300" bindchange="changeSwiper" current="{{currentIndex}}" style="height:{{height}}rpx;background-color:{{backColor}}">
+        <slot name="swiperItem"></slot>
+  </swiper>
+</template>
+<script>
+  import wepy from "wepy";
+  export default class Swiper extends wepy.component {
+    props = {
+      currentIndex: {
+          type: String,
+          default: "0"
+        },
+        height: {
+          type: String,
+        },
+        backColor: {
+          type: String,
+          default: "#fff"
+        }
+    };
+    watch = {
+        currentIndex(val) { //监听当前index
+            this.currentIndex = val;
+        }
+    };
+    methods = {
+      changeSwiper(event) {
+        let currentIndex = event.detail.current
+        this.$emit("changeSwiper", currentIndex)
+      }
+    }
+  }
+</script>
+<style lang="less" scoped>
+</style>

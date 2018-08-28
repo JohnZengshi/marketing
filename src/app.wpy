@@ -1,4 +1,5 @@
 <style lang="less">
+@import "/styles/base.less";
 .container {
   height: 100%;
   display: flex;
@@ -24,6 +25,8 @@ export default class extends wepy.app {
     pages: [
       'pages/store/store',
       'pages/my/my',
+      'pages/my/view/mineActivity',
+      'pages/my/view/bargainSucceed',
       'pages/integralStore/integralStore',
       'pages/record/record',
       'pages/discountCoupon/discountCoupon',

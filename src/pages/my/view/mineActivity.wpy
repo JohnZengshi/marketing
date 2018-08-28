@@ -1,0 +1,125 @@
+<template>
+    <view>
+        <Tabs 
+            :tabs.sync="tabs" 
+            height="90" 
+            fontSize="30" 
+            :currentIndex.sync="currentIndex"></Tabs>
+        <Swiper 
+            @changeSwiper="changeSwiper" 
+            :currentIndex.sync="currentIndex"
+            height="1120"
+            backColor="#F6F7F8">
+            <swiper-item slot="swiperItem" wx:for="{{activity}}" wx:key="{{index}}" wx:for-index="index" wx:for-item="item">
+                <view class="activityItem">
+                    <scroll-view 
+                        scroll-y="{{true}}" 
+                        class="refresh-scroll__container" 
+                        scroll-with-animation="{{true}}" 
+                        bindscrolltolower="lower"
+                        style="width:100%;height:100%;" 
+                        catchscroll="scroll">
+                        <view style="width:100%;height:100%;">
+                            <Refresh :scrollTop.sync="scrollTop">
+                                <view slot="refresh-content" style="margin-top:90rpx;">
+                                    <view class="card" bindtap="toBargainSucceed">
+                                        <Card></Card>
+                                    </view>
+                                    <view class="card">
+                                        <Card></Card>
+                                    </view>
+                                    <view class="card">
+                                        <Card></Card>
+                                    </view>
+                                    <view class="card">
+                                        <Card></Card>
+                                    </view>
+                                    <view class="card">
+                                        <Card></Card>
+                                    </view>
+                                    <view class="card">
+                                        <Card></Card>
+                                    </view>
+                                </view>
+                            </Refresh>
+                        </view>
+                    </scroll-view>
+                </view>
+            </swiper-item>
+        </Swiper>
+    </view>
+</template>
+<script>
+import wepy from "wepy";
+import Tabs from "@components/tabs";
+import Swiper from "@components/swiper";
+import Card from "../components/card";
+import Refresh from 'wepy-scroll-view-refresh';
+export default class MineActivity extends wepy.page {
+    data = {
+        tabs:["我的参与(3)" , "全部活动(4)" , "进行中的活动(3)"],
+        activity:[{
+            name:"我的参与",
+        },{
+            name:"全部活动",
+        },{
+            name:"进行中的活动",
+        }],
+        currentIndex:"0",
+        scrollTop: 0
+    };
+    config = {
+        navigationBarTitleText:"我的活动",
+        navigationBarTextStyle:"black",
+        backgroundTextStyle:"light"
+    };
+    components = {
+        Tabs,
+        Swiper,
+        Card,
+        Refresh
+    };
+    methods = {
+      lower(index) {
+        console.log(index)
+      },
+      scroll(e) { //页面滚动
+        this.scrollTop = e.detail.scrollTop
+        this.$apply()
+      },
+      toBargainSucceed(){ //点击卡片进入砍价成功页面
+        wx.navigateTo({
+          url: '/pages/my/view/bargainSucceed'
+        })
+      }
+    };
+    events = {
+        "changeSwiper"(index){
+            this.currentIndex = index;
+        },
+        "changeSliderLine"(index){
+            this.currentIndex = index;
+        },
+        'refresh': (res) => {
+          if (res === 'success') {
+            setTimeout(() => {
+              this.$invoke('Refresh', 'reset')
+            }, 3000)
+          }
+        }
+    }
+    onLoad(){
+    }
+}
+</script>
+<style lang="less" scoped>
+    .activityItem{
+        width:100%;
+        height:100%;
+        .card{
+            margin-top: 20rpx;
+        }
+    }
+</style>
+
+

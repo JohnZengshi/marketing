@@ -1,0 +1,113 @@
+<!-- 我的活动卡片组件 -->
+<template>
+  <view class="cardContent flex flex-v">
+    <view class="time flex flex-r flex-pack-justify">
+      <text class="timeDetial">活动时间：2018.12.08 12:30~2018.1.8 12:30</text>
+      <view class="status flex flex-r flex-align-center">
+        <image src="/images/mine/1 我的活动－活动状态@3x.png"></image>
+        <text>进行中</text>
+      </view>
+    </view>
+    <view class="content flex flex-r flex-pack-justify">
+      <view class="pic">
+        <image></image>
+      </view>
+      <view class="rigth flex flex-v">
+        <view class="title flex flex-r flex-align-center">
+          <text>[砍价]</text>
+          <text>周年庆全民砍价大狂欢</text>
+        </view>
+        <view class="des flex">
+          <text>活动详情，伙伴一起砍价吧，砍到什么算什么...</text>
+        </view>
+        <view class="tag flex">
+          <view>未验证</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+<script>
+  import wepy from "wepy"
+  export default class Card extends wepy.component {
+
+  }
+</script>
+<style lang="less" scoped>
+.cardContent{
+  width: 100%;
+  height: 270rpx;
+  background-color: #fff;
+  padding: 20rpx 26rpx 40rpx 26rpx;
+  box-sizing: border-box;
+  .time{
+    .timeDetial{
+      font-size: 24rpx;
+      color: #333333;
+    }
+    .status {
+      >image {
+        width: 24rpx;
+        height: 24rpx;
+        margin-right: 10rpx;
+      }
+      >text {
+        font-size: 26rpx;
+        color: #FB684C;
+      }
+    }
+  }
+  .content{
+    margin-top: 26rpx;
+    .pic{
+      width: 150rpx;
+      height: 150rpx;
+      background-color: #FB684C;
+      border-radius: 10rpx;
+      image{
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .rigth{
+      .title{
+        margin-top: 20rpx;
+        >text{
+          font-size: 32rpx;
+          line-height: 32rpx;
+          font-weight: bold;
+          &:first-of-type{
+            color: #FB684C;
+            margin-right: 12rpx;
+          }
+          &:last-of-type{
+            color: #333333;
+          }
+        }
+      }
+      .des{
+        margin-top: 20rpx;
+        >text{
+          font-size: 24rpx;
+          line-height: 24rpx;
+          color: #999999;
+        }
+      }
+      .tag{
+        margin-top: 20rpx;
+        >view{
+          width: 86rpx;
+          height: 34rpx;
+          background-color: #FFF0ED;
+          border: 1rpx #FFBFB3 solid;
+          color: #FB684C;
+          font-size: 22rpx;
+          text-align: center;
+          line-height: 34rpx;
+          border-radius: 5rpx;
+        }
+      }
+    }
+  }
+}
+</style>
