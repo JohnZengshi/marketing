@@ -27,7 +27,7 @@
 </style>
 <template>
   <view class="flex flex_column margin_left margin_right font_normal">
-    我的界面
+    积分商城
   </view>
 </template>
 
