@@ -1,0 +1,90 @@
+<style lang="less">
+  .scroll-view_H{
+    white-space: nowrap;
+  }
+  .classes-item-t{
+    font-size: 28rpx;
+  }
+  .scroll-view-item_H{
+    position: relative;
+    display: inline-block;
+    height: 80rpx;
+    line-height: 80rpx;
+    margin-right: 60rpx;
+  }
+</style>
+<template>
+  <view class="classes-item-wrap">
+    <scroll-view class="scroll-view_H" scroll-x="true" style="width: 100%">
+      <view
+        id="{{item.classesId}}"
+        class="scroll-view-item_H"
+        wx:for-items="{{classesList}}"
+        wx:key="{{item.classesId}}"
+        data-id="{{item.classesId}}"
+        data-item="{{item}}"
+      >
+        <text class="classes-item-t {{currentFillter.jewelryBigClassId == item.classesId ? 'h-classes-item-on' : ''}}">{{item.classesName}}</text>
+        <view wx:if="{{currentFillter.jewelryBigClassId == item.classesId}}" class="classes-on-icon"></view>
+      </view>
+    </scroll-view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+//通过继承自wepy.page的类创建页面逻辑
+export default class Index extends wepy.page {
+    //可用于页面模板绑定的数据
+    data = {
+        classesList: [
+          {
+            classesId: 'classesId',
+            classesName: 'classesName'
+          },
+          {
+            classesId: 'classesId',
+            classesName: 'classesName'
+          },
+          {
+            classesId: 'classesId',
+            classesName: 'classesName'
+          },
+          {
+            classesId: 'classesId',
+            classesName: 'classesName'
+          },
+          {
+            classesId: 'classesId',
+            classesName: 'classesName'
+          },
+          {
+            classesId: 'classesId',
+            classesName: 'classesName'
+          },
+          {
+            classesId: 'classesId',
+            classesName: 'classesName'
+          },
+          {
+            classesId: 'classesId',
+            classesName: 'classesName'
+          }
+        ],
+        motto: 'Hello World',
+        userInfo: {}
+    };
+
+    //事件处理函数(集中保存在methods对象中)
+    methods = {
+        bindViewTap () {
+            console.log('button clicked');
+        }
+    };
+
+    //页面的生命周期函数
+    onLoad() {
+        console.log('onLoad');
+    };
+}
+</script>

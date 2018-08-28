@@ -1,0 +1,96 @@
+<style lang="less">
+  .popup__content {
+    width: 300rpx;
+    height: 300rpx;
+    line-height: 300rpx;
+    background: #FFFFFF;
+    border-radius: 12rpx;
+    text-align: center;
+  }
+
+  .popup__content_full {
+    width: 100%;
+    height: 200rpx;
+    line-height: 200rpx;
+    text-align: center;
+    background: #FFFFFF;
+  }
+
+  .popup__content_side {
+    width: 300rpx;
+    height: 100%;
+    line-height: 400rpx;
+    background: #ffffff;
+    text-align: center;
+  }
+
+  .classes-item-wrap{
+    background-color: #fff;
+    padding-left: 26rpx;
+    border-bottom: 1rpx solid #ededed;
+  }
+</style>
+<template>
+  <view class="flex flex_column margin_left margin_right font_normal">
+    商城
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+
+  //通过继承自wepy.page的类创建页面逻辑
+  export default class Index extends wepy.page {
+      //可用于页面模板绑定的数据
+      data = {
+          classesList: [
+            {
+              classesId: 'classesId',
+              classesName: 'classesName'
+            },
+            {
+              classesId: 'classesId',
+              classesName: 'classesName'
+            },
+            {
+              classesId: 'classesId',
+              classesName: 'classesName'
+            },
+            {
+              classesId: 'classesId',
+              classesName: 'classesName'
+            },
+            {
+              classesId: 'classesId',
+              classesName: 'classesName'
+            },
+            {
+              classesId: 'classesId',
+              classesName: 'classesName'
+            },
+            {
+              classesId: 'classesId',
+              classesName: 'classesName'
+            },
+            {
+              classesId: 'classesId',
+              classesName: 'classesName'
+            }
+          ],
+          motto: 'Hello World',
+          userInfo: {}
+      };
+
+      //事件处理函数(集中保存在methods对象中)
+      methods = {
+          bindViewTap () {
+              console.log('button clicked');
+          }
+      };
+
+      //页面的生命周期函数
+      onLoad() {
+          console.log('onLoad');
+      };
+  }
+</script>
