@@ -5,6 +5,7 @@
 <template>
   <view class="flex flex_column margin_left margin_right font_normal">
     我的界面
+    <button bindtap="toMineActivty">我的活动</button>
   </view>
 </template>
 
@@ -23,6 +24,11 @@ import wepy from 'wepy';
       methods = {
           bindViewTap () {
               console.log('button clicked');
+          },
+          toMineActivty() {
+            wx.navigateTo({
+              url: '/pages/my/view/mineActivity'
+            })
           }
       };
 
