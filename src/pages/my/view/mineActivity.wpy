@@ -1,10 +1,10 @@
 <template>
     <view>
-        <Tabs 
+<!--         <Tabs 
             :tabs.sync="tabs" 
             height="90" 
             fontSize="30" 
-            :currentIndex.sync="currentIndex"></Tabs>
+            :currentIndex.sync="currentIndex"></Tabs> -->
         <Swiper 
             @changeSwiper="changeSwiper" 
             :currentIndex.sync="currentIndex"
@@ -51,30 +51,30 @@
 </template>
 <script>
 import wepy from "wepy";
-import Tabs from "@components/tabs";
+// import Tabs from "@components/tabs";
 import Swiper from "@components/swiper";
 import Card from "../components/card";
 import Refresh from 'wepy-scroll-view-refresh';
+
 export default class MineActivity extends wepy.page {
     data = {
-        tabs:["我的参与(3)" , "全部活动(4)" , "进行中的活动(3)"],
-        activity:[{
-            name:"我的参与",
-        },{
-            name:"全部活动",
-        },{
-            name:"进行中的活动",
+        activity: [{
+            name: "我的参与",
+        }, {
+            name: "全部活动",
+        }, {
+            name: "进行中的活动",
         }],
-        currentIndex:"0",
+        currentIndex: "0",
         scrollTop: 0
     };
     config = {
-        navigationBarTitleText:"我的活动",
-        navigationBarTextStyle:"black",
-        backgroundTextStyle:"light"
+        navigationBarTitleText: "我的活动",
+        navigationBarTextStyle: "black",
+        backgroundTextStyle: "light"
     };
     components = {
-        Tabs,
+        // Tabs,
         Swiper,
         Card,
         Refresh
@@ -95,10 +95,10 @@ export default class MineActivity extends wepy.page {
     };
     events = {
         "changeSwiper"(index){
-            this.currentIndex = index;
+            this.currentIndex = index
         },
         "changeSliderLine"(index){
-            this.currentIndex = index;
+            this.currentIndex = index
         },
         'refresh': (res) => {
           if (res === 'success') {
@@ -112,7 +112,7 @@ export default class MineActivity extends wepy.page {
     }
 }
 </script>
-<style lang="less" scoped>
+<style lang="less">
     .activityItem{
         width:100%;
         height:100%;
