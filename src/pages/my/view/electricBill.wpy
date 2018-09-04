@@ -1,0 +1,483 @@
+<template>
+  <view class="bill-main {{isBill == 'Y' ? 'main-color' : ''}}">
+    <image wx:if="{{isHasProduct}}" class="no-product-data" src="/images/mine/no-bill-data.png"></image>
+    <block wx:for="{{billList}}" wx:key="{{item}}">
+      <view class="bill-item">
+
+        <view class="item-head">
+          <view class="order-no">{{item.orderNo}}</view>
+          <view class="head-tit-wrap">
+            <text class="head-tit mr35">{{item.nyr}}</text>
+            <text class="head-tit">{{item.sf}}</text>
+          </view>
+          <text class="price-right-tit"><text class="price-symbol">￥</text>{{item.totalPrice}}</text>
+        </view>
+
+        <block wx:for-items="{{item.productList}}" wx:for-index="indexTwo" wx:for-item="page" wx:key="page">
+          <view class="item-body">
+            <view class="selling-price">
+              <view class="body-price-right-tit">
+                <text class="body-price-symbol">￥</text>{{page.price}}
+              </view>
+              <text class="body-price-tit">售价</text>
+            </view>
+
+            <view class='body-head'>
+              <view class="bill-tit-h">
+                <text class="bill-product-name">{{page.jewelryName}}</text>
+                <image wx:if="{{page.sellType == 1}}" class="bill-tit-h-icon" src="/images/mine/bill-type-one.png"></image>
+                <image wx:if="{{page.sellType == 2}}" class="bill-tit-h-icon" src="/images/mine/bill-type-two.png"></image>
+                <image wx:if="{{page.sellType == 3}}" class="bill-tit-h-icon" src="/images/mine/bill-type-three.png"></image>
+                <image wx:if="{{page.sellType == 4}}" class="bill-tit-h-icon" src="/images/mine/bill-type-four.png"></image>
+              </view>
+            </view>
+
+            <view class='item-list'>
+              <text class="bill-body-tit-left">条形码:</text>
+              <text class="bill-body-tit-right">{{page.barcode}}</text>
+            </view>
+
+            <view class="one-item" style="margin-top: 48rpx;">
+              <view class='item-list'>
+                <text class="bill-body-tit-left">金重:</text>
+                <text class="bill-body-tit-right">{{page.goldWeight}}<text class="unit-tit">g</text></text>
+              </view>
+
+              <view class='item-list'>
+                <text class="bill-body-tit-left">金价:</text>
+                <text class="bill-body-tit-right">{{page.goldPrice}}<text class="unit-tit">元/g</text></text>
+              </view>
+
+            </view>
+
+            <view class="one-item">
+              <view class='item-list'>
+                <text class="bill-body-tit-left">工费:</text>
+                <text class="bill-body-tit-right">{{page.costPrice}}<text class="unit-tit">元</text></text>
+              </view>
+
+              <view class='item-list'>
+                <text class="bill-body-tit-left">折扣:</text>
+                <text class="bill-body-tit-right">{{page.discount}}<text class="unit-tit">%</text></text>
+              </view>
+            </view>
+
+            <view class="line-type"></view>
+            <block wx:if="{{indexTwo == 0}}">
+              <view class="decorate-circle decorate-circle-left"></view>
+              <view class="decorate-circle decorate-circle-right"></view>
+            </block>
+          </view>
+        </block>
+
+      </view>
+    </block>
+    <view class="bottomBtn" bindtap="showPopup">自助账单</view>
+    <Popup 
+      :isShow.sync="isShow" 
+      popUpType="center"
+      @hide.user="hidePop">
+      <view class="popUp flex flex-v flex-align-center">
+        <image class="close" src="/images/mine/关闭@3x.png" @tap.stop="hidePop"></image>
+        <text>新增购买记录</text>
+        <view class="orderInput">
+          <text>单据号</text>
+          <input type="text" placeholder="输入单据号" placeholder-style="font-size: 26rpx;margin-left: 31rpx;color:#D6D6D6;" adjust-position="true"></input>
+        </view>
+        <view class="sumInput">
+          <text>金额</text>
+          <input type="number" placeholder="输入金额" placeholder-style="font-size: 26rpx;margin-left: 31rpx;color:#D6D6D6;" adjust-position="true"></input>
+        </view>
+        <view class="btn">
+          确认
+        </view>
+      </view>
+    </Popup>
+  </view>
+</template>
+<script>
+  import wepy from "wepy";
+  import Popup from '@components/popup';
+  export default class ElectricBill extends wepy.page {
+    config = {
+      navigationBarTitleText: "电子账单",
+      navigationBarTextStyle: "black",
+      backgroundTextStyle: "light",
+    };
+    components = {
+      Popup: Popup
+    };
+    data = {
+      isBill: false, // 是否有电子账单
+      isHasProduct: false,
+      billList: [{
+        orderNo: "hFC273629767",
+        nyr: "2017.09.12",
+        sf: "12:34",
+        totalPrice: "4000",
+        productList: [{
+          price: "2000",
+          sellType: 1,
+          jewelryName: "千足银彩宝手镯",
+          barcode: "20237827778",
+          goldWeight: "12.330",
+          goldPrice: "265.30",
+          costPrice: "265.00",
+          discount: "98%",
+
+        }, {
+          price: "2000",
+          sellType: 2,
+          jewelryName: "千足银彩宝饺子",
+          barcode: "20237827778",
+          goldWeight: "12.330",
+          goldPrice: "265.30",
+          costPrice: "265.00",
+          discount: "98%",
+
+        }]
+      }],
+      isShow: false,
+      showOverlay: true,
+      type: "center"
+    };
+    methods = {
+      showPopup() {
+        this.isShow = true;
+      },
+      hidePop() {
+        this.isShow = false;
+      }
+    }
+    // onLoad() {
+    //   this.setData({
+    //     isBill: options.isBill
+    //   })
+    //   console.log('options.isBill', options.isBill)
+    //   if (options.isBill == 'Y') {
+    //     console.log('金')
+    //     wx.setNavigationBarColor({
+    //       frontColor: '#ffffff',
+    //       backgroundColor: '#2993f8'
+    //     })
+    //   } else {
+    //     console.log('BBB')
+    //     wx.setNavigationBarColor({
+    //       backgroundColor: '#ffffff'
+    //     })
+    //   }
+    //   this.seekElectronicBilling()
+    // };
+    // seekElectronicBilling() {
+    //   let options = {
+    //     shopId: app.data.globalData.shopInfo.shopId,
+    //     userId: wx.getStorageSync('userId')
+    //   }
+    //   requestData(electronicBilling, options)
+    //     .then(res => {
+    //       let datas = res.dataList
+    //       for (let i of datas) {
+    //         // 转换时间
+    //         i.nyr = utils.extractXjTime(i.time)
+    //         i.sf = utils.extractXjTimeSF(i.time)
+    //       }
+    //       this.setData({
+    //         isHasProduct: !datas.length,
+    //         billList: datas
+    //       })
+    //     })
+    // };
+  }
+</script>
+<style lang="less" scoped>
+  .bill-main {
+    min-height: 100%;
+    overflow: hidden;
+    background-color: #F6F7F8;
+  }
+
+  .main-color {
+    background-color: #2993f8;
+  }
+
+  .bill-item {
+    /* border: 1px solid red; */
+    background-color: #fff;
+    width: 92%;
+    border-radius: 10rpx;
+    /* overflow: hidden; */
+    margin: 0 auto 26rpx auto;
+    margin-top: 22rpx;
+  }
+
+  .item-head {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10rpx 10rpx 0 0;
+    padding: 0 31rpx;
+    background-color: #FFF2F0;
+  }
+
+  .price-symbol {
+    font-size: 24rpx;
+    color: #f84f45;
+  }
+
+  .price-right-tit {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 31rpx;
+    margin: auto;
+    font-size: 40rpx;
+    height: 40rpx;
+    line-height: 40rpx;
+    color: #f84f45;
+  }
+
+  .mr35 {
+    margin-right: 35rpx;
+  }
+
+  .head-tit-wrap {
+    height: 22rpx;
+    margin: 10rpx 0 18rpx 0;
+  }
+
+  .head-tit {
+    display: inline-block;
+    font-size: 22rpx;
+    height: 22rpx;
+    vertical-align: top;
+    line-height: 22rpx;
+    color: #999;
+  }
+
+  .order-no {
+    font-size: 36rpx;
+    line-height: 36rpx;
+    margin-top: 34rpx;
+    color: #333;
+  }
+
+  /* 内容 */
+  .item-body {
+    padding: 54rpx 0 0 48rpx;
+    position: relative;
+
+    &:last-of-type {
+      .line-type {
+        border-bottom: 1rpx solid #fff;
+      }
+    }
+  }
+
+  .selling-price {
+    position: absolute;
+    top: 54rpx;
+    right: 31rpx;
+  }
+
+  .body-price-symbol,
+  .body-price-right-tit {
+    color: #333;
+  }
+
+  .body-price-symbol {
+    font-size: 22rpx;
+  }
+
+  .body-price-right-tit {
+    font-size: 31rpx;
+    height: 31rpx;
+    line-height: 31rpx;
+  }
+
+  .body-price-tit {
+    display: block;
+    margin-top: 6rpx;
+    font-size: 22rpx;
+    color: #999;
+    text-align: right;
+  }
+
+  /* 图片和文字排序 */
+  .bill-tit-h {
+    height: 28rpx;
+    margin-bottom: 26rpx;
+  }
+
+  .bill-tit-h-icon {
+    width: 50rpx;
+    vertical-align: top;
+    height: 28rpx;
+  }
+
+  .bill-product-name {
+    display: inline-block;
+    vertical-align: top;
+    max-width: 280rpx;
+    // margin-left: 20rpx;
+    margin-right: 20rpx;
+    font-size: 28rpx;
+    line-height: 28rpx;
+    color: #333;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .item-list {
+    height: 28rpx;
+    flex: 1;
+  }
+
+  .one-item {
+    display: flex;
+    margin-bottom: 26rpx;
+  }
+
+  .bill-body-tit-left {
+    display: inline-block;
+    vertical-align: bottom;
+    font-size: 28rpx;
+    line-height: 28rpx;
+    color: #999;
+  }
+
+  .bill-body-tit-right {
+    display: inline-block;
+    vertical-align: bottom;
+    margin-left: 12rpx;
+    font-size: 28rpx;
+    line-height: 28rpx;
+    color: #333;
+  }
+
+  .unit-tit {
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 12rpx;
+    font-size: 28rpx;
+    line-height: 28rpx;
+    color: #666;
+  }
+
+  .line-type {
+    overflow: hidden;
+    height: 28rpx;
+    // width: calc(100% - 46rpx);
+    width: 577rpx;
+    margin-top: 28rpx;
+    border-bottom: 1rpx solid #dedede;
+  }
+
+  .decorate-circle {
+    position: absolute;
+    top: -15rpx;
+    width: 30rpx;
+    height: 30rpx;
+    border-radius: 50%;
+    z-index: 100;
+    background-color: #F6F7F8;
+  }
+
+  .decorate-circle-left {
+    left: -15rpx;
+  }
+
+  .decorate-circle-right {
+    right: -15rpx;
+  }
+
+  .no-product-data {
+    position: absolute;
+    width: 307rpx;
+    height: 400rpx;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+  }
+
+  .bottomBtn {
+    position: fixed;
+    bottom: 0;
+    font-size: 35rpx;
+    color: #fff;
+    width: 100%;
+    height: 98rpx;
+    text-align: center;
+    line-height: 98rpx;
+    background: -webkit-linear-gradient(left, #FC894F, #FB6F4D);
+    /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right, #FC894F, #FB6F4D);
+    /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right, #FC894F, #FB6F4D);
+    /* Firefox 3.6 - 15 */
+    background: linear-gradient(to right, #FC894F, #FB6F4D);
+    /* 标准的语法 */
+  }
+
+  .popUp{
+    background-color: #fff; 
+    width: 680rpx; 
+    height: 666rpx;
+    border-radius: 17rpx;
+    position: relative;
+    .close{
+      position: absolute;
+      width: 23rpx;
+      height: 23rpx;
+      right: 57rpx;
+      top: 33rpx;
+    }
+    >text{
+      font-size: 37rpx;
+      color: #333333;
+      line-height: 37rpx;
+      margin-top: 30rpx;
+    }
+    >view{
+      >text{
+        font-size: 27rpx;
+        line-height: 27rpx;
+      }
+      >input{
+        margin-top: 20rpx;
+        width: 498rpx;
+        height: 74rpx;
+        border: 1rpx #D6D6D6 solid;
+        border-radius: 8rpx;
+        font-size: 24rpx;
+        font-weight: bold;
+      }
+      &.orderInput{
+        margin-top: 50rpx;        
+      }
+      &.sumInput{
+        margin-top: 37rpx;
+      }
+    }
+
+    .btn{
+      margin-top: 114rpx;
+      width: 500rpx;
+      height: 76rpx;
+      border-radius: 38rpx;
+      font-size: 31rpx;
+      color: #fff;
+      text-align: center;
+      line-height: 76rpx;
+      background: -webkit-linear-gradient(left, #FC894F, #FB6F4D);
+      /* Safari 5.1 - 6.0 */
+      background: -o-linear-gradient(right, #FC894F, #FB6F4D);
+      /* Opera 11.1 - 12.0 */
+      background: -moz-linear-gradient(right, #FC894F, #FB6F4D);
+      /* Firefox 3.6 - 15 */
+      background: linear-gradient(to right, #FC894F, #FB6F4D);
+      /* 标准的语法 */
+    }
+  }
+</style>
