@@ -1,0 +1,399 @@
+<template>
+  <view class="flex flex-v flex-align-center">
+    <view class="card">
+      <image class="backPic" src="/images/mine/7 升等级－背景@3x.png"></image>
+      <view class="cardContent flex flex-v ">
+        <view class="grade flex flex-r flex-pack-justify flex-align-center">
+          <view>
+            <!-- <image ></image> -->
+            <text>白金会员</text>
+          </view>
+          <view>等级规则</view>
+        </view>
+        <view class="gradeScore flex flex-r flex-align-center">
+          <view class="progressBar">
+            <view class="bar"></view>
+            <view class="tag">
+              <view class="arrow"></view>
+              500
+            </view>
+          </view>
+          <text>铂金(500)</text>
+        </view>
+        <view class="tip">
+          在获取500积分课升级为铂金会员
+        </view>
+      </view>
+    </view>
+
+
+    <view class="memberExclusive">
+      <!-- <memberExclusiveTitle idx="_01" title="白金惠享"></memberExclusiveTitle> -->
+      <view class="titleLine">
+        <view class="title">白金惠享</view>
+        <view class="line"></view>
+      </view>
+      <view class="content flex flex-r">
+        <view class="item flex flex-r flex-align-center">
+          <image src="/images/mine/7.1折上折@3x.png"></image>
+          <view class="flex flex-v">
+            <text>折上折</text>
+            <text>享受折上折优惠</text>
+          </view>
+        </view>
+        <view class="item flex flex-r">
+          <image src="/images/mine/7.2最低折@3x.png"></image>
+          <view class="flex flex-v">
+            <text>最低折</text>
+            <text>享受最低折优惠</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+
+    <view class="makeIntergral">
+      <!-- <makeIntergralTitle idx="_02" title="赚积分"></makeIntergralTitle> -->
+      <view class="titleLine">
+        <view class="title">赚积分</view>
+        <view class="line"></view>
+      </view>
+      <view class="content">
+        <!-- 店铺消费 -->
+        <view class="item flex flex-r flex-pack-justify flex-align-center">
+          <view class="left flex flex-r">
+            <image src="/images/mine/7.4店铺消费@3x.png"></image>
+            <view class="title flex flex-v">
+              <text>店铺消费</text>
+              <view class="detial flex flex-r">
+                <image src="/images/mine/7.0升等级－积分图标@3x.png"></image>
+                <text>100元=10分</text>
+              </view>
+            </view>
+          </view>
+          <view class="right">
+            <view class="btn">查看详情</view>
+          </view>
+        </view>
+        <!-- 完善资料 -->
+        <view class="item flex flex-r flex-pack-justify flex-align-center">
+          <view class="left flex flex-r ">
+            <image src="/images/mine/7.5完善资料@3x.png"></image>
+            <view class="title flex flex-v">
+              <text>完善资料</text>
+              <view class="detial flex flex-r">
+                <image src="/images/mine/7.0升等级－积分图标@3x.png"></image>
+                <text>+10</text>
+              </view>
+            </view>
+          </view>
+          <view class="right">
+            <view class="btn gary">已赚+10</view>
+            <!-- <view class="btn">去完善</view> -->
+          </view>
+        </view>
+        <repeat for="{{makeIntergralList}}" key="index" index="index" item="item">
+          <view class="item flex flex-r flex-pack-justify flex-align-center">
+            <view class="left flex flex-r">
+              <image wx:if="{{item.type == '0'}}" src="/images/mine/7.8砍价@3x.png"></image>
+              <image wx:elif="{{item.type == '1'}}" src="/images/mine/7.6砸金蛋@3x.png"></image>
+
+              <view class="title flex flex-v">
+                <text>{{item.name}}</text>
+                <view class="detial flex flex-r">
+                  <image src="/images/mine/7.0升等级－积分图标@3x.png"></image>
+                  <text>{{item.des}}</text>
+                </view>
+              </view>
+            </view>
+            <view class="right">
+              <view wx:if="{{item.hasMake}}" class="btn {{item.hasMake?'gary':''}}">已赚{{item.des}}</view>
+              <view wx:elif="{{!item.hasMake}}" class="btn {{item.hasMake?'gary':''}}">取赚积分</view>
+            </view>
+          </view>
+        </repeat>
+      </view>
+    </view>
+
+  </view>
+</template>
+<script>
+  import wepy from "wepy";
+  import {
+    _getDomRect
+  } from "@utils/getDom";
+  import titleLine from "../components/titleLine";
+  export default class UpGrade extends wepy.page {
+    config = {
+      navigationBarTitleText: "升等级",
+      navigationBarTextStyle: "black",
+      backgroundTextStyle: "light"
+    };
+    components = {
+      // memberExclusiveTitle: titleLine,
+      // makeIntergralTitle: titleLine
+    };
+    data = {
+      makeIntergralList: [{
+        type: "0",
+        name: "珠宝砍价活动",
+        des: "+10",
+        hasMake: true,
+      }, {
+        type: "1",
+        name: "七夕砸金",
+        des: "+10",
+        hasMake: false,
+      }]
+    };
+    onLoad() {};
+  }
+</script>
+<style lang="less" scoped>
+  .card {
+    position: relative;
+    width: 617rpx;
+    height: 287rpx;
+    margin-top: 20rpx;
+
+    .backPic {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+
+    .cardContent {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+
+      .grade {
+        margin-top: 37rpx;
+
+        >view {
+          &:first-of-type {
+            margin-left: 38rpx;
+
+            >text {
+              font-size: 36rpx;
+              color: #68564b;
+              font-weight: bold;
+            }
+          }
+
+          &:last-of-type {
+            margin-right: 34rpx;
+            font-size: 24rpx;
+            color: #6a554b;
+            width: 130rpx;
+            height: 44rpx;
+            border: 1rpx #6a554b solid;
+            border-radius: 22rpx;
+            text-align: center;
+            line-height: 44rpx;
+          }
+        }
+      }
+
+      .gradeScore {
+        margin-top: 99rpx;
+        margin-left: 44rpx;
+
+        .progressBar {
+          width: 428rpx;
+          height: 14rpx;
+          border-radius: 7rpx;
+          background-color: rgba(101, 81, 76, 0.3);
+          position: relative;
+          margin-right: 10rpx;
+
+          .bar {
+            height: 100%;
+            width: 100rpx;
+            position: absolute;
+            border-radius: 7rpx;
+            left: 0;
+            background-color: rgb(101, 81, 76);
+          }
+
+          .tag {
+            position: absolute;
+            top: -47rpx;
+            left: 70rpx;
+            width: 54rpx;
+            height: 34rpx;
+            font-size: 17rpx;
+            text-align: center;
+            line-height: 34rpx;
+            background-color: rgb(101, 81, 76);
+            border-radius: 5rpx;
+            color: #fff;
+
+            .arrow {
+              display: block;
+              width: 0;
+              height: 0;
+              border-width: 10rpx 10rpx 0;
+              border-style: solid;
+              border-color: rgb(101, 81, 76) transparent transparent;
+              /*黄 透明 透明 */
+              position: absolute;
+              top: 30rpx;
+              left: 15rpx;
+            }
+          }
+        }
+
+        >text {
+          font-size: 22rpx;
+          color: #65514c;
+          line-height: 22rpx;
+        }
+      }
+
+      .tip {
+        font-size: 22rpx;
+        color: #66514c;
+        line-height: 22rpx;
+        margin-top: 18rpx;
+        margin-left: 44rpx;
+      }
+    }
+  }
+
+  .memberExclusive {
+    width: 100%;
+    margin-top: 60rpx;
+
+    .titleLine {
+      display: inline-block;
+      margin-left: 30rpx;
+      .title {
+        padding: 0 10rpx;
+        font-size: 32rpx;
+        color: #333;
+        transform: translateY(7px);
+      }
+
+      .line {
+        width: 100%;
+        height: 12rpx;
+        background-color: #fed3cb;
+        border-radius: 6rpx;
+      }
+    }
+
+    .content {
+      margin-top: 30rpx;
+
+      .item {
+        width: 50%;
+
+        >image {
+          width: 80rpx;
+          height: 80rpx;
+          margin-left: 30rpx;
+        }
+
+        >view {
+          margin-left: 20rpx;
+
+          >text {
+            &:first-of-type {
+              font-size: 30rpx;
+              line-height: 30rpx;
+              color: #333;
+            }
+
+            &:last-of-type {
+              font-size: 24rpx;
+              line-height: 24rpx;
+              color: #999;
+              margin-top: 14rpx;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .makeIntergral {
+    width: 100%;
+    margin-top: 60rpx;
+
+    .titleLine {
+      display: inline-block;
+      margin-left: 30rpx;
+      .title {
+        padding: 0 10rpx;
+        font-size: 32rpx;
+        color: #333;
+        transform: translateY(7px);
+      }
+
+      .line {
+        width: 100%;
+        height: 12rpx;
+        background-color: #fed3cb;
+        border-radius: 6rpx;
+      }
+    }
+
+    .content {
+      padding: 34rpx 28rpx 0 25rpx;
+
+      .item {
+        margin-bottom: 38rpx;
+
+        .left {
+          >image {
+            width: 80rpx;
+            height: 80rpx;
+            margin-right: 22rpx;
+          }
+
+          .title {
+            >text {
+              font-size: 30rpx;
+              color: #333;
+            }
+
+            .detial {
+              margin-top: 14rpx;
+
+              >image {
+                width: 32rpx;
+                height: 32rpx;
+                margin-right: 14rpx;
+              }
+
+              >text {
+                font-size: 26rpx;
+                color: #fb6548;
+              }
+            }
+          }
+        }
+
+        .right {
+          .btn {
+            width: 122rpx;
+            height: 52rpx;
+            font-size: 24rpx;
+            background-color: #fb684c;
+            text-align: center;
+            line-height: 52rpx;
+            color: #fff;
+            border-radius: 26rpx;
+
+            &.gary {
+              background-color: #D6D6D6;
+            }
+          }
+        }
+      }
+    }
+  }
+</style>
