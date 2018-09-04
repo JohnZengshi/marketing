@@ -1,0 +1,150 @@
+<template>
+  <view>
+    <Tabs :tabs.sync="tabs" height="90" fontSize="30" :currentIndex.sync="currentIndex"></Tabs>
+    <Swiper @changeSwiper="changeSwiper" :currentIndex.sync="currentIndex" height="1120" backColor="#F6F7F8">
+        <swiper-item slot="swiperItem" wx:for="{{activity}}" wx:key="index" wx:for-index="index" wx:for-item="item">
+            <view class="activityItem">
+                <scroll-view scroll-y="{{true}}" class="refresh-scroll__container" scroll-with-animation="{{true}}"
+                    bindscrolltolower="lower" style="width:100%;height:100%;" catchscroll="scroll">
+                    <view style="width:100%;height:100%;">
+                        <Refresh :scrollTop.sync="scrollTop">
+                            <view class="flex flex-v flex-align-center" slot="refresh-content" style="margin-top:90rpx;">
+                                <view class="tip">优惠券仅限线下门店使用</view>
+                                <repeat for="{{item.couponCardData}}" key="index" index="index" item="i">
+                                    <CouponCard 
+                                        :useStatus.sync="item.useStatus" 
+                                        :couponType.sync="i.type"
+                                        :couponCardData.sync="i"></CouponCard>
+                                </repeat>
+                            </view>
+                        </Refresh>
+                    </view>
+                </scroll-view>
+            </view>
+        </swiper-item>
+    </Swiper>
+  </view>
+</template>
+<script>
+  import wepy from "wepy";
+  import Tabs from "@components/tabs";
+  import Swiper from "@components/swiper";
+  import CouponCard from "../components/couponCard";
+  import Refresh from 'wepy-scroll-view-refresh';
+  export default class Coupon extends wepy.page {
+    config = {
+      navigationBarTitleText: "优惠券",
+      navigationBarTextStyle: "black",
+      backgroundTextStyle: "light"
+    };
+    data = {
+      tabs: ["未使用(3)", "已使用(4)", "已过期(3)"],
+      activity: [{
+        name: "未使用",
+        useStatus: "0",
+        couponCardData: [{
+          type: "1",
+          couponTitle: "满减优惠券",
+          couponDes: "",
+          validityDate: "2018-08-01~0218-09-01",
+          couponVal: "50",
+          explain: "满500元可用",
+          tip: "剩3天"
+        },
+        {
+          type: "2",
+          couponTitle: "折扣券",
+          couponDes: "仅限珠宝，黄金，白金，银饰，砖石，蓝宝石，红珠宝，蓝宝石，红珠宝，蓝宝石，红珠宝",
+          validityDate: "2018-08-01~0218-09-01",
+          couponVal: "5",
+          explain: "",
+          tip: ""
+        }, {
+          type: "3",
+          couponTitle: "退货券",
+          couponDes: "仅限珠宝，黄金，白金，银饰，砖石，",
+          validityDate: "2018-08-01~0218-09-01",
+          couponVal: "50",
+          explain: "满1000元可用",
+          tip: ""
+        }, {
+          type: "4",
+          couponTitle: "免工费券",
+          couponDes: "仅限珠宝，黄金，白金，银饰",
+          validityDate: "2018-08-01~0218-09-01",
+          couponVal: "免工费",
+          explain: "",
+        }]
+      }, {
+        name: "已使用",
+        useStatus: "1",
+        couponCardData: [{
+          type: "1",
+          couponTitle: "满500元减50元",
+          couponDes: "仅限指定店铺使用",
+          validityDate: "2018-08-01~0218-09-01",
+          couponVal: "50",
+        }]
+      }, {
+        name: "已过期",
+        useStatus: "1",
+        couponCardData: [{
+          type: "1",
+          couponTitle: "满500元减50元",
+          couponDes: "仅限指定店铺使用",
+          validityDate: "2018-08-01~0218-09-01",
+          couponVal: "50",
+        }]
+      }],
+      currentIndex: "0",
+      scrollTop: 0
+    };
+    components = {
+      Tabs,
+      Swiper,
+      Refresh,
+      CouponCard
+    };
+    methods = {
+      lower(index) {
+        console.log(index)
+      },
+      scroll(e) { //页面滚动
+        this.scrollTop = e.detail.scrollTop
+        this.$apply()
+      },
+    };
+    events = {
+      "changeSwiper"(index) {
+        this.currentIndex = index;
+      },
+      "changeSliderLine"(index) {
+        this.currentIndex = index;
+      },
+      'refresh': (res) => {
+        if (res === 'success') {
+          setTimeout(() => {
+            this.$invoke('Refresh', 'reset')
+          }, 3000)
+        }
+      }
+    }
+  }
+</script>
+<style lang="less" scoped>
+  .activityItem {
+    width: 100%;
+    height: 100%;
+    .tip{
+      font-size: 22rpx;
+      color: #999;
+      line-height: 22rpx;
+      text-align: right;
+      width: 100%;
+      margin-top: 20rpx;
+      margin-bottom: 5rpx;
+      padding-right: 26rpx;
+      box-sizing: border-box;
+    }
+  }
+</style>
