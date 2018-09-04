@@ -1,0 +1,23 @@
+<template>
+  <view>
+    <picker></picker>
+  </view>
+</template>
+<script>
+  import wepy from "wepy";
+  import picker from "@components/picker";
+  export default class setPersonalData extends wepy.page {
+    config = {
+      navigationBarTitleText: "生日类型",
+      navigationBarTextStyle: "black",
+      backgroundTextStyle: "light"
+    };
+    data = {};
+    components = {
+      picker,
+    }
+  }
+</script>
+<style lang="less" scoped>
+
+</style>
