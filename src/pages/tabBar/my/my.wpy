@@ -3,12 +3,19 @@
 
 </style>
 <template>
-  <view class="flex flex_column margin_left margin_right font_normal">
+  <view>
     我的界面
     <button bindtap="toMineActivty">我的活动</button>
+    <button bindtap="toCoupon">优惠券</button>
+    <button bindtap="toPersonalData">个人资料</button>
+    <button bindtap="toMineIntergral">我的积分</button>
+    <button bindtap="toUpGrade">升等级</button>
+    <button bindtap="toFootPrint">足迹</button>
+    <button bindtap="toElectricBill">电子账单</button>
+    <button bindtap="toAfterSaleCriterion">售后准则</button>
+    <button bindtap="toAboutUs">关于我们</button>
   </view>
 </template>
-
 <script>
 import wepy from 'wepy';
 
@@ -19,19 +26,57 @@ import wepy from 'wepy';
           motto: 'Hello World',
           userInfo: {}
       };
-
       //事件处理函数(集中保存在methods对象中)
       methods = {
-          bindViewTap () {
-              console.log('button clicked');
-          },
-          toMineActivty() {
-            wx.navigateTo({
-              url: '/pages/my/view/mineActivity'
-            })
-          }
+        bindViewTap() {
+          console.log('button clicked');
+        },
+        toMineActivty() {
+          wx.navigateTo({
+            url: '/pages/my/view/mineActivity',
+          })
+        },
+        toCoupon() {
+          wx.navigateTo({
+            url: '/pages/my/view/coupon',
+          })
+        },
+        toPersonalData() {
+          wx.navigateTo({
+            url: '/pages/my/view/personalData',
+          })
+        },
+        toMineIntergral() {
+          wx.navigateTo({
+            url: '/pages/my/view/myIntegral',
+          })
+        },
+        toUpGrade() {
+          wx.navigateTo({
+            url: '/pages/my/view/UpGrade',
+          })
+        },
+        toFootPrint() {
+          wx.navigateTo({
+            url: '/pages/my/view/footprint',
+          })
+        },
+        toElectricBill() {
+          wx.navigateTo({
+            url: '/pages/my/view/electricBill',
+          })
+        },
+        toAfterSaleCriterion() {
+          wx.navigateTo({
+            url: '/pages/my/view/afterSaleCriterion',
+          })
+        },
+        toAboutUs() {
+          wx.navigateTo({
+            url: '/pages/my/view/aboutUs',
+          })
+        }
       };
-
       //页面的生命周期函数
       onLoad() {
           console.log('onLoad');

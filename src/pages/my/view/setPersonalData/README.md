@@ -1,0 +1,4 @@
+- setAddress		设置地址
+- setBirthday            设置生日类型
+- setGender              设置性别
+- setName                 设置姓名

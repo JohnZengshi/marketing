@@ -28,7 +28,6 @@
 
 
     <view class="memberExclusive">
-      <!-- <memberExclusiveTitle idx="_01" title="白金惠享"></memberExclusiveTitle> -->
       <view class="titleLine">
         <view class="title">白金惠享</view>
         <view class="line"></view>
@@ -53,7 +52,6 @@
 
 
     <view class="makeIntergral">
-      <!-- <makeIntergralTitle idx="_02" title="赚积分"></makeIntergralTitle> -->
       <view class="titleLine">
         <view class="title">赚积分</view>
         <view class="line"></view>
@@ -122,7 +120,6 @@
   import {
     _getDomRect
   } from "@utils/getDom";
-  import titleLine from "../components/titleLine";
   export default class UpGrade extends wepy.page {
     config = {
       navigationBarTitleText: "升等级",
@@ -130,8 +127,6 @@
       backgroundTextStyle: "light"
     };
     components = {
-      // memberExclusiveTitle: titleLine,
-      // makeIntergralTitle: titleLine
     };
     data = {
       makeIntergralList: [{

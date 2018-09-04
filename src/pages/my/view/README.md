@@ -1,0 +1,11 @@
+- mineActivity			我的活动页面
+- bargainSucceed            砍价成功页面
+- coupon                           优惠券页面
+- personalData                个人资料
+- myIntegral                      我的积分页面
+- UpGrade                         升等级页面
+- electricBill                 电子账单页面
+- afterSaleCriterion            售后准则页面
+- aboutUs                    关于我们
+- integralExplain           积分说明页面
+

@@ -78,7 +78,6 @@
 <script>
   import wepy from "wepy";
   import Refresh from 'wepy-scroll-view-refresh';
-  import DropDownSelect from "../components/dropDownSelect";
   import Sticky from "@components/sticky";
   export default class myIntergral extends wepy.page {
     config = {
@@ -153,7 +152,6 @@
       }]
     };
     components = {
-      DropDownSelect,
       Refresh,
     };
     methods = {
