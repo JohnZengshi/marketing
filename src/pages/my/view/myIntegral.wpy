@@ -1,0 +1,348 @@
+<template>
+  <view class="content">
+    <scroll-view scroll-y scroll-with-animation bindscrolltolower="lower" style="width:100%;height:100%;" catchscroll="scroll">
+      <view style="width:100%;height:100%;">
+        <Refresh :scrollTop.sync="scrollTop">
+          <view slot="refresh-content" style="margin-top:90rpx;">
+            <view class="intergralCount flex flex-r flex-pack-center">
+              <view class="tip flex flex-r flex-align-center" @tap.stop="toDiscountExplain">
+                <text>当前最多抵扣52元</text>
+                <!-- <image src="/images/mine/1.3我的活动－返回@3x.png"></image> -->
+                <text>></text>
+              </view>
+              <view class="count flex flex-r flex-align-end">
+                <image src="/images/mine/4 我的积分－积分图标@3x.png"></image>
+                <view class="num flex flex-r flex-align-end">
+                  <text>520</text>
+                  <text>分</text>
+                </view>
+              </view>
+            </view>
+            <view class="functionModule flex flex-r">
+              <view class="makeIntergral flex flex-r flex-align-center flex-pack-justify" bindtap="toUpGrade">
+                <view class="left flex flex-v">
+                  <text>赚积分</text>
+                  <text>一起赚积分咯！</text>
+                </view>
+                <image src="/images/mine/4.1 我的积分－赚积分@3x.png"></image>
+              </view>
+              <view class="intergarlStore flex flex-r flex-align-center flex-pack-justify">
+                <view class="left flex flex-v">
+                  <text>积分商城</text>
+                  <text>等你换礼品啦！</text>
+                </view>
+                <image src="/images/mine/4.2我的积分－积分商城@3x.png"></image>
+              </view>
+            </view>
+            <view class="intergralList">
+            <!-- <Sticky> -->
+                <view slot="stickyContent" class="listHeader flex flex-r flex-align-center">
+                    <text>积分记录</text>
+                    <view>
+                        <view></view>
+                    </view>
+                </view>
+            <!-- </Sticky> -->
+            <repeat for="{{intergarList}}" key="index" index="index" item="item">
+                <view class="listItem">
+                    <view class="itemCount flex flex-r flex-align-center flex-pack-justify">
+                        <view class="flex flex-r flex-align-center">
+                            <text>{{item.date}}</text>
+                        </view>
+                        <view class="flex flex-r flex-align-center">
+                            <text wx:if="{{item.has}}">获取：{{item.has}}</text>
+                            <text wx:if="{{item.use}}">使用：{{item.use}}</text>
+                        </view>
+                    </view>
+                    <repeat for="{{item.list}}" key="idx" index="idx" item="i">
+                        <view class="item flex flex-r flex-align-center flex-pack-justify">
+                            <view class="left flex flex-v">
+                                <text>{{i.useType}}</text>
+                                <text>{{i.date}}</text>
+                            </view>
+                                <view class="right">
+                                <text>{{i.num}}</text>
+                            </view>
+                        </view>
+                    </repeat>
+                </view>
+            </repeat>
+            </view>
+          </view>
+        </Refresh>
+      </view>
+    </scroll-view>
+  </view>
+  </view>
+</template>
+<script>
+  import wepy from "wepy";
+  import Refresh from 'wepy-scroll-view-refresh';
+  import DropDownSelect from "../components/dropDownSelect";
+  import Sticky from "@components/sticky";
+  export default class myIntergral extends wepy.page {
+    config = {
+      navigationBarTitleText: "我的积分",
+      navigationBarTextStyle: "black",
+      backgroundTextStyle: "light"
+    };
+    data = {
+      scrollTop: 0,
+      intergarList: [{
+          date: "2018-09-10",
+          has: "83",
+          use: "200",
+          list: [{
+              useType: "签到",
+              date: "06-11",
+              num: "+2"
+          }, {
+              useType: "兑换优惠券",
+              date: "06-23",
+              num: "+50"
+          }, {
+              useType: "兑换优惠券",
+              date: "06-11",
+              num: "+2"
+          }, {
+              useType: "使用优惠券",
+              date: "02-15",
+              num: "-200"
+          }]
+      }, {
+          date: "2018-10-10",
+          has: "80",
+          use: "",
+          list: [{
+              useType: "签到",
+              date: "02-11",
+              num: "+8"
+          }, {
+              useType: "签到",
+              date: "06-23",
+              num: "+50"
+          }, {
+              useType: "兑换优惠券",
+              date: "09-11",
+              num: "+84"
+          }, {
+              useType: "签到",
+              date: "02-11",
+              num: "+8"
+          }, {
+              useType: "签到",
+              date: "06-23",
+              num: "+50"
+          }, {
+              useType: "兑换优惠券",
+              date: "09-11",
+              num: "+84"
+          }, {
+              useType: "签到",
+              date: "02-11",
+              num: "+8"
+          }, {
+              useType: "签到",
+              date: "06-23",
+              num: "+50"
+          }, {
+              useType: "兑换优惠券",
+              date: "09-11",
+              num: "+84"
+          }]
+      }]
+    };
+    components = {
+      DropDownSelect,
+      Refresh,
+    };
+    methods = {
+      lower(index) {},
+      scroll(e) { //页面滚动
+        this.scrollTop = e.detail.scrollTop;
+        // this.$broadcast("PageScroll");
+        this.$apply()
+      },
+      toUpGrade() { //跳转到升等级页面
+        wx.navigateTo({
+          url: '/pages/my/view/UpGrade'
+        })
+      },
+      toDiscountExplain() { //跳转到折扣说明页面
+        wx.navigateTo({
+          url: '/pages/my/view/discountExplain'
+        })
+      }
+    };
+    events = {
+      'refresh': (res) => {
+        if (res === 'success') {
+          setTimeout(() => {
+            this.$invoke('Refresh', 'reset')
+          }, 3000)
+        }
+      }
+    };
+  }
+</script>
+<style lang="less" scoped>
+  .content {
+    width: 100%;
+    height: 100%;
+
+    .intergralCount {
+      width: 100%;
+      height: 270rpx;
+      position: relative;
+      background: -webkit-linear-gradient(left, #FC884F, #FB6C4C);
+      /* Safari 5.1 - 6.0 */
+      background: -o-linear-gradient(right, #FC884F, #FB6C4C);
+      /* Opera 11.1 - 12.0 */
+      background: -moz-linear-gradient(right, #FC884F, #FB6C4C);
+      /* Firefox 3.6 - 15 */
+      background: linear-gradient(to right, #FC884F, #FB6C4C);
+      /* 标准的语法 */
+      .count {
+          margin-top: 130rpx;
+          margin-bottom: 60rpx;
+        >image {
+          width: 60rpx;
+          height: 60rpx;
+          margin-right: 30rpx;
+        }
+        .num {
+          height: 80rpx;
+          >text {
+            &:first-of-type {
+              font-size: 80rpx;
+              color: #fff;
+              font-weight: bold;
+              line-height:75rpx;
+            }
+
+            &:last-of-type {
+              font-size: 30rpx;
+              color: #fff;
+              vertical-align: bottom;
+            }
+          }
+        }
+      }
+      .tip {
+          top: 67rpx;
+          right: 143rpx;
+          left: 357rpx;
+          position: absolute;
+          display: inline-block;
+          padding: 0 8rpx 0 14rpx;
+          border-radius: 30rpx 30rpx 30rpx 0;
+          background-color: #E75838;
+          >text {
+            font-size: 24rpx;
+            color: #f9e7df;
+            line-height: 50rpx;
+            margin-right: 10rpx;
+          }
+
+          >image {
+            width: 24rpx;
+            height: 24rpx;
+          }
+        }
+    }
+
+    .functionModule{
+        .makeIntergral,.intergarlStore{
+            width: 50%;
+            height: 120rpx;
+            .left{
+                margin-left: 42rpx;
+                >text{
+                    &:first-of-type{
+                        font-size: 30rpx;
+                        line-height: 30rpx;
+                        color: #333;
+                        font-weight: bold;
+                    }
+                    &:last-of-type{
+                        font-size: 22rpx;
+                        line-height: 22rpx;
+                        margin-top: 16rpx;
+                        color: #999;
+                    }
+                }
+            }
+            >image {
+              width: 100rpx;
+              height: 100rpx;
+              margin-right: 38rpx;
+            }
+        }
+        .makeIntergral{
+            border-right: 1rpx #E6E6E6 solid;
+        }
+    }
+
+    .intergralList{
+        .listHeader{
+            width: 100%;
+            height: 84rpx;
+            background-color: #F6F7F8;
+            >text{
+                font-size: 30rpx;
+                color: #333;
+                margin-left: 32rpx;
+            }
+        }
+        .listItem{
+            .itemCount{
+                height: 44rpx;
+                width: 100%;
+                background-color: #ffede9;
+                >view{
+                    margin-left: 28rpx;
+                    >text{
+                        font-size: 24rpx;
+                        color: #fb684c;
+                    }
+                    &:last-of-type{
+                        margin-right: 27rpx;
+                        >text{
+                            margin-right: 10rpx;
+                            &:last-of-type{
+                                margin-right: 0;
+                            }
+                        }
+                    }
+                }
+            }
+            .item{
+                height: 120rpx;
+                border-bottom: 1rpx #EAEAEA solid;
+                margin: 0 26rpx;
+                .left{
+                    >text{
+                        &:first-of-type{
+                            font-size: 30rpx;
+                            color: #333;
+                            line-height: 30rpx;
+                        }
+                        &:last-of-type{
+                            font-size: 26rpx;
+                            color: #999;
+                            margin-top: 16rpx;
+                            line-height: 26rpx;
+                        }
+                    }
+                }
+                .right{
+                    >text{
+                        font-size: 30rpx;
+                        color: #333;
+                    }
+                }
+            }
+        }
+    }
+  }
+</style>
