@@ -1,0 +1,117 @@
+<template>
+  <view class="Popup-root" @tap="hide" wx:if="{{isShow}}">
+    <view 
+      class="mask" 
+      @touchmove.stop="catchForNotHide"></view>
+    <view 
+        class="Popup-pop {{popUpType}}" 
+        id="pop" 
+        @tap.stop="catchForNotHide" @touchmove="catchForNotHide">
+        <slot></slot>
+    </view>
+  </view>
+</template>
+<script>
+  import wepy from "wepy";
+  import {_getDomRect} from "@utils/getDom";
+  export default class Popup extends wepy.component {
+    props = {
+      isShow: { //是否显示弹窗
+        type: Boolean,
+        default: false
+      },
+      width: { 
+        type: String,
+        default: 0
+      },
+      height: {
+        type: String,
+        default: 0
+      },
+      popUpType: { //弹窗模式  center:中间  bottom:下面  left:左边  right:右边
+        type: String,
+        default: 'center'
+      }
+    };
+    data = {
+        ML: '0',
+        MR: '0'
+    };
+    watch = {
+        isShow: ()=>{
+          // console.log(123);
+            (async()=>{
+                // let domRes = await _getDomRect("#pop");
+                // console.log(domRes);
+                // let width = domRes.width;
+                // let height = domRes.height;
+                // this.ML = width/2;
+                // this.MR = height/2;
+                // this.$apply();
+            })()
+        }
+    };
+    methods = {
+      hide() {
+        this.$emit('hide')
+      },
+
+      catchForNotHide() {
+        console.log("do nothing")
+      }
+    };
+    async onLoad() {};
+    async onReady() {
+      let domRes = await _getDomRect("#pop");
+      console.log(domRes);
+    }
+  }
+</script>
+<style lang="less" scoped>
+  // .Popup-root {//   position: fixed;
+  //   z-index: 99999;
+  //   top: 0;
+  //   bottom: 0;
+  //   left: 0;
+  //   right: 0;
+  //   display: flex;
+  //   justify-content: center;
+  //   align-items: center;
+  //   background-color: rgba(0, 0, 0, 0.5);
+  // }
+  .mask {
+    position: fixed;
+    z-index: 99999;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .Popup-pop {
+    position: fixed;
+    z-index: 100000;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    &.center{
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%,-50%);
+    }
+    &.bottom{
+      bottom: 0;
+    }
+    &.left{
+      left: 0;
+      bottom: 0;
+    }
+    &.right{
+      right: 0;
+      bottom: 0;
+    }
+  }
+</style>
