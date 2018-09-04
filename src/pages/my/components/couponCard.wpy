@@ -1,0 +1,231 @@
+<template>
+  <view class="couponContent">
+    <view class="backPic" wx:if="{{useStatus == '0'}}">
+        <image wx:if="{{couponType == '1'}}" src="/images/mine/2优惠券@3x.png"></image>
+        <image wx:elif="{{couponType == '2'}}" src="/images/mine/2.1优惠券@3x.png"></image>
+        <image wx:elif="{{couponType == '3'}}" src="/images/mine/2.2优惠券@3x.png"></image>
+        <image wx:elif="{{couponType == '4'}}" src="/images/mine/2.3优惠券@3x.png"></image>
+    </view>
+    <view class="backPic" wx:else="{{useStatus == '1'}}">
+        <image src="/images/mine/2.4优惠券－使用／过期@3x.png"></image>
+    </view>
+    <view class="content flex flex-r flex-pack-justify flex-align-center">
+        <view class="left flex flex-v flex-pack-center">
+            <block>
+                <view class="couponType01 {{ useStatus == '1'?'gray':'' }}" wx:if="{{couponType == '1'}}">购物券</view>
+                <view class="couponType02 {{ useStatus == '1'?'gray':'' }}" wx:elif="{{couponType == '2'}}">购物券</view>
+                <view class="couponType03 {{ useStatus == '1'?'gray':'' }}" wx:elif="{{couponType == '3'}}">退货券</view>
+                <view class="couponType04 {{ useStatus == '1'?'gray':'' }}" wx:elif="{{couponType == '4'}}">售后券</view>
+            </block>
+            <view class="flex flex-r flex-align-center {{ useStatus == '1'?'gray':'' }}">
+                <text>{{couponCardData.couponTitle}}</text>
+                <view>限店铺使用</view>
+            </view>
+            <view>{{couponCardData.couponDes}}</view>
+            <view>有效期:{{couponCardData.validityDate}}</view>
+        </view>
+        <view  class="{{ useStatus == '1'?'gray':'' }} rigth flex flex-v flex-pack-center flex-align-center">
+            <block>
+                <view wx:if="{{couponType == '1'}}" class="couponVal couponVal01">
+                    <text>￥</text>
+                    <text>{{couponCardData.couponVal}}</text>
+                </view>
+                <view wx:elif="{{couponType == '2'}}" class="couponVal couponVal02">
+                    <text>{{couponCardData.couponVal}}</text>
+                    <text>折</text>
+                </view>
+                <view wx:elif="{{couponType == '3'}}" class="couponVal couponVal03">
+                    <text>￥</text>
+                    <text>{{couponCardData.couponVal}}</text>
+                </view>
+                <view wx:elif="{{couponType == '4'}}" class="couponVal couponVal04">
+                    <text>{{couponCardData.couponVal}}</text>
+                </view>
+            </block>
+            <view wx:if="{{couponCardData.explain}}" class="explain">{{couponCardData.explain}}</view>
+            <view wx:if="{{couponCardData.tip}}" class="tip">{{couponCardData.tip}}</view>
+        </view>
+    </view>
+  </view>
+</template>
+<script>
+  import wepy from "wepy";
+  export default class CouponCard extends wepy.component {
+    props = {
+        useStatus: { //优惠券的使用状态
+            typr: String,
+            default: "0"
+        },
+        couponCardData: { //优惠券的数据
+            type: Object,
+            default: null
+        },
+        couponType: { //优惠券的类型
+            type: String,
+            default: "1"
+        },
+    };
+    data = {};
+    methods = {};
+  }
+</script>
+<style lang="less" scoped>
+.couponContent{
+    position: relative;
+    width: 675rpx;
+    height: 244rpx;
+    .backPic{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        >image{
+            width: 100%;
+            height: 100%;
+        }
+    }
+    .content{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        .left{
+            margin-left: 43rpx; 
+            width: 417rpx;
+            >view{
+                color: #fff;
+                &:nth-of-type(1){
+                    font-size: 18rpx;
+                    line-height: 28rpx;
+                    text-align: center;
+                    border-radius: 28rpx 28rpx 28rpx 0;
+                    // font-weight: bold;
+                    // margin-top: 56rpx;
+                    width: 70rpx;
+                    height: 28rpx;
+                    background-color: #fff;
+                    color: #fb684c;
+                    &.gray{
+                        color: #ccc;
+                    }
+                };
+                &:nth-of-type(2){
+                    margin-top: 6rpx;
+                    >text{
+                        font-size: 36rpx;
+                        line-height: 36rpx;
+                        margin-right: 4rpx;
+                    }
+                    >view{
+                        width: 90rpx;
+                        height: 28rpx;
+                        font-size: 16rpx;
+                        text-align: center;
+                        line-height: 28rpx;
+                        border-radius: 28rpx;
+                        color: #fb684c;
+                        background-color: #fff;
+                    }
+                    &.gray{
+                        >view{
+                            color: #ccc;
+                        }
+                    }
+                };
+                &:nth-of-type(3){
+                    font-size: 22rpx;
+                    margin-top: 24rpx;
+                    word-break: break-all;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 1;
+                    /*限制在一个块元素显示的文本的行数*/
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    -o-text-overflow: ellipsis;
+                    -webkit-text-overflow: ellipsis;
+                    -moz-text-overflow: ellipsis;
+                }
+                &:nth-of-type(4){
+                    font-size: 22rpx;
+                    line-height: 22rpx;
+                    margin-top: 10rpx;
+                }
+            }
+        }
+        .rigth{
+            // margin-top: 22rpx;
+            margin-right: 11rpx;
+            height: 190rpx;
+            width: 175rpx;
+            position: relative;
+            overflow: hidden;
+            &.gray{
+                -webkit-filter: grayscale(100%);
+            }
+            .couponVal{
+                // font-size: 80rpx;
+                // line-height: 80rpx;
+                // color: #fb6720;
+                // font-weight: bold;
+                // margin-top: 75rpx;
+                &.couponVal01,&.couponVal03{
+                    >text{
+                        color: #fb684c;
+                        font-weight: bold;
+                        &:first-of-type{
+                            font-size: 30rpx;
+                            line-height: 30rpx;
+                        }
+                        &:last-of-type{
+                            font-size: 60rpx;
+                            line-height: 60rpx;
+                        }
+                    }
+                }
+                &.couponVal02{
+                    >text{
+                        color: #fb684c;
+                        font-weight: bold;
+                        &:first-of-type{
+                            font-size: 60rpx;
+                            line-height: 60rpx;
+                        }
+                        &:last-of-type{
+                            font-size: 30rpx;
+                            line-height: 30rpx;
+                        }
+                    }
+                }
+                &.couponVal04{  
+                    >text{
+                        font-size: 30rpx;
+                        color: #fb684c
+                    }
+                }
+            };
+            .explain{
+                font-size: 22rpx;
+                color: #fb684c;
+            }
+            .tip{
+                top:15rpx;
+                right:-25rpx;
+                position: absolute;
+                width: 108rpx;
+                height: 30rpx;
+                font-size: 20rpx;
+                color: #fff;
+                background-color: #FB6721;
+                text-align: center;
+                line-height: 30rpx;
+                // border-radius: 14rpx;
+                // margin-top: 9rpx;
+                transform: rotate(45deg)
+            }
+        }
+    }
+}
+</style>
