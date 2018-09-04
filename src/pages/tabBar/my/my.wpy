@@ -23,6 +23,11 @@ import wepy from 'wepy';
   export default class Index extends wepy.page {
       //可用于页面模板绑定的数据
       data = {
+          list: [
+            {
+              hao: '123'
+            }
+          ],
           motto: 'Hello World',
           userInfo: {}
       };

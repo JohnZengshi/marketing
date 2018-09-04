@@ -9,7 +9,7 @@
 	},
 	"compileType": "miniprogram",
 	"appid": "wxdaec656a7d436633",
-	"projectname": "xcx-marketing",
+	"projectname": "my-project",
 	"miniprogramRoot": "./dist",
 	"condition": {}
 }
