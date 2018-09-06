@@ -83,11 +83,13 @@ export default class extends wepy.app {
 
   constructor () {
     super()
-    this.use('requestfix')
+    this.use('requestfix');
+    this.use('promisify');
   }
 
   onLaunch() {
-    this.testAsync()
+    this.testAsync();
+    // this.getUserInfo();
   }
 
   sleep (s) {
@@ -103,17 +105,11 @@ export default class extends wepy.app {
     console.log(data)
   }
 
-  getUserInfo(cb) {
-    const that = this
-    if (this.globalData.userInfo) {
-      return this.globalData.userInfo
-    }
-    wepy.getUserInfo({
-      success (res) {
-        that.globalData.userInfo = res.userInfo
-        cb && cb(res.userInfo)
-      }
-    })
-  }
+  // async getUserInfo() {
+  //   await wepy.login();
+  //   let res = await wepy.getUserInfo();
+  //   console.log(res)
+  //   this.globalData['userInfo'] = res.userInfo;
+  // }
 }
 </script>
