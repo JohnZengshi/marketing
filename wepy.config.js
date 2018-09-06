@@ -28,7 +28,7 @@ module.exports = {
       compress: prod
     },
     sass: {
-      outputStyle: 'compressed'
+      'outputStyle': 'compressed'
     },
     babel: {
       sourceMap: true,
@@ -51,16 +51,21 @@ module.exports = {
 }
 
 if (prod) {
-
   // 压缩sass
-  // module.exports.compilers['sass'] = {outputStyle: 'compressed'}
+  module.exports.compilers['sass'] = {
+    'outputStyle': 'compressed'
+  };
+  // 压缩less
+  module.exports.compilers['less'] = {
+    'compress': true
+  };
+
 
   // 压缩js
   module.exports.plugins = {
     uglifyjs: {
       filter: /\.js$/,
-      config: {
-      }
+      config: {}
     },
     imagemin: {
       filter: /\.(jpg|png|jpeg)$/,
