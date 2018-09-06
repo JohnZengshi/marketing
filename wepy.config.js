@@ -16,6 +16,7 @@ module.exports = {
     alias: {
       counter: path.join(__dirname, 'src/components/counter'),
       '@': path.join(__dirname, 'src'),
+      '@Api': path.join(__dirname, 'src/Api'),
       '@components':path.join(__dirname, 'src/components'),
       '@utils':path.join(__dirname, 'src/utils'),
     },
