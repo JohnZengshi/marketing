@@ -2,13 +2,13 @@
   <view>
     <Tabs :tabs.sync="tabs" height="90" fontSize="30" :currentIndex.sync="currentIndex"></Tabs>
     <Swiper @changeSwiper="changeSwiper" :currentIndex.sync="currentIndex" height="1120" backColor="#F6F7F8">
-        <swiper-item slot="swiperItem" wx:for="{{activity}}" wx:key="index" wx:for-index="index" wx:for-item="item">
+        <swiper-item slot="swiperItem" wx:for="{{coupon}}" wx:key="index" wx:for-index="index" wx:for-item="item">
             <view class="activityItem">
                 <scroll-view scroll-y="{{true}}" class="refresh-scroll__container" scroll-with-animation="{{true}}"
                     bindscrolltolower="lower" style="width:100%;height:100%;" catchscroll="scroll">
                     <view style="width:100%;height:100%;">
-                        <Refresh :scrollTop.sync="scrollTop">
-                            <view class="flex flex-v flex-align-center" slot="refresh-content" style="margin-top:90rpx;">
+                        <!-- <UnUsed wx:if="{{item.name == '未使用'}}" :scrollTop.sync="scrollTop"> -->
+                          <view class="flex flex-v flex-align-center" slot="refresh-content">
                                 <view class="tip">优惠券仅限线下门店使用</view>
                                 <repeat for="{{item.couponCardData}}" key="index" index="index" item="i">
                                     <CouponCard 
@@ -17,7 +17,29 @@
                                         :couponCardData.sync="i"></CouponCard>
                                 </repeat>
                             </view>
-                        </Refresh>
+                        <!-- </UnUsed> -->
+                        <!-- <haveUsed wx:elif="{{item.name == '已使用'}}" :scrollTop.sync="scrollTop"> -->
+                          <!-- <view class="flex flex-v flex-align-center" slot="refresh-content" style="margin-top:90rpx;"> -->
+                                <!-- <view class="tip">优惠券仅限线下门店使用</view>
+                                <repeat for="{{item.couponCardData}}" key="index" index="index" item="i">
+                                    <CouponCard 
+                                        :useStatus.sync="item.useStatus" 
+                                        :couponType.sync="i.type"
+                                        :couponCardData.sync="i"></CouponCard>
+                                </repeat> -->
+                            </view>
+                        <!-- </haveUsed> -->
+                        <!-- <Expired wx:elif="{{item.name == '已过期'}}" :scrollTop.sync="scrollTop"> -->
+                          <!-- <view class="flex flex-v flex-align-center" slot="refresh-content" style="margin-top:90rpx;"> -->
+                                <!-- <view class="tip">优惠券仅限线下门店使用</view>
+                                <repeat for="{{item.couponCardData}}" key="index" index="index" item="i">
+                                    <CouponCard 
+                                        :useStatus.sync="item.useStatus" 
+                                        :couponType.sync="i.type"
+                                        :couponCardData.sync="i"></CouponCard>
+                                </repeat> -->
+                            </view>
+                        <!-- </Expired> -->
                     </view>
                 </scroll-view>
             </view>
@@ -30,7 +52,7 @@
   import Tabs from "@components/tabs";
   import Swiper from "@components/swiper";
   import CouponCard from "../components/couponCard";
-  import Refresh from 'wepy-scroll-view-refresh';
+  // import Refresh from '@components/ScrollViewRefresh';
   export default class Coupon extends wepy.page {
     config = {
       navigationBarTitleText: "优惠券",
@@ -39,7 +61,7 @@
     };
     data = {
       tabs: ["未使用(3)", "已使用(4)", "已过期(3)"],
-      activity: [{
+      coupon: [{
         name: "未使用",
         useStatus: "0",
         couponCardData: [{
@@ -102,12 +124,15 @@
     components = {
       Tabs,
       Swiper,
-      Refresh,
-      CouponCard
+      CouponCard,
+      // UnUsed:Refresh,
+      // haveUsed:Refresh,
+      // Expired:Refresh,
+      
     };
     methods = {
       lower(index) {
-        console.log(index)
+        // console.log(index)
       },
       scroll(e) { //页面滚动
         this.scrollTop = e.detail.scrollTop
@@ -121,10 +146,10 @@
       "changeSliderLine"(index) {
         this.currentIndex = index;
       },
-      'refresh': (res) => {
+      'refresh': (name,res) => {
         if (res === 'success') {
           setTimeout(() => {
-            this.$invoke('Refresh', 'reset')
+            this.$invoke(name, 'reset')
           }, 3000)
         }
       }

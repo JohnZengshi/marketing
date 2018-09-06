@@ -1,10 +1,11 @@
 <template>
     <view>
-<!--         <Tabs 
+        <Tabs 
             :tabs.sync="tabs" 
             height="90" 
             fontSize="30" 
-            :currentIndex.sync="currentIndex"></Tabs> -->
+            :currentIndex.sync="currentIndex">
+        </Tabs>
         <Swiper 
             @changeSwiper="changeSwiper" 
             :currentIndex.sync="currentIndex"
@@ -20,8 +21,30 @@
                         style="width:100%;height:100%;" 
                         catchscroll="scroll">
                         <view style="width:100%;height:100%;">
-                            <Refresh :scrollTop.sync="scrollTop">
-                                <view slot="refresh-content" style="margin-top:90rpx;">
+                            <!-- <myParticipation wx:if="{{item.name == '我的参与'}}" :scrollTop.sync="scrollTop">
+                                <view slot="refresh-content">
+                                    <view class="card" @tap="toBargainSucceed">
+                                        <Card></Card>
+                                    </view>
+                                    <view class="card">
+                                        <Card></Card>
+                                    </view>
+                                    <view class="card">
+                                        <Card></Card>
+                                    </view>
+                                    <view class="card">
+                                        <Card></Card>
+                                    </view>
+                                    <view class="card">
+                                        <Card></Card>
+                                    </view>
+                                    <view class="card">
+                                        <Card></Card>
+                                    </view>
+                                </view>
+                            </myParticipation>
+                            <allActivity wx:elif="{{item.name == '全部活动'}}" :scrollTop.sync="scrollTop">
+                                <view slot="refresh-content">
                                     <view class="card" bindtap="toBargainSucceed">
                                         <Card></Card>
                                     </view>
@@ -41,7 +64,32 @@
                                         <Card></Card>
                                     </view>
                                 </view>
-                            </Refresh>
+                            </allActivity> -->
+                            <!-- <underwayActivity wx:elif="{{item.name == '进行中的活动'}}" :scrollTop.sync="scrollTop"> -->
+                                <view slot="refresh-content">
+                                    <view class="card" bindtap="toBargainSucceed">
+                                        <Card></Card>
+                                    </view>
+                                    <view class="card">
+                                        <Card></Card>
+                                    </view>
+                                    <view class="card">
+                                        <Card></Card>
+                                    </view>
+                                    <view class="card">
+                                        <Card></Card>
+                                    </view>
+                                    <view class="card">
+                                        <Card></Card>
+                                    </view>
+                                    <view class="card">
+                                        <Card></Card>
+                                    </view>
+                                </view>
+                            <!-- </underwayActivity> -->
+                            <!-- <Refresh :scrollTop.sync="scrollTop">
+                                
+                            </Refresh> -->
                         </view>
                     </scroll-view>
                 </view>
@@ -51,10 +99,10 @@
 </template>
 <script>
 import wepy from "wepy";
-// import Tabs from "@components/tabs";
+import Tabs from "@components/tabs";
 import Swiper from "@components/swiper";
 import Card from "../components/card";
-import Refresh from 'wepy-scroll-view-refresh';
+// import Refresh from '@components/ScrollViewRefresh';
 
 export default class MineActivity extends wepy.page {
     data = {
@@ -75,10 +123,12 @@ export default class MineActivity extends wepy.page {
         backgroundTextStyle: "light"
     };
     components = {
-        // Tabs,
+        Tabs,
         Swiper,
         Card,
-        Refresh
+        // myParticipation:Refresh,
+        // allActivity:Refresh,
+        // underwayActivity:Refresh,
     };
     methods = {
       lower(index) {},
@@ -99,10 +149,10 @@ export default class MineActivity extends wepy.page {
         "changeSliderLine"(index) {
             this.currentIndex = index;
         },
-        'refresh': (res) => {
+        'refresh': (name,res) => {
           if (res === 'success') {
             setTimeout(() => {
-              this.$invoke('Refresh', 'reset')
+              this.$invoke(name, 'reset')
             }, 3000)
           }
         }
