@@ -46,7 +46,7 @@
 <style lang="less" scoped>
   #stickyContent {
     width: 100%;
-
+    z-index: 9999;
     &.fixed {
       position: fixed;
       top: 0;
