@@ -25,6 +25,7 @@
 <script>
   import wepy from "wepy";
   import wepyCropper from 'wepy-cropper';
+  import {getUserInfo} from "@Api/mine/mineApi";
   export default class presonalData extends wepy.page {
     config = {
       navigationBarTitleText: "个人资料",
@@ -32,61 +33,7 @@
       backgroundTextStyle: "light"
     };
     data = {
-      presonalDataConfig: [{
-        text: "头像",
-        type: "pic",
-        value: "",
-        required: true,
-        operation: "changeHeadPortrait"
-      }, {
-        text: "姓名",
-        type: "text",
-        value: "哈哈哈",
-        required: true,
-        operation: "setName"
-      }, {
-        text: "性别",
-        type: "text",
-        value: "男",
-        required: true,
-        operation: "setGender"
-      }, {
-        text: "生日",
-        type: "text",
-        value: "2018-02-03",
-        required: true,
-        operation: "setBirthday"
-      }, {
-        text: "纪念日",
-        type: "text",
-        value: "",
-        required: false,
-        operation: "qushezhi"
-      }, {
-        text: "微信号",
-        type: "text",
-        value: "",
-        required: false,
-        operation: "qushezhi"
-      }, {
-        text: "邮箱",
-        type: "text",
-        value: "",
-        required: false,
-        operation: "qushezhi"
-      }, {
-        text: "地址",
-        type: "text",
-        value: "",
-        required: false,
-        operation: "setAddress"
-      }, {
-        text: "详细地址",
-        type: "text",
-        value: "",
-        required: false,
-        operation: "qushezhi"
-      }],
+      UserInfo: null,
       clipParams: {
         src: '', //字符串, 图片path 必填
         mode: "rectangle", //选填,默认rectangle
@@ -99,6 +46,69 @@
         visable: false
       },
       currentOperation: "0"
+    };
+    computed = {
+      presonalDataConfig() {
+        if (this.UserInfo) {
+          return [{
+            text: "头像",
+            type: "pic",
+            value: this.UserInfo.qcSrc,
+            required: true,
+            operation: "changeHeadPortrait"
+          }, {
+            text: "姓名",
+            type: "text",
+            value: this.UserInfo.nickName,
+            required: true,
+            operation: "setName"
+          }, {
+            text: "性别",
+            type: "text",
+            value: this.UserInfo.sex == '1' ? '男' : '女',
+            required: true,
+            operation: "setGender"
+          }, {
+            text: "生日",
+            type: "text",
+            value: "2018-02-03",
+            required: true,
+            operation: "setBirthday"
+          }, {
+            text: "纪念日",
+            type: "text",
+            value: "",
+            required: false,
+            operation: "qushezhi"
+          }, {
+            text: "微信号",
+            type: "text",
+            value: "",
+            required: false,
+            operation: "qushezhi"
+          }, {
+            text: "邮箱",
+            type: "text",
+            value: "",
+            required: false,
+            operation: "qushezhi"
+          }, {
+            text: "地址",
+            type: "text",
+            value: "",
+            required: false,
+            operation: "setAddress"
+          }, {
+            text: "详细地址",
+            type: "text",
+            value: "",
+            required: false,
+            operation: "qushezhi"
+          }]
+        }else{
+          return [];
+        }
+      }
     };
     components = {
       wepyCropper
@@ -124,7 +134,16 @@
         this.$apply();
       }
     };
-    onLoad() {
+    onLoad() {};
+    async onShow() {
+      this.UserInfo =await this.getUserInfo();
+      this.$apply();
+    }
+    // 获取用户的信息
+    async getUserInfo() {
+      let {shopId,userId,memberId} = this.$parent.globalData;
+      let res = await getUserInfo({shopId,userId,memberId});
+      return res.data
     };
     // 跳转到设置页面
     toSetPersonalData(operation) {
@@ -193,7 +212,7 @@
             height: 120rpx;
             border-radius: 50%;
             border: 1rpx #F9E0D3 solid;
-            background-color: #FB684C;
+            // background-color: #FB684C;
             margin:15rpx 20rpx;
           }
 

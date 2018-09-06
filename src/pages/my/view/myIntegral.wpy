@@ -35,14 +35,14 @@
               </view>
             </view>
             <view class="intergralList">
-            <!-- <Sticky> -->
+            <Sticky>
                 <view slot="stickyContent" class="listHeader flex flex-r flex-align-center">
                     <text>积分记录</text>
                     <view>
                         <view></view>
                     </view>
                 </view>
-            <!-- </Sticky> -->
+            </Sticky>
             <repeat for="{{intergarList}}" key="index" index="index" item="item">
                 <view class="listItem">
                     <view class="itemCount flex flex-r flex-align-center flex-pack-justify">
@@ -152,13 +152,14 @@
       }]
     };
     components = {
+        Sticky
     //   Refresh,
     };
     methods = {
       lower(index) {},
       scroll(e) { //页面滚动
         this.scrollTop = e.detail.scrollTop;
-        // this.$broadcast("PageScroll");
+        this.$broadcast("PageScroll");
         this.$apply()
       },
       toUpGrade() { //跳转到升等级页面

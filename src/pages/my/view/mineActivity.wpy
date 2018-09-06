@@ -67,24 +67,14 @@
                             </allActivity> -->
                             <!-- <underwayActivity wx:elif="{{item.name == '进行中的活动'}}" :scrollTop.sync="scrollTop"> -->
                                 <view slot="refresh-content">
-                                    <view class="card" bindtap="toBargainSucceed">
-                                        <Card></Card>
-                                    </view>
-                                    <view class="card">
-                                        <Card></Card>
-                                    </view>
-                                    <view class="card">
-                                        <Card></Card>
-                                    </view>
-                                    <view class="card">
-                                        <Card></Card>
-                                    </view>
-                                    <view class="card">
-                                        <Card></Card>
-                                    </view>
-                                    <view class="card">
-                                        <Card></Card>
-                                    </view>
+                                    <view wx:if="{{item.list.length == 0}}" class="noData">暂无数据</view>
+                                    <block wx:else>
+                                        <repeat for="{{item.list}}" key="idx" index="idx" item="i">
+                                            <view class="card" bindtap="toBargainSucceed">
+                                                <Card :cardData.sync="i"></Card>
+                                            </view>
+                                        </repeat>
+                                    </block>
                                 </view>
                             <!-- </underwayActivity> -->
                             <!-- <Refresh :scrollTop.sync="scrollTop">
@@ -102,19 +92,15 @@ import wepy from "wepy";
 import Tabs from "@components/tabs";
 import Swiper from "@components/swiper";
 import Card from "../components/card";
+import {getActivityList} from "@Api/mine/mineApi";
 // import Refresh from '@components/ScrollViewRefresh';
 
 export default class MineActivity extends wepy.page {
     data = {
-        tabs: ["我的参与(3)", "全部活动(4)", "进行中的活动(3)"],
-        activity: [{
-            name: "我的参与",
-        }, {
-            name: "全部活动",
-        }, {
-            name: "进行中的活动",
-        }],
-        currentIndex: "0",
+        myJoinedList:[], //我的参与
+        allActivityList:[], //全部活动
+        ongoingActivity:[], //进行中的活动
+        currentIndex: "",
         scrollTop: 0
     };
     config = {
@@ -156,14 +142,107 @@ export default class MineActivity extends wepy.page {
             }, 3000)
           }
         }
+    };
+    computed = {
+        tabs (){
+            return [`我的参与(${this.myJoinedList.length})`, `全部活动(${this.allActivityList.length})`, `进行中的活动(${this.ongoingActivity.length})`]
+        },
+        activity() {
+          return [{
+            name: "我的参与",
+            list: this.myJoinedList,
+          }, {
+            name: "全部活动",
+            list: this.allActivityList,
+          }, {
+            name: "进行中的活动",
+            list: this.ongoingActivity,
+          }]
+        }
+    };
+    watch = {
+        // currentIndex: (val)=>{
+        //     let currentList = this.activity[val].list;
+        //     if (currentList.length == 0) {
+        //       let {
+        //         shopId,
+        //         userId,
+        //         memberId
+        //       } = this.$parent.globalData;
+        //       let option = {
+        //         shopId: shopId,
+        //         userId: userId,
+        //         memberId: memberId,
+        //         clazz: "1",
+        //         type: "",
+        //         status: "",
+        //       }
+        //       if (val == '0') {
+        //         console.log("未开始");
+        //         option.status = "0";
+        //       } else if (val == '1') {
+        //         console.log("进行中");
+        //         option.status = "1";
+        //       } else if (val == '2') {
+        //         console.log("已进行");
+        //         option.status = "2";
+        //       }
+        //       (async () => {
+        //         let list = await this.getActivityList(option);
+        //         console.log(list);
+        //         this.activity[val].list = list;
+        //         this.$apply();
+        //       })()
+        //     }
+        // }
     }
-    onLoad() {}
+    onLoad() {
+        this.currentIndex = 0;
+    };
+    async onShow() {
+        this.myJoinedList = await this.getActivityList("1", "", "0");
+        this.allActivityList = await this.getActivityList("1", "", "1");
+        this.ongoingActivity = await this.getActivityList("1", "", "2");
+        console.log(this.activity);
+        this.$apply();
+    };
+    // 请求的参数
+    async getRequestData() {}
+    /** 获取活动列表
+     * @param  {[String]} clazz  [活动类别:1 店铺,2 用户参与]
+     * @param  {[String]} type   [活动类型:1 砍价,2 砸金蛋]
+     * @param  {[String]} status [活动状态:0未开始,1 进行中,2 已结束]
+     * @return {[type]}          [description]
+     */
+    async getActivityList(clazz="1",type="",status=""){
+        let {
+          shopId,
+          userId,
+          memberId
+        } = this.$parent.globalData;
+        let res =await getActivityList({shopId,userId,memberId,clazz,type,status})
+        if(res.msg == 'OK'){
+            return res.data;
+        }else{
+            return []
+        }
+    }
 }
 </script>
 <style lang="less">
     .activityItem{
         width:100%;
         height:100%;
+        position: relative;
+        .noData{
+            position: absolute;
+            font-size: 24rpx;
+            line-height: 24rpx;
+            top: 50%;
+            width: 100%;
+            text-align: center;
+            margin-top: -12rpx;
+        }
         .card{
             margin-top: 20rpx;
         }

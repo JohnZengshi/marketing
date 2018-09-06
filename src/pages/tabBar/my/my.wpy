@@ -5,6 +5,7 @@
 <template>
   <view>
     我的界面
+    <view>{{UserInfo.balance}}</view>
     <button bindtap="toMineActivty">我的活动</button>
     <button bindtap="toCoupon">优惠券</button>
     <button bindtap="toPersonalData">个人资料</button>
@@ -18,7 +19,7 @@
 </template>
 <script>
 import wepy from 'wepy';
-
+import {getUserInfo,register} from "@Api/mine/mineApi";
   //通过继承自wepy.page的类创建页面逻辑
   export default class Index extends wepy.page {
       //可用于页面模板绑定的数据
@@ -29,7 +30,7 @@ import wepy from 'wepy';
             }
           ],
           motto: 'Hello World',
-          userInfo: {}
+          UserInfo: {}
       };
       //事件处理函数(集中保存在methods对象中)
       methods = {
@@ -83,8 +84,67 @@ import wepy from 'wepy';
         }
       };
       //页面的生命周期函数
-      onLoad() {
-          console.log('onLoad');
+      async onLoad() {
+          let res =await this.register(); //注册
+          await this.saveUserInfo(res.data); //保存信息
+          // let UserInfo = await this.getUserInfo(); //获取会员信息
+          // this.UserInfo = UserInfo;
+          this.$apply();
+          console.log(this.UserInfo)
+      };
+      //每次页面进入触发
+      async onShow() {
+        // this.getUserInfo();
+      };
+      // 保存信息
+      async saveUserInfo(data) {
+        let {companyId,shopId,userId,memberId} = data;
+        this.$parent.globalData.shopId = shopId;
+        this.$parent.globalData.memberId = memberId;
+        this.$parent.globalData.userId = userId;
+        wepy.setStorageSync("companyId",companyId);
+        wepy.setStorageSync("userId",userId);
+      };
+      // 会员注册
+      async register() {
+        return { //假设注册成功
+          state: 200,
+          msg: "OK",
+          data: {
+            companyId: "7eb47787d95045d79cc8e1dbb71414d5",
+            shopId: "92999c248dc94a62a999b46895ab35c0",
+            userId: "053388eb65a747ea8d7dc53ee8c81201",
+            memberId: "6d6ef8fc12ff4b688eef1779de11fefb",
+          }
+        }
+      };
+      // 获取会员信息
+      async getUserInfo() {
+        let {shopId,userId,memberId} = this.$parent.globalData;
+        let option = {
+            shopId: shopId,
+            userId: userId,
+            memberId: memberId
+        }
+        let res =await getUserInfo(option)
+        // { "state": 200,  "msg": "OK",  "data":{ 返回参数} }
+        if(res.msg == 'OK'){
+          return res.data;
+        }else{
+          return {
+            couponNum: "0",
+            integralNum: "0",
+            balance: "0.00",
+            qcSrc: "",
+            nickName: "",
+            faceSrc: "",
+            gradeName: "",
+            shopName: "",
+            member: "",
+            sex: "",
+            phone: "",
+          }
+        }
       };
   }
 </script>

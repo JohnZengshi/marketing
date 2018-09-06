@@ -1,12 +1,12 @@
 <template>
   <view class="couponContent">
-    <view class="backPic" wx:if="{{useStatus == '0'}}">
+    <view class="backPic" wx:if="{{useStatus == '1'}}">
         <image wx:if="{{couponType == '1'}}" src="/images/mine/2优惠券@3x.png"></image>
         <image wx:elif="{{couponType == '2'}}" src="/images/mine/2.1优惠券@3x.png"></image>
         <image wx:elif="{{couponType == '3'}}" src="/images/mine/2.2优惠券@3x.png"></image>
         <image wx:elif="{{couponType == '4'}}" src="/images/mine/2.3优惠券@3x.png"></image>
     </view>
-    <view class="backPic" wx:else="{{useStatus == '1'}}">
+    <view class="backPic" wx:else="{{useStatus == '2' || useStatus == '3'}}">
         <image src="/images/mine/2.4优惠券－使用／过期@3x.png"></image>
     </view>
     <view class="content flex flex-r flex-pack-justify flex-align-center">
@@ -18,7 +18,7 @@
                 <view class="couponType04 {{ useStatus == '1'?'gray':'' }}" wx:elif="{{couponType == '4'}}">售后券</view>
             </block>
             <view class="flex flex-r flex-align-center {{ useStatus == '1'?'gray':'' }}">
-                <text>{{couponCardData.couponTitle}}</text>
+                <text>{{couponCardData.head}}</text>
                 <view>限店铺使用</view>
             </view>
             <view>{{couponCardData.couponDes}}</view>
