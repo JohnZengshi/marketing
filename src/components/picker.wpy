@@ -33,33 +33,21 @@
         start="2015-09-01" 
         end="2017-09-01" 
         bindchange="bindDateChange">
-        <view class="pickerContent flex flex-r flex-align-center">
-            <view class="picker">
-              {{pickerText}}
-            </view>
-            <image src="/images/mine/下拉@3x.png"></image>
-        </view>
+        <slot name="datePicker"></slot>
       </picker>
     </block>
     <block wx:elif="{{type == 'rang'}}">
       <picker bindchange="bindPickerChange" value="{{index}}" range="{{selectArray}}">
-        <view class="pickerContent flex flex-r flex-align-center">
-            <view class="picker">
-              {{pickerText}}
-            </view>
-            <image src="/images/mine/下拉@3x.png"></image>
-        </view>
+        <slot name="allPicker"></slot>
       </picker>
     </block>
-  </view>
-  <!-- <view class="section">
-    <view class="section__title">省市区选择器</view>
-    <picker mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
-      <view class="picker">
-        当前选择：{{region[0]}}，{{region[1]}}，{{region[2]}}
-      </view>
+    <block wx:elif="{{type == 'address'}}">
+      <picker mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
+        <slot name="addressPicker"></slot>
     </picker>
-  </view> -->
+    </block>
+  </view>
+    
 </template>
 <script>
   import wepy from "wepy";
@@ -72,12 +60,6 @@
          */
         type: String,
         default: "rang"
-      },
-      pickerText: {
-        /** 选择器上要显示的字
-         * @param  {[String]} pickerText  [要显示的字]
-         */
-        type: String
       },
       selectArray: {
         /** 单选选择器的数组
@@ -235,7 +217,8 @@
         this.setData(data);
       },
       bindDateChange: function (e) {
-        console.log('picker发送选择改变，携带值为', e.detail.value)
+        console.log('picker发送选择改变，携带值为', e.detail.value);
+        this.$emit("bindDateChange",e.detail.value)
         this.setData({
           date: e.detail.value
         })
@@ -247,21 +230,14 @@
       },
       bindRegionChange: function (e) {
         console.log('picker发送选择改变，携带值为', e.detail.value)
-        this.setData({
-          region: e.detail.value
-        })
+        this.$emit("bindRegionChange",e.detail.value)
+        this.region = e.detail.value;
+        this.$apply();
       }
     }
   }
 </script>
 <style lang="less" scoped>
 .section {
-  .pickerContent {
-    >image {
-      margin-left: 14rpx;
-      width: 13rpx;
-      height: 10rpx;
-    }
-  }
 }
 </style>

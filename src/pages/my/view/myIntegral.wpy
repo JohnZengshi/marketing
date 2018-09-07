@@ -40,10 +40,24 @@
                     <text>积分记录</text>
                     <view class="picker flex flex-r flex-align-center">
                         <view class="datePicker">
-                            <datePicker type="date" pickerText="日期"></datePicker>
+                            <datePicker type="date" pickerText="日期">
+                                <view class="pickerContent flex flex-r flex-align-center" slot="datePicker">
+                                  <view  class="picker">
+                                    日期
+                                  </view>
+                                  <image src="/images/mine/下拉@3x.png"></image>
+                                </view>
+                            </datePicker>
                         </view>
                         <view class="allPicker">
-                            <allPicker type="rang" :selectArray.sync="array" pickerText="全部"></allPicker>
+                            <allPicker type="rang" :selectArray.sync="array" pickerText="全部">
+                                <view class="pickerContent flex flex-r flex-align-center" slot="allPicker">
+                                  <view  class="picker">
+                                    全部
+                                  </view>
+                                  <image src="/images/mine/下拉@3x.png"></image>
+                                </view>
+                            </allPicker>
                         </view>
                     </view>
                 </view>
@@ -304,12 +318,19 @@
             >.picker{
                 font-size: 27rpx;
                 color: #666666;
-                >.datePicker{
+                  >.datePicker{
                     margin-right: 82rpx;
-                }
-                >.allPicker{
-                    margin-right: 29rpx;
-                }
+                  }
+                  >.allPicker{
+                      margin-right: 29rpx;
+                  }
+                  .pickerContent {
+                    >image {
+                      margin-left: 14rpx;
+                      width: 13rpx;
+                      height: 10rpx;
+                    }
+                  }
             }
         }
         .listItem{
