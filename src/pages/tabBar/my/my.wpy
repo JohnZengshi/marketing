@@ -112,9 +112,9 @@ import {getUserInfo,register} from "@Api/mine/mineApi";
           msg: "OK",
           data: {
             companyId: "7eb47787d95045d79cc8e1dbb71414d5",
-            shopId: "92999c248dc94a62a999b46895ab35c0",
-            userId: "053388eb65a747ea8d7dc53ee8c81201",
-            memberId: "6d6ef8fc12ff4b688eef1779de11fefb",
+            shopId: "3d26ff58746a476a96800fb99911a310",
+            userId: "2e3e5de7d5ae48c992f47bd3b89ea90a",
+            memberId: "e5512fa1b1d111e8ae9ef48e3888bbef",
           }
         }
       };
