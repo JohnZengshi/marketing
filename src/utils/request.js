@@ -3,7 +3,7 @@ import Tip from "./tip";
 /**
  * @param  {[Object]} params [请求的参数]
  * @param  {[String]} url    [请求的url]
- * @param  {[Number]} t      [第几次请求]
+ * @param  {[Number]} t      [第几次请求] [接口文档要求：收到数据后，返回状态为200，为正常。若未收到返回，则系统会在第10秒、第60秒、第180秒后再次发送，共发送四次数据包]
  * @return {[type]}          [description]
  */
 const wxRequest = async (params, url ,t) => {
