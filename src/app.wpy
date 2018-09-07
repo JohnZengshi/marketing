@@ -30,10 +30,7 @@ export default class extends wepy.app {
       'pages/my/view/mineActivity',
       'pages/my/view/bargainSucceed',
       'pages/my/view/personalData',
-      'pages/my/view/setPersonalData/pages/setName',
-      'pages/my/view/setPersonalData/pages/setGender',
-      'pages/my/view/setPersonalData/pages/setBirthday',
-      'pages/my/view/setPersonalData/pages/setAddress',
+      
       'pages/my/view/myIntegral',
       'pages/my/view/UpGrade',
       'pages/my/view/footprint',
@@ -42,7 +39,10 @@ export default class extends wepy.app {
       'pages/my/view/aboutUs',
       'pages/my/view/discountExplain',
       'pages/my/view/coupon',
-
+      'pages/my/view/setPersonalData/pages/setAddress',
+      'pages/my/view/setPersonalData/pages/setBirthday',      
+      'pages/my/view/setPersonalData/pages/setGender',      
+      'pages/my/view/setPersonalData/pages/setName',
       'pages/discountCoupon/discountCoupon',
       'pages/shopList/shopList',
       'pages/integralStore/view/exchangeRecord',

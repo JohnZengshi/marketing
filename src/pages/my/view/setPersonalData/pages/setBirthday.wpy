@@ -1,23 +1,151 @@
 <template>
-  <view>
-    <picker></picker>
+<view class="setBirthday">
+  <view class="content">
+    <view class="label">
+      <view class="flex flex-r flex-align-center flex-pack-justify">
+        <view class="item flex flex-r flex-align-center">
+          <view class="icon {{currentSelect == '公历'?'select':''}}" @tap="changeSelect('公历')"></view>
+          <text>公历</text>
+        </view>
+        <calendarYearPicker :initDate.sync="initDate" :dateType.sunc='1'>
+          <text class="pickerContent" slot="content">{{calendarYear}}</text>
+        </calendarYearPicker>
+      </view>
+    </view>
+    <view class="label flex flex-r flex-align-center flex-pack-justify">
+      <view class="flex flex-r flex-align-center flex-pack-justify">
+        <view class="item flex flex-r flex-align-center">
+          <view class="icon {{currentSelect == '农历'?'select':''}}" @tap="changeSelect('农历')"></view>
+          <text>农历</text>
+        </view>
+        <lunarCalendarPicker :initDate.sync="initDate" :dateType.sync='2'>
+          <text class="pickerContent" slot="content">{{lunarCalendar}}</text>
+        </lunarCalendarPicker>
+      </view>
+    </view>
+  </view>
+  
+  
   </view>
 </template>
 <script>
   import wepy from "wepy";
   import picker from "@components/picker";
-  export default class setPersonalData extends wepy.page {
+  import datepickerPlus from "@components/datepickerPlus"
+  export default class setBirthday extends wepy.page {
     config = {
       navigationBarTitleText: "生日类型",
       navigationBarTextStyle: "black",
       backgroundTextStyle: "light"
+    }
+    data = {
+      currentSelect: "公历",
+      calendarYear:`${new Date().getMonth() + 1}月${new Date().getDate()}日`,
+      lunarCalendar:``,
+      initDate: `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`
     };
-    data = {};
     components = {
       picker,
+      calendarYearPicker:datepickerPlus,
+      lunarCalendarPicker:datepickerPlus
+    };
+    methods = {
+      changeSelect(val) {
+        this.currentSelect = val
+      }
+    };
+    computed = {};
+    events = {
+      "bindDateChange" :(val)=>{
+        console.log(val);
+        // this.currentDate = val;
+      },
+      'currentDate': (calendarYear,lunarCalendar)=>{
+        this.lunarCalendar = lunarCalendar;
+        this.$apply();
+      },
+      'submit' :(val)=>{
+        console.log(val);
+        if(val.dateType == '公历'){
+            let dateArr = val.dateStr.split('-');
+            this.calendarYear = `${dateArr[0]}月${dateArr[1]}日`;
+            this.$apply();
+        }else if(val.dateType == '农历'){
+            this.lunarCalendar = val.dateStr;
+            this.$apply();
+        }
+      }
+    };
+    onLoad() {
     }
   }
 </script>
 <style lang="less" scoped>
+.setBirthday {
+  background-color: #F6F7F8;
+  width: 100%;
+  height: 100%;
+  .content {
+    width: 100%;
+    height: 100%;
+    padding-top: 19rpx;
 
+    .label {
+      padding: 0 27rpx 0 25rpx;
+      background-color: #fff;
+
+      >view {
+        width: 100%;
+
+        .item {
+          height: 78rpx;
+
+          .icon {
+            width: 40rpx;
+            height: 40rpx;
+            border-radius: 50%;
+            position: relative;
+            margin-right: 39rpx;
+            border: 2rpx #D6D6D6 solid;
+            box-sizing: border-box;
+
+            &.select {
+              background-color: #FB684C;
+              border: none;
+
+              &::after {
+                content: '\00a0';
+                display: inline-block;
+                border: 4rpx solid #fff;
+                border-radius: 4rpx;
+                border-top-width: 0;
+                border-right-width: 0;
+                width: 18rpx;
+                height: 10rpx;
+                -webkit-transform: rotate(-50deg);
+                position: absolute;
+                top: 13rpx;
+                left: 9rpx;
+              }
+            }
+          }
+
+          >text {
+            font-size: 27rpx;
+            color: #333333;
+          }
+        }
+
+        &:first-of-type {
+          border-bottom: 1rpx #E6E6E6 solid;
+        }
+      }
+      
+      .pickerContent{
+        font-size: 28rpx;
+        color: #666666;
+      }
+    }
+  }
+}
 </style>
