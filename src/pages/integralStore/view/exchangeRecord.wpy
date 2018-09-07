@@ -1,0 +1,388 @@
+<template>
+  <view class="exchangeRecord">
+    <scroll-view scroll-y scroll-with-animation bindscrolltolower="lower" style="width:100%;height:100%;" catchscroll="scroll">
+      <view style="width:100%;height:100%;">
+        <!-- <Refresh :scrollTop.sync="scrollTop"> -->
+        <view slot="refresh-content">
+          <view class="intergralCount flex flex-r flex-pack-center">
+            <view class="tip flex flex-r flex-align-center" @tap.stop="toDiscountExplain">
+              <text>当前最多抵扣52元</text>
+              <!-- <image src="/images/mine/1.3我的活动－返回@3x.png"></image> -->
+              <text>></text>
+            </view>
+            <view class="count flex flex-r flex-align-end">
+              <image src="/images/mine/4 我的积分－积分图标@3x.png"></image>
+              <view class="num flex flex-r flex-align-end">
+                <text>520</text>
+                <text>分</text>
+              </view>
+            </view>
+          </view>
+          <Sticky>
+            <view slot="stickyContent" class="listHeader flex flex-r flex-align-center flex-pack-justify">
+              <text>积分记录</text>
+              <view class="picker flex flex-r flex-align-center">
+                <view class="datePicker">
+                  <datePicker type="date" pickerText="日期"></datePicker>
+                </view>
+                <view class="allPicker">
+                  <allPicker type="rang" :selectArray.sync="array" pickerText="全部"></allPicker>
+                </view>
+              </view>
+            </view>
+          </Sticky>
+          <view class="intergralList">
+            <repeat for="{{intergarList}}" key="index" index="index" item="item">
+              <view class="listItem">
+                <view slot="stickyContent" class="itemCount flex flex-r flex-align-center flex-pack-justify">
+                  <view class="flex flex-r flex-align-center">
+                    <text>{{item.date}}</text>
+                  </view>
+                  <view class="flex flex-r flex-align-center">
+                    <text wx:if="{{item.has}}">获取：{{item.has}}</text>
+                    <text wx:if="{{item.use}}">使用：{{item.use}}</text>
+                  </view>
+                </view>
+                <repeat for="{{item.list}}" key="idx" index="idx" item="i">
+                  <view class="item flex flex-r flex-align-center flex-pack-justify">
+                    <view class="left flex flex-r">
+                      <image></image>
+                      <view class="flex flex-v">
+                          <text>{{i.title}}</text>
+                          <block>
+                            <text wx:if="{{i.useType == 'coupon'}}" class="coupon">优惠券</text>
+                            <text wx:elif="{{i.useType == 'goods'}}" class="goods">商品</text>
+                          </block>
+                          <text>{{i.date}}</text>
+                      </view>
+                    </view>
+                    <view class="right">
+                      <text>{{i.num}}</text>
+                    </view>
+                  </view>
+                </repeat>
+              </view>
+            </repeat>
+          </view>
+        </view>
+        <!-- </Refresh> -->
+      </view>
+    </scroll-view>
+  </view>
+</template>
+<script>
+  import wepy from "wepy";
+  import picker from "@components/picker";
+  import Sticky from "@components/sticky";
+  export default class ExchangeRecord extends wepy.page {
+    config = {
+      navigationBarTitleText: "兑换记录",
+      navigationBarTextStyle: "black",
+      backgroundTextStyle: "light"
+    };
+    data = {
+      array: ['美国', '中国', '巴西', '日本'],
+      scrollTop: 0,
+      intergarList: [{
+        date: "2018-09-10",
+        use: "200",
+        list: [{
+          title: "手镯",
+          useType: "goods",
+          date: "06-11",
+          num: "+2"
+        }, {
+          title: "兑换优惠券",
+          useType: "coupon",
+          date: "06-23",
+          num: "+50"
+        }, {
+          title: "兑换优惠券",
+          useType: "coupon",
+          date: "06-11",
+          num: "+2"
+        }, {
+          title: "兑换优惠券",
+          useType: "coupon",
+          date: "02-15",
+          num: "-200"
+        }]
+      }, {
+        date: "2018-10-10",
+        use: "200",
+        list: [{
+          title: "兑换优惠券",
+          useType: "coupon",
+          date: "02-11",
+          num: "+8"
+        }, {
+          title: "兑换优惠券",
+          useType: "coupon",
+          date: "06-23",
+          num: "+50"
+        }, {
+          title: "兑换优惠券",
+          useType: "coupon",
+          date: "09-11",
+          num: "+84"
+        }, {
+          title: "兑换优惠券",
+          useType: "coupon",
+          date: "02-11",
+          num: "+8"
+        }, {
+          title: "兑换优惠券",
+          useType: "coupon",
+          date: "06-23",
+          num: "+50"
+        }, {
+          title: "兑换优惠券",
+          useType: "coupon",
+          date: "09-11",
+          num: "+84"
+        }, {
+          title: "手镯",
+          useType: "goods",
+          date: "02-11",
+          num: "+8"
+        }, {
+          title: "手镯",
+          useType: "goods",
+          date: "06-23",
+          num: "+50"
+        }, {
+          title: "兑换优惠券",
+          useType: "coupon",
+          date: "09-11",
+          num: "+84"
+        }]
+      }]
+    };
+    components = {
+      Sticky,
+      //   Refresh,
+      datePicker: picker,
+      allPicker: picker,
+    };
+    methods = {
+      lower(index) {},
+      scroll(e) { //页面滚动
+        this.scrollTop = e.detail.scrollTop;
+        this.$broadcast("PageScroll");
+        this.$apply()
+      }
+    };
+    events = {
+      'refresh': (name, res) => {
+        if (res === 'success') {
+          setTimeout(() => {
+            this.$invoke(name, 'reset')
+          }, 3000)
+        }
+      }
+    };
+  }
+</script>
+<style lang="less" scoped>
+  .exchangeRecord {
+    width: 100%;
+    height: 100%;
+
+    .intergralCount {
+      width: 100%;
+      height: 270rpx;
+      position: relative;
+      background: -webkit-linear-gradient(left, #FC884F, #FB6C4C);
+      /* Safari 5.1 - 6.0 */
+      background: -o-linear-gradient(right, #FC884F, #FB6C4C);
+      /* Opera 11.1 - 12.0 */
+      background: -moz-linear-gradient(right, #FC884F, #FB6C4C);
+      /* Firefox 3.6 - 15 */
+      background: linear-gradient(to right, #FC884F, #FB6C4C);
+
+      /* 标准的语法 */
+      .count {
+        margin-top: 130rpx;
+        margin-bottom: 60rpx;
+
+        >image {
+          width: 60rpx;
+          height: 60rpx;
+          margin-right: 30rpx;
+        }
+
+        .num {
+          height: 80rpx;
+
+          >text {
+            &:first-of-type {
+              font-size: 80rpx;
+              color: #fff;
+              font-weight: bold;
+              line-height: 75rpx;
+            }
+
+            &:last-of-type {
+              font-size: 30rpx;
+              color: #fff;
+              vertical-align: bottom;
+            }
+          }
+        }
+      }
+
+      .tip {
+        top: 67rpx;
+        right: 143rpx;
+        left: 357rpx;
+        position: absolute;
+        display: inline-block;
+        padding: 0 8rpx 0 14rpx;
+        border-radius: 30rpx 30rpx 30rpx 0;
+        background-color: #E75838;
+
+        >text {
+          font-size: 24rpx;
+          color: #f9e7df;
+          line-height: 50rpx;
+          margin-right: 10rpx;
+        }
+
+        >image {
+          width: 24rpx;
+          height: 24rpx;
+        }
+      }
+    }
+    .listHeader {
+      width: 100%;
+      height: 84rpx;
+      background-color: #F6F7F8;
+
+      >text {
+        font-size: 30rpx;
+        color: #333;
+        margin-left: 32rpx;
+      }
+
+      >.picker {
+        font-size: 27rpx;
+        color: #666666;
+
+        >.datePicker {
+          margin-right: 82rpx;
+        }
+
+        >.allPicker {
+          margin-right: 29rpx;
+        }
+      }
+    }
+
+    .intergralList {
+      .listItem {
+        .itemCount {
+          height: 44rpx;
+          width: 100%;
+          background-color: #ffede9;
+
+          >view {
+            margin-left: 28rpx;
+
+            >text {
+              font-size: 24rpx;
+              color: #fb684c;
+            }
+
+            &:last-of-type {
+              margin-right: 27rpx;
+
+              >text {
+                margin-right: 10rpx;
+
+                &:last-of-type {
+                  margin-right: 0;
+                }
+              }
+            }
+          }
+        }
+
+        .item {
+          border-bottom: 1rpx #EAEAEA solid;
+          padding: 27rpx 30rpx 16rpx 30rpx;
+
+          .left {
+            >image {
+              width: 150rpx;
+              height: 150rpx;
+              border-radius: 8rpx;
+              background-color: #FC884F;
+              margin-right: 36rpx;
+            }
+
+            >view {
+              >text {
+                &:first-of-type {
+                  font-size: 31rpx;
+                  color: #222222;
+                  line-height: 31rpx;
+                  margin-top: 13rpx;
+                }
+
+                &:nth-of-type(2) {
+                  margin-top: 26rpx;
+                  font-size: 20rpx;
+                  width: 76rpx;
+                  height: 27rpx;
+                  text-align: center;
+                  line-height: 27rpx;
+
+                  &.coupon {
+                    color: #537DA4;
+                    background-color: #E6ECF2;
+                    border-radius: 4rpx;
+                  }
+
+                  &.goods {
+                    color: #26826A;
+                    background-color: #E6F2EE;
+                    border-radius: 4rpx;
+                  }
+                }
+
+                &:last-of-type {
+                  margin-top: 10rpx;
+                  font-size: 18rpx;
+                  line-height: 18rpx;
+                  color: #999999;
+                }
+              }
+            }
+
+            // >text {
+            //   &:first-of-type {
+            //     font-size: 30rpx;
+            //     color: #333;
+            //     line-height: 30rpx;
+            //   }
+            //   &:last-of-type {
+            //     font-size: 26rpx;
+            //     color: #999;
+            //     margin-top: 16rpx;
+            //     line-height: 26rpx;
+            //   }
+            // }
+          }
+
+          .right {
+            >text {
+              font-size: 30rpx;
+              color: #FB684C;
+            }
+          }
+        }
+      }
+    }
+  }
+</style>

@@ -29,6 +29,7 @@
   <view class="flex flex_column margin_left margin_right font_normal">
     积分商城
   </view>
+  <button bindtap="toExchangeRecord">兑换记录</button>
 </template>
 
 <script>
@@ -47,6 +48,11 @@ import wepy from 'wepy';
           bindViewTap () {
               console.log('button clicked');
           },
+          toExchangeRecord() {
+            wx.navigateTo({
+              url: '/pages/integralStore/view/exchangeRecord',
+            })
+          }
       };
 
       //页面的生命周期函数

@@ -45,6 +45,7 @@ export default class extends wepy.app {
 
       'pages/discountCoupon/discountCoupon',
       'pages/shopList/shopList',
+      'pages/integralStore/view/exchangeRecord',
       'pages/location/location',
       'pages/index'
     ],
