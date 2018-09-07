@@ -1,13 +1,13 @@
 <template>
-  <view class="section">
+  <!-- <view class="section">
     <view class="section__title">普通选择器</view>
     <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
       <view class="picker">
         当前选择：{{array[index]}}
       </view>
     </picker>
-  </view>
-  <view class="section">
+  </view> -->
+  <!-- <view class="section">
     <view class="section__title">多列选择器</view>
     <picker mode="multiSelector" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange"
       value="{{multiIndex}}" range="{{multiArray}}">
@@ -15,36 +15,77 @@
         当前选择：{{multiArray[0][multiIndex[0]]}}，{{multiArray[1][multiIndex[1]]}}，{{multiArray[2][multiIndex[2]]}}
       </view>
     </picker>
-  </view>
-  <view class="section">
+  </view> -->
+  <!-- <view class="section">
     <view class="section__title">时间选择器</view>
     <picker mode="time" value="{{time}}" start="09:01" end="21:01" bindchange="bindTimeChange">
       <view class="picker">
         当前选择: {{time}}
       </view>
     </picker>
-  </view>
+  </view> -->
 
   <view class="section">
-    <view class="section__title">日期选择器</view>
-    <picker mode="date" value="{{date}}" start="2015-09-01" end="2017-09-01" bindchange="bindDateChange">
-      <view class="picker">
-        当前选择: {{date}}
-      </view>
-    </picker>
+    <block wx:if="{{type == 'date'}}">
+      <picker 
+        mode="date" 
+        value="{{date}}" 
+        start="2015-09-01" 
+        end="2017-09-01" 
+        bindchange="bindDateChange">
+        <view class="pickerContent flex flex-r flex-align-center">
+            <view class="picker">
+              {{pickerText}}
+            </view>
+            <image src="/images/mine/下拉@3x.png"></image>
+        </view>
+      </picker>
+    </block>
+    <block wx:elif="{{type == 'rang'}}">
+      <picker bindchange="bindPickerChange" value="{{index}}" range="{{selectArray}}">
+        <view class="pickerContent flex flex-r flex-align-center">
+            <view class="picker">
+              {{pickerText}}
+            </view>
+            <image src="/images/mine/下拉@3x.png"></image>
+        </view>
+      </picker>
+    </block>
   </view>
-  <view class="section">
+  <!-- <view class="section">
     <view class="section__title">省市区选择器</view>
     <picker mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
       <view class="picker">
         当前选择：{{region[0]}}，{{region[1]}}，{{region[2]}}
       </view>
     </picker>
-  </view>
+  </view> -->
 </template>
 <script>
   import wepy from "wepy";
   export default class Picker extends wepy.component {
+    props = {
+      type: {
+        /** 选择器类型
+         * @param  {[String]} "date"   [日期类型]
+         * @param  {[String]} "rang"   [单选类型]
+         */
+        type: String,
+        default: "rang"
+      },
+      pickerText: {
+        /** 选择器上要显示的字
+         * @param  {[String]} pickerText  [要显示的字]
+         */
+        type: String
+      },
+      selectArray: {
+        /** 单选选择器的数组
+         * @param  {[String]} selectArray  [数组]
+         */
+        type: Array
+      }
+    };
     data = {
       array: ['美国', '中国', '巴西', '日本'],
       objectArray: [{
@@ -214,5 +255,13 @@
   }
 </script>
 <style lang="less" scoped>
-
+.section {
+  .pickerContent {
+    >image {
+      margin-left: 14rpx;
+      width: 13rpx;
+      height: 10rpx;
+    }
+  }
+}
 </style>

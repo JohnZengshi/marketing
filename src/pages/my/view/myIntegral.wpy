@@ -36,16 +36,21 @@
             </view>
             <view class="intergralList">
             <Sticky>
-                <view slot="stickyContent" class="listHeader flex flex-r flex-align-center">
+                <view slot="stickyContent" class="listHeader flex flex-r flex-align-center flex-pack-justify">
                     <text>积分记录</text>
-                    <view>
-                        <view></view>
+                    <view class="picker flex flex-r flex-align-center">
+                        <view class="datePicker">
+                            <datePicker type="date" pickerText="日期"></datePicker>
+                        </view>
+                        <view class="allPicker">
+                            <allPicker type="rang" :selectArray.sync="array" pickerText="全部"></allPicker>
+                        </view>
                     </view>
                 </view>
             </Sticky>
             <repeat for="{{intergarList}}" key="index" index="index" item="item">
                 <view class="listItem">
-                    <view class="itemCount flex flex-r flex-align-center flex-pack-justify">
+                    <view slot="stickyContent" class="itemCount flex flex-r flex-align-center flex-pack-justify">
                         <view class="flex flex-r flex-align-center">
                             <text>{{item.date}}</text>
                         </view>
@@ -77,7 +82,8 @@
 </template>
 <script>
   import wepy from "wepy";
-//   import Refresh from '@components/ScrollViewRefresh';
+  //   import Refresh from '@components/ScrollViewRefresh';
+  import picker from "@components/picker";
   import Sticky from "@components/sticky";
   export default class myIntergral extends wepy.page {
     config = {
@@ -86,74 +92,77 @@
       backgroundTextStyle: "light"
     };
     data = {
+      array: ['美国', '中国', '巴西', '日本'],
       scrollTop: 0,
       intergarList: [{
-          date: "2018-09-10",
-          has: "83",
-          use: "200",
-          list: [{
-              useType: "签到",
-              date: "06-11",
-              num: "+2"
-          }, {
-              useType: "兑换优惠券",
-              date: "06-23",
-              num: "+50"
-          }, {
-              useType: "兑换优惠券",
-              date: "06-11",
-              num: "+2"
-          }, {
-              useType: "使用优惠券",
-              date: "02-15",
-              num: "-200"
-          }]
+        date: "2018-09-10",
+        has: "83",
+        use: "200",
+        list: [{
+          useType: "签到",
+          date: "06-11",
+          num: "+2"
+        }, {
+          useType: "兑换优惠券",
+          date: "06-23",
+          num: "+50"
+        }, {
+          useType: "兑换优惠券",
+          date: "06-11",
+          num: "+2"
+        }, {
+          useType: "使用优惠券",
+          date: "02-15",
+          num: "-200"
+        }]
       }, {
-          date: "2018-10-10",
-          has: "80",
-          use: "",
-          list: [{
-              useType: "签到",
-              date: "02-11",
-              num: "+8"
-          }, {
-              useType: "签到",
-              date: "06-23",
-              num: "+50"
-          }, {
-              useType: "兑换优惠券",
-              date: "09-11",
-              num: "+84"
-          }, {
-              useType: "签到",
-              date: "02-11",
-              num: "+8"
-          }, {
-              useType: "签到",
-              date: "06-23",
-              num: "+50"
-          }, {
-              useType: "兑换优惠券",
-              date: "09-11",
-              num: "+84"
-          }, {
-              useType: "签到",
-              date: "02-11",
-              num: "+8"
-          }, {
-              useType: "签到",
-              date: "06-23",
-              num: "+50"
-          }, {
-              useType: "兑换优惠券",
-              date: "09-11",
-              num: "+84"
-          }]
+        date: "2018-10-10",
+        has: "80",
+        use: "",
+        list: [{
+          useType: "签到",
+          date: "02-11",
+          num: "+8"
+        }, {
+          useType: "签到",
+          date: "06-23",
+          num: "+50"
+        }, {
+          useType: "兑换优惠券",
+          date: "09-11",
+          num: "+84"
+        }, {
+          useType: "签到",
+          date: "02-11",
+          num: "+8"
+        }, {
+          useType: "签到",
+          date: "06-23",
+          num: "+50"
+        }, {
+          useType: "兑换优惠券",
+          date: "09-11",
+          num: "+84"
+        }, {
+          useType: "签到",
+          date: "02-11",
+          num: "+8"
+        }, {
+          useType: "签到",
+          date: "06-23",
+          num: "+50"
+        }, {
+          useType: "兑换优惠券",
+          date: "09-11",
+          num: "+84"
+        }]
       }]
     };
     components = {
-        Sticky
+        Sticky,
     //   Refresh,
+        datePicker:picker,
+        allPicker:picker,
     };
     methods = {
       lower(index) {},
@@ -291,6 +300,16 @@
                 font-size: 30rpx;
                 color: #333;
                 margin-left: 32rpx;
+            }
+            >.picker{
+                font-size: 27rpx;
+                color: #666666;
+                >.datePicker{
+                    margin-right: 82rpx;
+                }
+                >.allPicker{
+                    margin-right: 29rpx;
+                }
             }
         }
         .listItem{
