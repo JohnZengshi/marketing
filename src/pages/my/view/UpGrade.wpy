@@ -8,7 +8,7 @@
             <!-- <image ></image> -->
             <text>白金会员</text>
           </view>
-          <view>等级规则</view>
+          <view @tap.stop="toGradeRule">等级规则</view>
         </view>
         <view class="gradeScore flex flex-r flex-align-center">
           <view class="progressBar">
@@ -70,7 +70,7 @@
             </view>
           </view>
           <view class="right">
-            <view class="btn">查看详情</view>
+            <view class="btn" @tap.stop="toBonusPointsForConsumption">查看详情</view>
           </view>
         </view>
         <!-- 完善资料 -->
@@ -86,8 +86,8 @@
             </view>
           </view>
           <view class="right">
-            <view class="btn gary">已赚+10</view>
-            <!-- <view class="btn">去完善</view> -->
+            <!-- <view class="btn gary">已赚+10</view> -->
+            <view class="btn" @tap.stop="toPersonalData">去完善</view>
           </view>
         </view>
         <repeat for="{{makeIntergralList}}" key="index" index="index" item="item">
@@ -140,6 +140,23 @@
         des: "+10",
         hasMake: false,
       }]
+    };
+    methods = {
+      toGradeRule() {
+        wx.navigateTo({
+          url: '/pages/my/view/gradeRule',
+        })
+      },
+      toPersonalData() {
+        wx.navigateTo({
+          url: '/pages/my/view/personalData',
+        })
+      },
+      toBonusPointsForConsumption() {
+        wx.navigateTo({
+          url: '/pages/my/view/BonusPointsForConsumption',
+        })
+      }
     };
     onLoad() {};
   }

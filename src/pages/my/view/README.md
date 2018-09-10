@@ -8,4 +8,6 @@
 - afterSaleCriterion            售后准则页面
 - aboutUs                    关于我们
 - integralExplain           积分说明页面
+- gradeRule                 等级规则页面
+- BonusPointsForConsumption  消费赚积分页面
 
