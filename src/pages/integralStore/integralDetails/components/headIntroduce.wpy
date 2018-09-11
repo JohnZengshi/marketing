@@ -1,0 +1,81 @@
+<template>
+  <view class="i-head-introduce-wrap">
+
+    <view class="product-detail-tit-h">
+      <text class="product-detail-product-name">{{girardInfo.styleName}}</text>
+    </view>
+
+    <view>
+       <text class="price-right-tit">{{girardInfo.lowestPrice}}~{{girardInfo.highestPrice}}<text class="price-symbol">积分</text></text>
+       <text class="hot-tit">仅剩库存：{{girardInfo.hot}}件</text>
+    </view>
+    
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+//通过继承自wepy.page的类创建页面逻辑
+export default class iHeadIntroduce extends wepy.component {
+
+  props = {
+    girardInfo: {
+      type: Object,
+      default: []
+    }
+  }
+
+  data = {
+    autoplay: true,
+    interval: 4000,
+    duration: 500,
+  }
+
+
+  methods = {
+  }
+}
+</script>
+</script>
+<style lang="less">
+/* 中部介绍 */
+.i-head-introduce-wrap{
+  position: relative;
+  padding: 20rpx 0 20rpx 26rpx; 
+  background-color: #fff;
+  /* 图片和文字排序 */
+  .product-detail-tit-h {
+    overflow: hidden;
+    /* height: 28rpx; */
+    /* margin-bottom: 26rpx; */
+  }
+  .product-detail-product-name {
+    display: inline-block;
+    vertical-align: top;
+    max-width: 500rpx;
+    margin-right: 20rpx;
+    font-size: 28rpx;
+    line-height: 28rpx;
+    /* line-height: 34rpx; */
+    color: #333;
+  }
+  /* 价格 */
+  .price-right-tit{
+    margin: auto;
+    height: 40rpx;
+    font-size: 32rpx;
+    line-height: 40rpx;
+    color: #f84f45;
+  }
+  .price-symbol{
+    font-size: 24rpx;
+    color: #f84f45;
+  }
+  .hot-tit{
+    float: right;
+    font-size: 20rpx;
+    color: #999;
+    margin-top: 20rpx;
+    margin-right: 26rpx;
+  }
+}
+</style>

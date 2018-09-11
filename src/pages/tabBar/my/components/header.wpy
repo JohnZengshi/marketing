@@ -1,0 +1,239 @@
+<template>
+  <view class="my-header-box">
+    <view class="sign-in {{userInfo.sign == 'Y' ? 'opacity-08' : ''}}" bindtap='_rportByWeChat'>
+      <a class='sign-in-sort-icon mr-10' wx:if="{{userInfo.sign == 'N'}}">
+        <image wx:if="currentFillter.orderBy" class="sign-in-sort-bg-one" src="/images/sign-in-head-icon.png"></image>
+      </a>
+      <text class="text-tit mt-10">{{userInfo.sign == 'N' ? '签到' : '已签到'}}</text>
+    </view>
+
+    <view class="set-btn-list" bindtap='_rportByWeChat'>
+
+      <a class='img-box'>
+        <image wx:if="currentFillter.orderBy" class="sign-in-sort-bg-one" src="/images/set-fff@3x.png"></image>
+      </a>
+
+    </view>
+
+    <view class="head-portrait">
+      <image class="head-portrait-img" mode="aspectFill" src="{{userInfo.faceSrc}}"></image>
+    </view>
+    <!-- <text class="user-name">{{userInfo.memberName}}</text> -->
+    <view class="filter-item" bindtap="setMember">
+      <view class="user-name">
+        <text class="text-tit">{{userInfo.nickName}}：</text>
+        <a class='xj-sort-icon'>
+          <image wx:if="currentFillter.orderBy" class="xj-sort-bg-one" src="/images/member-qr.png"></image>
+        </a>
+      </view>
+      <view class="vip-btn">
+        {{userInfo.gradeName}}
+        <image class='vip-icon' src="/images/VIP@3x.png"></image>
+      </view>
+    </view>
+    <!-- 店铺 -->
+    <view class="shop-location" bindtap='_rportByWeChat'>
+      <a class='shop-location-icon mr-10'>
+        <image wx:if="currentFillter.orderBy" src="/images/location@3x.png"></image>
+      </a>
+      <text class="text-tit mt-10">{{userInfo.shopName}}</text>
+      <a class='drop-down-icon mr-10'>
+        <image wx:if="currentFillter.orderBy" src="/images/drop-down-fff.png"></image>
+      </a>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+export default class myHeader extends wepy.component {
+  props = {
+    userInfo: {
+      type: Object,
+      default: {}
+    }
+  }
+
+  datas = {
+  }
+
+  onLoad() {
+      // let self = this
+      // this.$parent.getUserInfo(function (userInfo) {
+      //   console.log('用户信息', userInfo)
+      //   if (userInfo) {
+      //     self.userInfo = userInfo
+      //   }
+      //   self.$apply()
+      // })
+    }
+}
+
+</script>
+<style lang="less">
+.my-header-box {
+  position: relative;
+  height: 350rpx;
+  width: 100%;
+  overflow: hidden;
+ // background-color: #FB6A4C;
+ background-color: #2993f8;
+  .sign-in-sort-bg-one{
+    width: 29rpx;
+    height: 32rpx;
+    vertical-align: top;
+  }
+  .sign-in{
+    position: absolute;
+    right: 20rpx;
+    top: 20rpx;
+    border: 1rpx solid #fff;
+    padding: 0 10rpx;
+    height: 56rpx;
+    border-radius: 10rpx;
+    .sign-in-sort-icon{
+      display: inline-block;
+      width: 29rpx;
+      height: 32rpx;
+      text-align: left;
+      margin-right: 10rpx;
+      margin-top: 10rpx;
+    }
+    .text-tit {
+      display: inline-block;
+      vertical-align: top;
+      font-size: 28rpx;
+      line-height: 28rpx;
+      color: #fff;
+    }
+  }
+
+  .set-btn-list{
+    position: absolute;
+    right: 20rpx;
+    top: 120rpx;
+    height: 38rpx;
+    border-radius: 10rpx;
+    .img-box{
+      display: inline-block;
+      width: 38rpx;
+      height: 38rpx;
+      margin-left: 40rpx;
+      >image{
+        vertical-align: top;
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+
+  .shop-location{
+    position: absolute;
+    right: 20rpx;
+    bottom: 46rpx;
+    padding: 0 10rpx;
+    height: 50rpx;
+    border-radius: 20rpx;
+    background-color: #fb5a36;
+    .shop-location-icon{
+      display: inline-block;
+      width: 29rpx;
+      height: 32rpx;
+      text-align: left;
+      margin: 10rpx;
+      >image{
+        vertical-align: top;
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .drop-down-icon{
+      display: inline-block;
+      vertical-align: top;
+      width: 19rpx;
+      height: 18rpx;
+      text-align: left;
+      margin: 18rpx 10rpx;
+      >image{
+        vertical-align: top;
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .text-tit {
+      display: inline-block;
+      vertical-align: top;
+      font-size: 28rpx;
+      line-height: 28rpx;
+      color: #fff;
+    }
+  }
+
+  .head-portrait {
+    display: inline-block;
+    vertical-align: top;
+    height: 110rpx;
+    width: 110rpx;
+    border-radius: 50%;
+    // margin: 34rpx auto 0 auto;
+    overflow: hidden;
+    border: 4rpx solid #fff;
+    margin: 85rpx 0 0 30rpx;
+    .head-portrait-img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .filter-item {
+    display: inline-block;
+    margin: 85rpx 0 0 20rpx;
+    text-align: left;
+    .user-name {
+      text-align: left;
+      .text-tit {
+        display: inline-block;
+        vertical-align: top;
+        font-size: 36rpx;
+        line-height: 36rpx;
+        text-align: left;
+        color: #fff;
+      }
+      .xj-sort-icon {
+        display: inline-block;
+        width: 40rpx;
+        text-align: center;
+        margin-right: 60rpx;
+        padding-top: 10rpx;
+        .xj-sort-bg-one{
+          width: 28rpx;
+          height: 28rpx;
+          vertical-align: top;
+        }
+      }
+    }
+    .vip-btn{
+      position: relative;
+      display: inline-block;
+      padding: 0 10rpx;
+      height: 34rpx;
+      min-width: 100rpx;
+      background-color: #fb5a36;
+      border-radius: 20rpx; 
+      font-size: 22rpx;
+      color: #fff;
+      text-indent: 40rpx;
+      margin-top: 20rpx;
+      .vip-icon{
+          position:absolute;
+          left:0;
+          height:50rpx;
+          width:38rpx;
+          vertical-align:top;
+          bottom:0;
+      }
+    }
+  }
+
+}
+
+</style>

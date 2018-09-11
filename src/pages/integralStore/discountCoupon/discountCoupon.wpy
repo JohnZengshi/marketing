@@ -1,0 +1,231 @@
+<template>
+  <view class="discount-coupon-mian">
+    <view class="h-wrap">
+      <view class="banner-h">
+        <image mode="aspectFit" src="http://jzm-1252389350.cosgz.myqcloud.com/iconHeaded/banner%403x1536061840020.png"></image>
+        <view class="d-c-left-tit">
+          <text>{{showList.head}}</text>
+          <text>使用时间驸马的驸马的毛发</text>
+        </view>
+        <view class="d-c-right-tit">
+          <text>520</text>
+          <text>分</text>
+        </view>  
+      </view>
+
+      <view class="h-t-one-wrap">
+        <text>{{showList.head}}</text>
+        <text>仅剩库存309</text>
+      </view>
+
+      <view class="h-t-two-wrap">
+        <text>420</text>
+        <text>积分</text>
+      </view>
+      
+      <view class="h-t-three-wrap">
+        <text>有效日期</text>
+        <text>{{showList.validityBeginTime}} - </text>
+        <text>{{showList.validityEndTime}}</text>
+      </view>
+
+      <view class="h-t-r-btn">
+        适用店铺
+      </view>
+
+    </view>
+
+    <view class="state-wrap">
+      <view class="state-h">
+        优惠卷说明
+      </view>
+      <block wx:for="{{showList.ruleList}}" wx:key="item">
+        <view class="state-item">{{index + 1}} {{item.ruleText}}</view>
+      </block>
+
+    </view>
+
+    <!-- 兑换弹窗 -->
+    <convert></convert>
+    <!-- 底部按钮 -->
+    <bottomBtn @open.user="openConvert"></bottomBtn>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import api from 'Api';
+import utill from '@util'
+import bottomBtn from 'common/bottomBtn';
+import convert from './components/convert';
+//通过继承自wepy.page的类创建页面逻辑
+export default class discountCoupon extends wepy.page {
+    components = {
+      bottomBtn: bottomBtn,
+      convert: convert
+    };
+    config = {
+      "navigationBarTitleText": "优惠券"
+    };
+    //可用于页面模板绑定的数据
+    data = {
+        showList: {
+          ruleList: []
+        }
+    };
+
+    async ticketDetail (parm) {
+      let _self = this
+      let datas = {
+        id: 'id',
+        head: 'head',
+        subhead: 'subhead',
+        validityBeginTime: '20180910000000',
+        validityEndTime: '20181010000000',
+        ruleList: [
+          {
+            ruleText: 'AAAAAAAAA'
+          },
+          {
+            ruleText: 'BBBBBBBBB'
+          }
+        ]
+      }
+      datas.validityBeginTime = utill.extractXjTime(datas.validityBeginTime)
+      datas.validityEndTime = utill.extractXjTime(datas.validityEndTime)
+      _self.showList = datas
+      _self.$apply()
+      let json = await api.ticketDetail(parm)
+      // if (json.dataList.length) {
+      //   this.isBill = 'Y'
+      // }
+      _self.$apply()
+    }
+    
+
+    //事件处理函数(集中保存在methods对象中)
+    methods = {
+      openConvert () {
+        this.$invoke('convert', 'open')
+      }
+    };
+
+    //页面的生命周期函数
+    onLoad(parm) {
+      this.ticketDetail()
+      // this.ticketDetail({ticketId: parm.id})
+    };
+}
+</script>
+<style lang="less">
+.discount-coupon-mian{
+  background-color: #f6f6f6;
+  min-height: 100%;
+  .h-wrap{
+    position: relative;
+    background-color: #fff; 
+    box-shadow: 0 10rpx 30rpx #dedede;
+    padding: 0 30rpx 50rpx 30rpx;
+    .banner-h{
+      position: relative;
+      height: 300rpx;
+      image{
+        width: 100%;
+        height: 100%;
+      }
+      .d-c-left-tit{
+        position: absolute;
+        bottom: 40rpx;
+        left: 34rpx;
+        z-index: 10;
+        text{
+          display: block;
+        }
+        text:first-child{
+          font-size: 30rpx;
+          color: #fff;
+        }
+        text:last-child{
+          font-size: 20rpx;
+          color: #fff;
+          margin-top: 20rpx;
+        }
+      }
+      .d-c-right-tit{
+        position: absolute;
+        right: 30rpx;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        height: 150rpx;
+        text:first-child{
+          font-size: 150rpx;
+          height: 150rpx;
+          line-height: 1;
+          color: #fff;
+        }
+        text:last-child{
+          font-size: 30rpx;
+          color: #fff;
+          margin-top: 20rpx;
+        }
+      }
+    }
+    .h-t-one-wrap{
+      margin-top: 30rpx;
+      text:first-child{
+        font-size: 32rpx;
+        color: #333;
+      }
+      text:last-child{
+        float: right;
+        font-size: 24rpx;
+        color: #999;
+      }
+    }
+    .h-t-two-wrap{
+      margin-top: 44rpx;
+      text{
+        color: #fb684c;
+      }
+      text:first-child{
+        font-size: 48rpx;
+      }
+      text:last-child{
+        font-size: 28rpx;
+      }
+    }
+    .h-t-three-wrap{
+      font-size: 22rpx;
+      color: #999;
+      margin-top: 16rpx;
+    }
+    .h-t-r-btn{
+      position: absolute;
+      bottom: 40rpx;
+      right: 30rpx;
+      width: 120rpx;
+      height: 40rpx;
+      color: #fff;
+      border-radius: 5rpx;
+      font-size: 24rpx;
+      text-align: center;
+      line-height: 40rpx;
+      background-color: #FC8D4F;
+    }
+  }
+  .state-wrap{
+    padding: 0 30rpx;
+    .state-h{
+      font-size: 28rpx;
+      color: #333;
+      margin-top: 30rpx;
+    }
+    .state-item{
+      margin-top: 40rpx;
+      font-size: 26rpx;
+      color: #999;
+    }
+  }
+}
+</style>

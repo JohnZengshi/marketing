@@ -55,7 +55,7 @@
   import Tabs from "@components/tabs";
   import Swiper from "@components/swiper";
   import CouponCard from "../components/couponCard";
-  import {getTicketList} from "@Api/mine/mineApi";
+  import api from 'Api'
   // import Refresh from '@components/ScrollViewRefresh';
   export default class Coupon extends wepy.page {
     config = {
@@ -197,7 +197,7 @@
     async getTicketList(type="1",orderId) {
       let {shopId,userId,memberId} = this.$parent.globalData;
       let option = {shopId,userId,memberId,type};
-      let res = await getTicketList(option);
+      let res = await api.getTicketList(option);
       return res.data.dataList;
     };
     // 优惠券数据过滤

@@ -93,3 +93,66 @@ page {
   -ms-flex-pack: justify;
   justify-content: space-between;
 }
+
+// 渐变
+.grad{
+  background: linear-gradient(to right, #fc8d4f , #fb684c);
+}
+
+.ml26{
+  margin-left: 26rpx;
+}
+.mr-10{
+  margin-right: 10rpx;
+}
+.br-r{
+  border-right: 1rpx solid #ededed;
+}
+// 所有左对齐的表格
+.table-l-box{
+  .table-l-item {
+    background-color: #fff;
+    padding: 30rpx 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    // margin: 0 26rpx;
+    .l-text {
+      width: 160rpx;
+      font-size: 26rpx;
+      color: #888999;
+    }
+    .r-text {
+      flex: 1;
+      font-size: 26rpx;
+      color: #555;
+      padding-right: 26rpx;
+      position: relative;
+      word-break:break-all;
+    }
+  }
+  .table-l-item:before {
+    content: " ";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 1px;
+    border-top: 1rpx solid #D8D8D8;
+    color: #D8D8D8;
+  }
+  .table-l-item:first-child:after {
+    content: " ";
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    height: 1px;
+    border-top: 1rpx solid #D8D8D8;
+    color: #D8D8D8;
+  }
+}
+.m-c{
+  color: #fc8d4f;
+}

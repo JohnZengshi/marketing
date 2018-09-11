@@ -101,7 +101,7 @@
   //   import Refresh from '@components/ScrollViewRefresh';
   import picker from "@components/picker";
   import Sticky from "@components/sticky";
-  import {getIntegralList,getIntegral} from "@Api/mine/mineApi";
+  import api from 'Api'
   export default class myIntergral extends wepy.page {
     config = {
       navigationBarTitleText: "我的积分",
@@ -189,7 +189,7 @@
         beginTime,
         endTime
       } = this.requestData;
-      let res = await getIntegralList({
+      let res = await api.getIntegralList({
         shopId,
         userId,
         memberId,
@@ -207,7 +207,7 @@
         userId,
         memberId
       } = this.$parent.globalData;
-      let res = await getIntegral({
+      let res = await api.getIntegral({
         shopId,
         userId,
         memberId

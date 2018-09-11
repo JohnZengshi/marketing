@@ -1,0 +1,112 @@
+<style lang="less">
+/* 综合排序的弹窗 */
+.synthesize-filter-popup-main{
+  position: absolute;
+  top: 158rpx;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 800;
+  opacity: 0;
+  transition: all .3s;
+  visibility: hidden;
+  background-color: rgba(0,0,0,.3);
+}
+.synthesize-filter-popup-main-on{
+  opacity: 1;
+  visibility: visible;
+}
+.synthesize-item {
+  background-color: #fff;
+  padding: 26rpx 30rpx;
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #ededed;
+}
+.synthesize-text {
+  font-size: 28rpx;
+  color: #666;
+}
+.synthesize-text-inner{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 26rpx;
+  margin: auto;
+  width: 42rpx;
+  height: 30rpx;
+}
+.synthesize-icon{
+  width: 32rpx;
+  height: 20rpx;
+  vertical-align: top;
+}
+.main-color{
+  color: #2993f8;
+}
+</style>
+<template>
+  <view bindtap='close' class="synthesize-filter-popup-main {{isfilterPopup ? 'synthesize-filter-popup-main-on' : ''}}">
+    <block wx:for="{{synthesizeFilterList}}" wx:key="{{item}}">
+      <view id="{{item.orderBy}}" data-item="{{item}}" class="synthesize-item" catchtap='setOrderBy'>
+        <view class="synthesize-text {{currentFillter.orderBy == item.orderBy ? 'main-color' : ''}}">{{item.name}}</view>
+        <view class="synthesize-text-inner" wx:if="{{currentFillter.orderBy == item.orderBy}}">
+          <image mode="synthesize" src="/images/pitch-on.png" class="synthesize-icon"></image>
+        </view>
+      </view>
+    </block>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+export default class Com extends wepy.component {
+    components = {};
+
+    data = {
+        isfilterPopup: false,
+        currentFillter: {
+          orderBy: '',
+          orderByName: '',
+        },
+        synthesizeFilterList: [
+          {
+            name: '综合排序',
+            orderBy: '1'
+          },
+          {
+            name: '按最新',
+            orderBy: '3'
+          },
+          {
+            name: '按最热',
+            orderBy: '2'
+          }
+        ]
+    };
+    // customFunction ()　{
+    //   // 自定义方法
+    //   close () {
+    //     this.isfilterPopup = false
+    //   }
+    // }
+    methods = {
+      open () {
+        this.isfilterPopup = !this.isfilterPopup
+      },
+      close () {
+        this.isfilterPopup = false
+      },
+      setOrderBy (e) {
+        this.currentFillter.orderBy = e.currentTarget.id
+        this.currentFillter.orderByName = e.currentTarget.dataset.item.name
+        this.$emit('uploadMenu', this.currentFillter)
+        this.isfilterPopup = false
+      }
+    };
+
+    events = {};
+    // Other properties
+}
+</script>

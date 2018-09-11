@@ -1,0 +1,186 @@
+  <template>
+  <view class="card-list-box">
+    <block wx:for="{{showList}}" wx:key="{{item}}">
+
+      <navigator url="../../integralStore/integralDetails/integralDetails?id={{item.id}}" hover-class="other-navigator-hover" class="scroll-img-item">
+
+        <view class="tit-pic-wrap">
+          <view class="h-tit">
+            <view class="tit">
+              20
+              <view>￥</view>
+            </view>
+          </view>
+          <text class="sm-tit">满100减1000</text>
+          <text class="b-tit">全店铺通用</text>
+        </view>
+
+        <view class="store-scroll-tit-b">
+          <view class="decorate-circle decorate-circle-left"></view>
+          <view class="decorate-circle decorate-circle-right"></view>
+          <text class="store-product-hot-tit">兑换</text>
+        </view>
+
+      </navigator>
+
+    </block>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+import api from 'Api'
+//通过继承自wepy.page的类创建页面逻辑
+export default class productList extends wepy.component {
+  props = {
+    showList: {
+      type: Array,
+      default: []
+    }
+  }
+
+  data = {
+    autoplay: true,
+    interval: 4000,
+    duration: 500,
+  }
+}
+</script>
+<style lang="less">
+.card-list-box{
+  margin: 0 30rpx;
+  font-size: 0;
+
+  .decorate-circle{
+    position: absolute;
+    top: -15rpx;
+    width: 30rpx;
+    height: 30rpx;
+    border-radius: 50%;
+    z-index: 100;
+    background-color: #fff;
+  }
+  .decorate-circle-left{
+    left: -15rpx;
+  }
+  .decorate-circle-right{
+    right: -15rpx;
+  }
+
+  .scroll-img-item {
+    vertical-align: top;
+    width: 330rpx;
+    height: 336rpx;
+    display: inline-block;
+    background: #fff;
+    margin-bottom: 58rpx;
+    margin-right: 30rpx;
+    background-color: #f3f2f1;
+  }
+
+  .scroll-img-item:nth-child(2n) {
+    margin-right: 0;
+  }
+
+  .scroll-img-right {
+    background: yellow;
+  }
+  
+  .tit-pic-wrap {
+    height: 230rpx;
+    width: 100%;
+    overflow: hidden;
+    .h-tit{
+      position: relative;
+      text-align: center;
+      margin: 20rpx 0;
+      .tit{
+        position: relative;
+        display: inline-block;
+        font-size: 50rpx;
+        color: #000;
+        view{
+          position: absolute;
+          font-size: 20rpx;
+          color: #000;
+          left: -10px;
+          top: 0;
+          cursor: pointer;
+          font-style: normal;
+        }
+      }
+    }
+    .sm-tit{
+      display: block;
+      text-align: center;
+      font-size: 26rpx;
+      color: #666;
+    }
+    .b-tit{
+      display: block;
+      text-align: center;
+      margin-top: 20rpx;
+      font-size: 32rpx;
+      color: #000;
+    }
+  }
+
+
+  .store-scroll-tit-b {
+    /* position: relative; */
+    height: 100rpx;
+    position: relative;
+    // border-top: 1rpx dashed red;
+    border-top: 1rpx dashed #dedede;
+    .store-product-hot-tit {
+      display: inline-block;
+      height: 40rpx;
+      line-height: 40rpx;
+      width: 100rpx;
+      color: #666;
+      font-size: 24rpx;
+      text-align: center;
+      border-radius: 5rpx;
+      color: #fff;
+      background-color: #fc8d4f;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+    }
+  }
+
+  .store-product-price-tit {
+    padding: 0 4rpx;
+    flex: 1;
+    color: #fc5b56;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    font-size: 28rpx;
+     line-height: 14rpx; 
+  }
+
+  .price-symbol-b{
+    padding-left: 20rpx;
+    width: 24rpx;
+    color: #fc5b56;
+    font-size: 24rpx;
+  }
+}
+
+
+
+// 没数据
+.no-product-data{
+  position: absolute;
+  width: 307rpx;
+  height: 400rpx;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+} 
+</style>

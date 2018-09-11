@@ -25,7 +25,7 @@
 <script>
   import wepy from "wepy";
   import wepyCropper from 'wepy-cropper';
-  import {getUserInfo} from "@Api/mine/mineApi";
+  import api from 'Api'
   export default class presonalData extends wepy.page {
     config = {
       navigationBarTitleText: "个人资料",
@@ -142,8 +142,8 @@
     // 获取用户的信息
     async getUserInfo() {
       let {shopId,userId,memberId} = this.$parent.globalData;
-      let res = await getUserInfo({shopId,userId,memberId});
-      return res.data
+      let res = await api.getUserInfo({shopId,userId,memberId});
+      return res
     };
     // 跳转到设置页面
     toSetPersonalData(operation) {

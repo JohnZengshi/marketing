@@ -1,63 +1,242 @@
-<style lang="less">
-  .popup__content {
-    width: 300rpx;
-    height: 300rpx;
-    line-height: 300rpx;
-    background: #FFFFFF;
-    border-radius: 12rpx;
-    text-align: center;
-  }
-
-  .popup__content_full {
-    width: 100%;
-    height: 200rpx;
-    line-height: 200rpx;
-    text-align: center;
-    background: #FFFFFF;
-  }
-
-  .popup__content_side {
-    width: 300rpx;
-    height: 100%;
-    line-height: 400rpx;
-    background: #ffffff;
-    text-align: center;
-  }
-
-</style>
 <template>
-  <view class="flex flex_column margin_left margin_right font_normal">
-    积分商城
+  <view class="integral-store-mian">
+    <scroll-view  style="height: 100%;" scroll-y="true" bindscrolltolower="lower" lower-threshold="50">
+      
+      <view class="banner-h">
+        <image mode="aspectFit" src="http://jzm-1252389350.cosgz.myqcloud.com/iconHeaded/banner%403x1535969828865.png"></image>
+      </view>
+
+      <view class="btn-list">
+
+        <navigator hover-class="none"  class="item" url="../../my/record/record">
+          <view class="icon-wrap">
+            <image mode="aspectFit" src="/images/integralStore/convert-record.png"></image>
+          </view>
+          <text>积分</text>
+          <text class="num-tit">5421</text>
+        </navigator>
+
+        <navigator hover-class="none"  class="item" url="../../my/record/record">
+            <view class="icon-wrap">
+              <image mode="aspectFit" src="/images/integralStore/integral-icon.png"></image>
+            </view>
+            <text>总换记录</text>
+        </navigator>
+
+      </view>
+
+      <!-- 轮播图 -->
+      <activitySwiper :showList.sync="showList"></activitySwiper>
+
+      <view class="list-h">
+
+        <view class="left-tit">
+          <text>大家都在兑</text>
+          <view class="bg-box"></view>
+        </view>
+
+        <view class="right-tit">
+          <text @tap="cutLocation" class="{{currentLocation == '1' ? 'actions' : ''}}">商品</text>
+          <text @tap="cutLocation" class="{{currentLocation == '2' ? 'actions' : ''}}">卡卷</text>
+        </view>
+
+      </view>
+
+      <!-- 商品列表 -->
+      <productList wx:if="{{currentLocation == '1'}}" :showList.sync="productDataList"></productList>
+
+      <!-- 卡卷列表 -->
+      <cardList wx:else :showList.sync="productDataList"></cardList>
+      
+    <scroll-view>
+    <!-- 底部导航 -->
+    <menu :menu.sync="currentMenu" :userId.sync="userId"></menu>
   </view>
-  <button bindtap="toExchangeRecord">兑换记录</button>
 </template>
 
 <script>
 import wepy from 'wepy';
-
-  //通过继承自wepy.page的类创建页面逻辑
-  export default class Index extends wepy.page {
-      //可用于页面模板绑定的数据
-      data = {
-          motto: 'Hello World',
-          userInfo: {}
-      };
-
-      //事件处理函数(集中保存在methods对象中)
-      methods = {
-          bindViewTap () {
-              console.log('button clicked');
-          },
-          toExchangeRecord() {
-            wx.navigateTo({
-              url: '/pages/integralStore/view/exchangeRecord',
-            })
+import menu from 'common/menu';
+import activitySwiper from './components/activitySwiper'
+import productList from './components/productList'
+import cardList from './components/cardList'
+import api from 'Api'
+//通过继承自wepy.page的类创建页面逻辑
+export default class integralStore extends wepy.page {
+    config = {
+      "navigationBarTitleText": "积分商城"
+    };
+    components = {
+      menu: menu,
+      activitySwiper: activitySwiper,
+      productList: productList,
+      cardList: cardList
+    }
+    //可用于页面模板绑定的数据
+    data = {
+        productDataList: [], // 商品列表
+        currentLocation: '2',
+        showList: [
+          {
+            url: 'http://jzm-1252389350.cosgz.myqcloud.com/iconHeaded/%E4%BA%A7%E5%93%811%403x1535970588676.png'
           }
-      };
+        ],
+        currentMenu: 'B',
+        userId: wx.getStorageSync('userId'),
+        motto: 'Hello World',
+        userInfo: {}
+    };
 
-      //页面的生命周期函数
-      onLoad() {
-          console.log('onLoad');
-      };
-  }
+    async electronicBilling () {
+        let _self = this
+        let json = await api.electronicBilling()
+        // if (json.dataList.length) {
+        //   this.isBill = '2'
+        // }
+        // _self.$apply()
+    }
+
+
+    async productList () {
+      let self = this
+      let options = {
+        page:1,
+        pageSize:0,
+        type: this.currentLocation
+      }
+      let json = await api.productList(options)
+      this.productDataList = [...json.dataList, ...json.dataList]
+      this.$apply()
+    }
+
+    
+
+    //事件处理函数(集中保存在methods对象中)
+    methods = {
+        cutLocation () {
+          if (this.currentLocation == '1') {
+            this.currentLocation = '2'
+          } else {
+            this.currentLocation = '1'
+          }
+          this.productDataList = []
+          this.productList()
+        },
+        bindViewTap () {
+            console.log('button clicked');
+        },
+          // 滚动到距离底部50开始执行
+        lower () {
+          if (this.allNum == this.showList.length) {
+            return
+          }
+          this.productList()
+        }
+    };
+
+    //页面的生命周期函数
+    onLoad() {
+        this.productList()
+    };
+}
 </script>
+<style lang="less">
+.integral-store-mian{
+  background-color: #fff;
+  .banner-h{
+    height: 300rpx;
+    margin: 0 30rpx;
+    image{
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .btn-list{
+    display: flex;
+    height: 109rpx;
+    .item{
+      position: relative;
+      flex: 1;
+      height: 100%;
+      line-height: 109rpx;
+      text-align: center;
+      .icon-wrap{
+        display: inline-block;
+        width: 28rpx;
+        height: 28rpx;
+        margin-right: 20rpx;
+        image{
+          vertical-align: middle;
+          width: 100%;
+          height: 100%;
+        }
+      }
+      text{
+        display: inline-block;
+        font-size: 28rpx;
+        color: #333;
+        margin-right: 12rpx;
+        vertical-align: middle;
+      }
+      .num-tit{
+        color: #fb684c;
+      }
+    }
+    .item:first-child{
+       &:after {
+          content: "";
+          display: inline-block;
+          width: 1rpx;
+          height: 38rpx;
+          background: #d6d6d6;
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          right: 0;
+          margin: auto;
+      }
+    }
+  }
+  .list-h{
+    margin: 0 30rpx 38rpx 30rpx;
+    .left-tit{
+      position: relative;
+      display: inline-block;
+      width: 194rpx;
+      height: 34rpx;
+      text{
+        position: absolute;
+        font-size: 34rpx;
+        color: #000;
+        bottom: 6rpx;
+        font-weight: bold;
+        z-index: 10;
+      }
+      .bg-box{
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        z-index: 1;
+        width: 194rpx;
+        height: 31rpx;
+        background-color: #fce9de;
+      }
+    }
+    .right-tit{
+      float: right;
+      margin-bottom: 6rpx;
+      text{
+        font-size: 28rpx;
+        color: #000;
+      }
+      text:first-child{
+        margin-right: 30rpx;
+      }
+      .actions{
+        color: #fb684c;
+      }
+    }
+  }
+}
+</style>

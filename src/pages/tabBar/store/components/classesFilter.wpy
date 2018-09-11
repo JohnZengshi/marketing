@@ -1,0 +1,414 @@
+<!-- 通过类别筛选弹窗 -->
+<template name="classesFilter">
+  <view catchtap='setClassPopup' class="classes-filter-popup-main border-box {{classPopup ? 'slide-fade-leave-active' : 'list-slide-leave-active'}}">
+    <view class="mask-content border-box" catchtap='relieveClick'>
+      <view style="flex: 1;overflow: hidden;box-sizing: border-box;" id="classesListScollMainH">
+        <scroll-view scroll-y style="height: 100%" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
+          <!-- 首饰类别大类 -->
+          <view class="filter-container border-box">
+            <div class="filter-content-list filter-root">
+              <view class="classes-item-head">
+                <span class="classes-item-head-tit">首饰类别</span>
+              </view>
+              <view class="big-classes-list-wrap">
+                <!-- wx:if="filterShow(currentFillter.jewelryBigClassId, item.classesId)" -->
+                <view catchtap="changeJewelryBigClassId" wx:for="{{jewelryList}}" wx:key="{{item.classesId}}" data-id="{{item.classesId}}" data-item="{{item}}" wx:if="{{currentFillter.jewelryBigClassId ? currentFillter.jewelryBigClassId == item.classesId : 'true'}}" class="classes-item classes-item-one {{currentFillter.jewelryBigClassId == item.classesId ? 'classes-item-on' : ''}}">
+                  {{item.classesName}}
+                  <view class='classes-f-on-icon' wx:if="{{currentFillter.jewelryBigClassId == item.classesId}}">
+                    <image class="classes-f-on-img" mode="aspectFit" src="/images/classes-on-icon.png"></image>
+                  </view>
+                </view>
+              </view>
+            </div>
+          </view>
+          <!-- 首饰类别小类 -->
+          <view class="filter-container border-box" wx:if="{{smallClasslist.jewelryBigClassId.length}}">
+            <div class="filter-content-list filter-root">
+              <view class="classes-item-head">
+                <span class="classes-item-head-tit">首饰明细</span>
+              </view>
+              <view class="big-classes-list-wrap">
+                <view catchtap="changeJewelrySmallClassId" class="classes-item classes-item-one {{currentFillter.jewelrySmallClassId == item.classesId ? 'classes-item-on' : ''}}" wx:for="{{smallClasslist.jewelryBigClassId}}" wx:key="{{item.classesId}}" data-id="{{item.classesId}}" wx:if="{{currentFillter.jewelrySmallClassId ? currentFillter.jewelrySmallClassId == item.classesId : 'true'}}">
+                  {{item.classesName}}
+                  <view class='classes-f-on-icon' wx:if="{{currentFillter.jewelrySmallClassId == item.classesId}}">
+                    <image class="classes-f-on-img" mode="aspectFit" src="/images/classes-on-icon.png"></image>
+                  </view>
+                </view>
+              </view>
+            </div>
+          </view>
+          <!-- 金属成色大类 -->
+          <view class="filter-container border-box">
+            <div class="filter-content-list filter-root">
+              <view class="classes-item-head">
+                <span class="classes-item-head-tit">金属成色</span>
+              </view>
+              <view class="big-classes-list-wrap">
+                <view catchtap="changeColorBigClassId" data-item="{{item}}" class="classes-item classes-item-one {{currentFillter.colorBigClassId == item.classesId ? 'classes-item-on' : ''}}" wx:for="{{finenessList}}" wx:key="{{item.classesId}}" data-id="{{item.classesId}}" wx:if="{{currentFillter.colorBigClassId ? currentFillter.colorBigClassId == item.classesId : 'true'}}">
+                  {{item.classesName}}
+                  <view class='classes-f-on-icon' wx:if="{{currentFillter.colorBigClassId == item.classesId}}">
+                    <image class="classes-f-on-img" mode="aspectFit" src="/images/classes-on-icon.png"></image>
+                  </view>
+                </view>
+              </view>
+            </div>
+          </view>
+          <!-- 金属成色小类 -->
+          <view class="filter-container border-box" wx:if="{{smallClasslist.colorBigClassId.length}}">
+            <div class="filter-content-list filter-root">
+              <view class="classes-item-head">
+                <span class="classes-item-head-tit">金属明细</span>
+              </view>
+              <view class="big-classes-list-wrap">
+                <view catchtap="changeColorSmallClassId" class="classes-item classes-item-one {{currentFillter.colorSmallClassId == item.classesId ? 'classes-item-on' : ''}}" wx:for="{{smallClasslist.colorBigClassId}}" wx:key="{{item.classesId}}" data-id="{{item.classesId}}" wx:if="{{currentFillter.colorSmallClassId ? currentFillter.colorSmallClassId == item.classesId : 'true'}}">
+                  {{item.classesName}}
+                  <view class='classes-f-on-icon' wx:if="{{currentFillter.colorSmallClassId == item.classesId}}">
+                    <image class="classes-f-on-img" mode="aspectFit" src="/images/classes-on-icon.png"></image>
+                  </view>
+                </view>
+              </view>
+            </div>
+          </view>
+          <!-- 宝石类型大类 -->
+          <view class="filter-container border-box">
+            <div class="filter-content-list filter-root">
+              <view class="classes-item-head">
+                <span class="classes-item-head-tit">宝石类型</span>
+              </view>
+              <view class="big-classes-list-wrap">
+                <view catchtap="changegemBigClassId" data-item="{{item}}" class="classes-item classes-item-one {{currentFillter.gemBigClassId == item.classesId ? 'classes-item-on' : ''}}" wx:for="{{gemList}}" wx:key="{{item.classesId}}" data-id="{{item.classesId}}" wx:if="{{currentFillter.gemBigClassId ? currentFillter.gemBigClassId == item.classesId : 'true'}}">
+                  {{item.classesName}}
+                  <view class='classes-f-on-icon' wx:if="{{currentFillter.gemBigClassId == item.classesId}}">
+                    <image class="classes-f-on-img" mode="aspectFit" src="/images/classes-on-icon.png"></image>
+                  </view>
+                </view>
+              </view>
+            </div>
+          </view>
+          <!-- 宝石类型小类 -->
+          <view class="filter-container border-box" wx:if="{{smallClasslist.gemBigClassId.length}}">
+            <div class="filter-content-list filter-root">
+              <view class="classes-item-head">
+                <span class="classes-item-head-tit">宝石明细</span>
+              </view>
+              <view class="big-classes-list-wrap">
+                <view catchtap="changegemSmallClassId" class="classes-item classes-item-one {{currentFillter.gemSmallClassId == item.classesId ? 'classes-item-on' : ''}}" wx:for="{{smallClasslist.gemBigClassId}}" wx:key="{{item.classesId}}" data-id="{{item.classesId}}" wx:if="{{currentFillter.gemSmallClassId ? currentFillter.gemSmallClassId == item.classesId : 'true'}}">
+                  {{item.classesName}}
+                  <view class='classes-f-on-icon' wx:if="{{currentFillter.gemSmallClassId == item.classesId}}">
+                    <image class="classes-f-on-img" mode="aspectFit" src="/images/classes-on-icon.png"></image>
+                  </view>
+                </view>
+              </view>
+            </div>
+          </view>
+          <view class="filter-container border-box">
+            <div class="filter-content-list filter-root">
+              <view class="classes-item-head">
+                <span class="classes-item-head-tit">销售状态</span>
+              </view>
+              <view class="big-classes-list-wrap">
+                <view catchtap="changeSellType" class="classes-item classes-item-one {{currentFillter.sellType == item.type ? 'classes-item-on' : ''}}" wx:for="{{sellStateList}}" wx:key="{{item.value}}" data-id="{{item.type}}">
+                  {{item.value}}
+                  <view class='classes-f-on-icon' wx:if="{{currentFillter.sellType == item.type}}">
+                    <image class="classes-f-on-img" mode="aspectFit" src="/images/classes-on-icon.png"></image>
+                  </view>
+                </view>
+              </view>
+            </div>
+          </view>
+        </scroll-view>
+      </view>
+      <view class="mask-tab">
+        <view href="javascript: void(0)" class="rest-btn" catchtap="restFilter">重置</view>
+        <view href="javascript: void(0)" class="complate-btn" catchtap="seekMallsClassification">完成</view>
+      </view>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+
+export default class classesFilter extends wepy.component {
+
+  props = {
+    currentFillter: {
+      type: Object,
+      default: {},
+      twoWay: true
+    },
+    smallClasslist: {
+      type: Object,
+      default: {},
+      twoWay: true
+    },
+    jewelryList: {
+      type: Array,
+      default: []
+    },
+    finenessList: {
+      type: Array,
+      default: []
+    },
+    gemList: {
+      type: Array,
+      default: []
+    }
+  };
+
+  data = {
+    sellStateList: [{
+        value: '现货',
+        type: '1'
+      },
+      {
+        value: '预售',
+        type: '2'
+      }
+    ],
+    classPopup: false
+  };
+  methods = {
+    open () {
+      this.classPopup = true
+    },
+    setClassPopup () {
+      this.classPopup = false
+    },
+    filterShow(changeId, currentId) {
+      // debugger
+      // return true
+      // if (changeId) {
+      //   return changeId == currentId
+      // }
+      // return true
+    },
+    // 重置大小类筛选
+    restFilter() {
+      this.currentFillter.jewelryBigClassId = ''
+      this.currentFillter.jewelrySmallClassId = ''
+      this.currentFillter.colorBigClassId = ''
+      this.currentFillter.colorSmallClassId = ''
+      this.currentFillter.gemBigClassId = ''
+      this.currentFillter.gemSmallClassId = ''
+      this.currentFillter.sellType = '5'
+      this.smallClasslist.jewelryBigClassId = []
+      this.smallClasslist.colorBigClassId = []
+      this.smallClasslist.gemBigClassId = []
+    },
+    seekMallsClassification() {
+      this.$emit('update', 'N')
+      this.classPopup = false
+    },
+    relieveClick() {
+      console.log('解除点击')
+    },
+    // 选择大类-首饰类型
+    changeJewelryBigClassId(e) {
+      if (this.currentFillter.jewelryBigClassId == e.currentTarget.dataset.item.classesId) {
+        this.currentFillter.jewelryBigClassId = ''
+        this.currentFillter.jewelrySmallClassId = ''
+        this.smallClasslist.jewelryBigClassId = []
+      } else {
+        this.currentFillter.jewelryBigClassId = e.currentTarget.dataset.item.classesId
+        this.smallClasslist.jewelryBigClassId = e.currentTarget.dataset.item.childrenList
+      }
+    },
+    // 选择小类-首饰类型 
+    changeJewelrySmallClassId(e) {
+      if (this.data.currentFillter.jewelrySmallClassId == e.currentTarget.dataset.id) {
+        this.currentFillter.jewelrySmallClassId = ''
+      } else {
+        this.currentFillter.jewelrySmallClassId = e.currentTarget.dataset.id
+      }
+    },
+    // 选择大类-金属成色
+    changeColorBigClassId(e) {
+      if (this.currentFillter.colorBigClassId == e.currentTarget.dataset.item.classesId) {
+        this.currentFillter.colorBigClassId = ''
+        this.currentFillter.colorSmallClassId = ''
+        this.smallClasslist.colorBigClassId = []
+      } else {
+        this.currentFillter.colorBigClassId = e.currentTarget.dataset.item.classesId
+        this.smallClasslist.colorBigClassId = e.currentTarget.dataset.item.childrenList
+      }
+    },
+
+    // 选择小类-金属成色
+    changeColorSmallClassId(e) {
+      if (this.currentFillter.colorSmallClassId == e.currentTarget.dataset.id) {
+        this.currentFillter.colorSmallClassId = ''
+      } else {
+        this.currentFillter.colorSmallClassId = e.currentTarget.dataset.id
+      }
+    },
+
+    // 选择宝石大类
+    changegemBigClassId(e) {
+      if (this.data.currentFillter.gemBigClassId == e.currentTarget.dataset.item.classesId) {
+        this.currentFillter.gemBigClassId = ''
+        this.currentFillter.gemSmallClassId = ''
+        this.smallClasslist.gemBigClassId = []
+      } else {
+        this.currentFillter.gemBigClassId = e.currentTarget.dataset.item.classesId
+        this.smallClasslist.gemBigClassId = e.currentTarget.dataset.item.childrenList
+      }
+    },
+
+    // 选择宝石小类
+    changegemSmallClassId(e) {
+      if (this.data.currentFillter.gemSmallClassId == e.currentTarget.dataset.id) {
+        this.currentFillter.gemSmallClassId = ''
+      } else {
+        this.currentFillter.gemSmallClassId = e.currentTarget.dataset.id
+      }
+    },
+
+    changeSellType(e) {
+      if (this.data.currentFillter.sellType == e.currentTarget.dataset.id) {
+        this.currentFillter.sellType = '5'
+      } else {
+        this.currentFillter.sellType = e.currentTarget.dataset.id
+      }
+    }
+  }
+}
+
+</script>
+<style lang="less">
+.classes-filter-popup-main {
+  background: #fff;
+  background-color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  transition: all .2s ease;
+}
+
+.mask-content {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  overflow: hidden;
+  width: 652rpx;
+}
+
+.filter-container {
+  flex: 1;
+  padding: 0 26rpx;
+  overflow: hidden;
+}
+
+.filter-root {
+  border-bottom: 16rpx solid #f9f9f9;
+}
+
+.classes-item-head {
+  height: 40rpx;
+  line-height: 40rpx;
+  font-size: 28rpx;
+  margin-bottom: 24rpx;
+}
+
+.classes-item-head-tit {
+  color: #999;
+  margin-left: 20rpx;
+}
+
+.classes-item {
+  box-sizing: border-box;
+  width: 192rpx;
+  display: inline-block;
+  text-align: center;
+  font-size: 28rpx;
+  padding: 16rpx 0;
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+  text-overflow: ellipsis;
+  background-color: #f8f8f8;
+  margin-right: 12rpx;
+  margin-bottom: 22rpx;
+  border-radius: 10rpx;
+}
+
+.classes-item-on {
+  background-color: #e9f4fe;
+  color: #2993f8;
+}
+
+.classes-item-one:nth-child(3n) {
+  margin-right: 0;
+}
+
+.classes-f-on-icon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 40rpx;
+  height: 33rpx;
+  overflow: hidden;
+}
+
+.classes-f-on-img {
+  width: 40rpx;
+  height: 33rpx;
+}
+
+.mask-tab {
+  background: #fff;
+  box-sizing: border-box;
+  display: flex;
+  z-index: 100;
+}
+
+.rest-btn {
+  flex: 1;
+  color: #2993f8;
+  background-color: #e9f4fe;
+}
+
+.rest-btn,
+.complate-btn {
+  padding: 26rpx 0;
+  font-size: 32rpx;
+  text-align: center;
+}
+
+.complate-btn {
+  width: 380rpx;
+  color: #fff;
+  background: #2993f8;
+}
+
+
+
+
+/* 外壳动画控制 */
+
+.list-slide-leave-active {
+  background-color: rgba(0, 0, 0, .1);
+  transform: translateX(100%);
+}
+
+.slide-fade-leave-active {
+  background-color: rgba(0, 0, 0, .3);
+  transform: translateX(0);
+}
+
+.big-classes-list-wrap {
+  font-size: 0;
+  box-sizing: border-box;
+}
+
+.main-color {
+  color: #2993f8;
+}
+
+</style>

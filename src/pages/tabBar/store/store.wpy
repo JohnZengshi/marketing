@@ -29,68 +29,223 @@
     padding-left: 26rpx;
     border-bottom: 1rpx solid #ededed;
   }
+  .store-main{
+    height: 100%;
+    display: flex;
+    background-color: #f4f4f4;
+    flex-direction: column;
+    box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    -webkit-box-sizing:border-box;
+  }
 </style>
 <template>
-  <view class="flex flex_column margin_left margin_right font_normal">
-    商城
+  <view class="store-main flex_column margin_left margin_right font_normal">
+    <!-- 头部左右滑动首饰大类 -->
+    <scrollBox @change-event.user="headMenuClassId"
+      :showList.sync="classesList"
+      :currentId.sync="jewelryBigClassId"
+    ></scrollBox>
+
+    <!-- 过滤的导航条 -->
+    <filterMenu @openGoleValue.user="openGoleValue" @openClassesFilter.user="openClassesFilter" @update.user="update"></filterMenu>
+
+    <!-- 通过商品大小类列表筛选 -->
+    <classesFilter :showShrink.sync="showShrink" :jewelryList.sync="jewelryList" :finenessList.sync="finenessList" :gemList.sync="gemList" :currentFillter.sync="currentFillter" @update.user="update"></classesFilter>
+
+    <!-- 金价详情 -->
+    <goldValue></goldValue>
+    
+    <!-- 商品列表 -->
+    <productList :productList.sync="productDataList" :isHasProduct.sync="isHasProduct"></productList>
+    
+    <!-- 底部导航 -->
+    <menu :menu.sync="currentMenu" :userId.sync="userId" :id.sync="currentId"></menu>
   </view>
 </template>
 
 <script>
 import wepy from 'wepy';
+import scrollBox from  'common/scrollBox';
+import menu from 'common/menu';
+// import filterPopup from  './components/filterPopup';
+import filterMenu from  './components/filterMenu';
+import productList from  './components/productList';
+import classesFilter from  './components/classesFilter';
+import goldValue from  './components/goldValue';
+import api from '@/api/api'
+//通过继承自wepy.page的类创建页面逻辑
+export default class store extends wepy.page {
+    components = {
+      scrollBox: scrollBox,
+      filterMenu: filterMenu,
+      productList: productList,
+      classesFilter: classesFilter,
+      goldValue: goldValue,
+      menu: menu
+    }
 
-  //通过继承自wepy.page的类创建页面逻辑
-  export default class Index extends wepy.page {
-      //可用于页面模板绑定的数据
-      data = {
-          classesList: [
-            {
-              classesId: 'classesId',
-              classesName: 'classesName'
-            },
-            {
-              classesId: 'classesId',
-              classesName: 'classesName'
-            },
-            {
-              classesId: 'classesId',
-              classesName: 'classesName'
-            },
-            {
-              classesId: 'classesId',
-              classesName: 'classesName'
-            },
-            {
-              classesId: 'classesId',
-              classesName: 'classesName'
-            },
-            {
-              classesId: 'classesId',
-              classesName: 'classesName'
-            },
-            {
-              classesId: 'classesId',
-              classesName: 'classesName'
-            },
-            {
-              classesId: 'classesId',
-              classesName: 'classesName'
-            }
-          ],
-          motto: 'Hello World',
-          userInfo: {}
-      };
+    //可用于页面模板绑定的数据
+    data = {
+      currentMenu: 'A',
+      currentId: 'menuTwoId',
+      userId: wx.getStorageSync('userId'),
+      classesListScollMainH: 0, // 产品类型滚动高度
+      showShrink: {}, // 通过类别筛选
+      secSelectList: [],
+      classPopup: false, // 类别赛选弹窗
+      goldValuePopup: false, // 金价详情弹窗
+      isFilterPopup: false, // 综合过滤弹窗
+      isHasProduct: false, // 商品是否为空
+      productDataList: [], // 商品列表
+      classesList: [], // 分类列表（首饰类别）
+      jewelryList: [], // 首饰类别
+      finenessList: [], // 成色名称
+      gemList: [], // 宝石名称
+      goldValueList: [], // 金价列表
+      discountList: [], // 折扣列表
+      jewelryBigClassId: '', // 首饰大类ID
+      currentFillter: {
+        jewelryBigClassId: '', // 首饰大类ID
+        jewelrySmallClassId: '', // 首饰小类ID
+        colorBigClassId: '', // 成色大类ID
+        colorSmallClassId: '', // 成色小类ID
+        gemBigClassId: '', // 宝石大类ID
+        gemSmallClassId: '', // 宝石小类ID
+        orderBy: 1, // 默认综合排序
+        orderByName: '综合排序', // 综合排序默认名字 
+        priceSortBy: 3, // 价格排序
+        sellType: '5' // 销售状态
+      }, // 当前的筛选条件
+      isGold: '2', // 是否可以看金价
+      page: 1,
+      pageSize: 0,
+      smallClasslist: {
+        jewelryBigClassId: [],
+        colorBigClassId: [],
+        gemBigClassId: []
+      }
+    };
 
-      //事件处理函数(集中保存在methods对象中)
-      methods = {
-          bindViewTap () {
-              console.log('button clicked');
+    // 商品分类-商品列表
+    async mallsClassification (reset) {
+      let options = {
+        jewelryBigClassId: this.currentFillter.jewelryBigClassId,
+        jewelrySmallClassId: this.currentFillter.jewelrySmallClassId,
+        colorBigClassId: this.currentFillter.colorBigClassId,
+        colorSmallClassId: this.currentFillter.colorSmallClassId,
+        gemBigClassId: this.currentFillter.gemBigClassId,
+        gemSmallClassId: this.currentFillter.gemSmallClassId,
+        orderBy: this.currentFillter.orderBy,
+        priceSortBy: this.currentFillter.priceSortBy,
+        sellType: this.currentFillter.sellType,
+        page: this.page,
+        pageSize: this.pageSize
+      }
+      const json = await api.mallsClassification(options)
+      this.isHasProduct = !json.dataList.length,
+      this.productDataList = json.dataList
+      this.$apply()
+    }
+
+    // 首饰类别
+    async showProductClassesList () {
+      let _self = this;
+      const json = await api.showProductClassesList({type: '3'})
+      for (let i of json.list) {
+        i.name = i.classesName
+        i.id = i.classesId
+      }
+      _self.classesList.push({
+        name: '全部',
+        id: ''
+      }, ...json.list)
+      _self.jewelryList = json.list
+      _self.$apply()
+    };
+
+    // 成色名称
+    async seekFinenessList () {
+      let _self = this;
+      const json = await api.showProductClassesList({type: 1})
+      this.finenessList = json.list
+      _self.$apply()
+    };
+
+    // 宝石名称
+    async seekGemList () {
+      let _self = this;
+      const json = await api.showProductClassesList({type: 2})
+      this.gemList = json.list
+      _self.$apply()
+    };
+
+    watch = {
+      'currentFillter' (newValue, oldValue) {
+        this.jewelryBigClassId = newValue.jewelryBigClassId
+        this.$apply()
+      }
+    }
+
+    //事件处理函数(集中保存在methods对象中)
+    methods = {
+        update (datas) {
+          // 重新过滤
+          this.productDataList = []
+          if (datas != 'N') { // N，没传数据
+            Object.assign(this.currentFillter, datas)
           }
-      };
+          this.mallsClassification()
+        },
+        // 查看金价详情
+        openGoleValue () {
+          this.$invoke('goldValue', 'open');
+        },
+        // 打开筛选条件
+        openClassesFilter () {
+          this.$invoke('classesFilter', 'open')
+        },
+        // 头部导航每次都要请求刷新数据
+        headMenuClassId (e) {
+          let _self = this
+          if (this.jewelryBigClassId == e.currentTarget.dataset.item.classesId) {
+            // this.jewelryBigClassId = '',
+            this.currentFillter.jewelryBigClassId = ''
+            this.smallClasslist.jewelryBigClassId = []
+          } else {
+            // this.jewelryBigClassId = e.currentTarget.dataset.item.classesId
+            this.currentFillter.jewelryBigClassId = e.currentTarget.dataset.item.classesId
+            this.smallClasslist.jewelryBigClassId = e.currentTarget.dataset.item.childrenList
+          }
+          this.productDataList = []
+          this.mallsClassification()
+        },
+        counterEmit (...args) {
+          console.log(args)
+        },
+        bindViewTap () {
+            console.log('button clicked');
+        }
+    };
 
-      //页面的生命周期函数
-      onLoad() {
-          console.log('onLoad');
-      };
-  }
+    // events对象中所声明的函数为用于监听组件之间的通信与交互事件的事件处理函数
+    events = {
+        'change-event': (p1, p2, p3, $event) => {
+            console.log('PPPPP1', p1)
+            console.log('PPPPP2', p2)
+            console.log('PPPPP3', p3)
+            console.log('PPPPP', $event)
+            // console.log(`${this.$name} receive ${$event.name} from ${$event.source.$name}`);
+        }
+    };
+
+    //页面的生命周期函数
+    onLoad() {
+        console.log('onLoad', this.classesList);
+        this.showProductClassesList()
+        this.seekFinenessList()
+        this.seekGemList()
+        this.mallsClassification()
+    };
+}
 </script>

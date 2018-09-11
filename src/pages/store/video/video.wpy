@@ -1,0 +1,45 @@
+<template>
+  <view class="video-main">
+    <view>{{url}}</view>
+    <view class="video-wrap" wx:if="{{url}}">
+      <video
+        class="video-inner"
+        autoplay="true"
+        style="width: 100%;height: 100%;"
+        id="myVideo"
+        src="{{url}}"
+        enable-danmu
+        controls
+      >
+      </video>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+//通过继承自wepy.page的类创建页面逻辑
+export default class commodityInformation extends wepy.page {
+  data = {
+    url: ''
+  }
+  onLoad (option) {
+    this.url =  option.url
+  }
+}
+</script>
+<style lang="less">
+.video-main{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: rgb(1, 1, 1);
+}
+.video-wrap{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  margin: auto;
+  height: 500rpx;
+}
+</style>

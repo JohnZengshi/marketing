@@ -1,6 +1,6 @@
 <template>
   <view>
-    我的界面
+    <!-- 我的界面
     <view>{{UserInfo.balance}}</view>
     <button bindtap="toMineActivty">我的活动</button>
     <button bindtap="toCoupon">优惠券</button>
@@ -21,193 +21,327 @@
         <text>为了给你带来更好的体验，我们正在努力测试当中，敬请期待...</text>
         <view class="btn" @tap="hidePop">知道了</view>
       </view>
-      </popup>
+      </popup> -->
+  <view class="my-main">
+
+    <!-- 头像信息 -->
+    <myHeader :userInfo.sync="userInfo"></myHeader>
+    
+    <!-- 数据集合 -->
+    <numBox :userInfo.sync="userInfo"></numBox>
+
+    <!-- 我的应用列表 -->
+    <applyList></applyList>
+  
+    <!-- 活动轮播图 -->
+    <activitySwiper></activitySwiper>
+
+    <!-- 商家服务 -->
+    <serviceList></serviceList>
+
+    <!-- 底部导航 -->
+    <menu :menu.sync="currentMenu" :userId.sync="userId"></menu>
   </view>
 </template>
+
 <script>
 import wepy from 'wepy';
-import popup from '@components/popup';
-import {getUserInfo,register} from "@Api/mine/mineApi";
-  //通过继承自wepy.page的类创建页面逻辑
-  export default class Index extends wepy.page {
-      //可用于页面模板绑定的数据
-      data = {
-          list: [
-            {
-              hao: '123'
-            }
-          ],
-          motto: 'Hello World',
-          UserInfo: {},
-          isShow:false,
-      };
-      components = {
-        popup,
-      };
-      //事件处理函数(集中保存在methods对象中)
-      methods = {
-        openPopup() { //弹窗显示
-          this.isShow = true;
-          this.$apply();
-        },
-        hidePop() { //弹窗隐藏
-          this.isShow = false;
-          this.$apply();
-        },
-        bindViewTap() {
-          console.log('button clicked');
-        },
-        toMineActivty() {
-          wx.navigateTo({
-            url: '/pages/my/view/mineActivity',
-          })
-        },
-        toCoupon() {
-          wx.navigateTo({
-            url: '/pages/my/view/coupon',
-          })
-        },
-        toPersonalData() {
-          wx.navigateTo({
-            url: '/pages/my/view/personalData',
-          })
-        },
-        toMineIntergral() {
-          wx.navigateTo({
-            url: '/pages/my/view/myIntegral',
-          })
-        },
-        toUpGrade() {
-          wx.navigateTo({
-            url: '/pages/my/view/UpGrade',
-          })
-        },
-        toFootPrint() {
-          wx.navigateTo({
-            url: '/pages/my/view/footprint',
-          })
-        },
-        toElectricBill() {
-          wx.navigateTo({
-            url: '/pages/my/view/electricBill',
-          })
-        },
-        toAfterSaleCriterion() {
-          wx.navigateTo({
-            url: '/pages/my/view/afterSaleCriterion',
-          })
-        },
-        toAboutUs() {
-          wx.navigateTo({
-            url: '/pages/my/view/aboutUs',
-          })
-        }
-      };
-      //页面的生命周期函数
-      async onLoad() {
-          let res =await this.register(); //注册
-          await this.saveUserInfo(res.data); //保存信息
-          // let UserInfo = await this.getUserInfo(); //获取会员信息
-          // this.UserInfo = UserInfo;
-          this.$apply();
-          console.log(this.UserInfo)
-      };
-      //每次页面进入触发
-      async onShow() {
-        // this.getUserInfo();
-      };
-      // 保存信息
-      async saveUserInfo(data) {
-        let {companyId,shopId,userId,memberId} = data;
-        this.$parent.globalData.shopId = shopId;
-        this.$parent.globalData.memberId = memberId;
-        this.$parent.globalData.userId = userId;
-        wepy.setStorageSync("companyId",companyId);
-        wepy.setStorageSync("userId",userId);
-      };
-      // 会员注册
-      async register() {
-        return { //假设注册成功
-          state: 200,
-          msg: "OK",
-          data: {
-            companyId: "7eb47787d95045d79cc8e1dbb71414d5",
-            shopId: "3d26ff58746a476a96800fb99911a310",
-            userId: "2e3e5de7d5ae48c992f47bd3b89ea90a",
-            memberId: "e5512fa1b1d111e8ae9ef48e3888bbef",
-          }
-        }
-      };
-      // 获取会员信息
-      async getUserInfo() {
-        let {shopId,userId,memberId} = this.$parent.globalData;
-        let option = {
-            shopId: shopId,
-            userId: userId,
-            memberId: memberId
-        }
-        let res =await getUserInfo(option)
-        // { "state": 200,  "msg": "OK",  "data":{ 返回参数} }
-        if(res.msg == 'OK'){
-          return res.data;
-        }else{
-          return {
-            couponNum: "0",
-            integralNum: "0",
-            balance: "0.00",
-            qcSrc: "",
-            nickName: "",
-            faceSrc: "",
-            gradeName: "",
-            shopName: "",
-            member: "",
-            sex: "",
-            phone: "",
-          }
-        }
-      };
+// import popup from '@components/popup';
+// import {getUserInfo,register} from "@Api/mine/mineApi";
+//   //通过继承自wepy.page的类创建页面逻辑
+//   export default class Index extends wepy.page {
+//       //可用于页面模板绑定的数据
+//       data = {
+//           list: [
+//             {
+//               hao: '123'
+//             }
+//           ],
+//           motto: 'Hello World',
+//           UserInfo: {},
+//           isShow:false,
+//       };
+//       components = {
+//         popup,
+//       };
+//       //事件处理函数(集中保存在methods对象中)
+//       methods = {
+//         openPopup() { //弹窗显示
+//           this.isShow = true;
+//           this.$apply();
+//         },
+//         hidePop() { //弹窗隐藏
+//           this.isShow = false;
+//           this.$apply();
+//         },
+//         bindViewTap() {
+//           console.log('button clicked');
+//         },
+//         toMineActivty() {
+//           wx.navigateTo({
+//             url: '/pages/my/view/mineActivity',
+//           })
+//         },
+//         toCoupon() {
+//           wx.navigateTo({
+//             url: '/pages/my/view/coupon',
+//           })
+//         },
+//         toPersonalData() {
+//           wx.navigateTo({
+//             url: '/pages/my/view/personalData',
+//           })
+//         },
+//         toMineIntergral() {
+//           wx.navigateTo({
+//             url: '/pages/my/view/myIntegral',
+//           })
+//         },
+//         toUpGrade() {
+//           wx.navigateTo({
+//             url: '/pages/my/view/UpGrade',
+//           })
+//         },
+//         toFootPrint() {
+//           wx.navigateTo({
+//             url: '/pages/my/view/footprint',
+//           })
+//         },
+//         toElectricBill() {
+//           wx.navigateTo({
+//             url: '/pages/my/view/electricBill',
+//           })
+//         },
+//         toAfterSaleCriterion() {
+//           wx.navigateTo({
+//             url: '/pages/my/view/afterSaleCriterion',
+//           })
+//         },
+//         toAboutUs() {
+//           wx.navigateTo({
+//             url: '/pages/my/view/aboutUs',
+import api from 'Api'
+import menu from 'common/menu';
+import myHeader from './components/header';
+import numBox from './components/numBox';
+import applyList from './components/applyList';
+import activitySwiper from './components/activitySwiper';
+import serviceList from './components/serviceList';
+
+//通过继承自wepy.page的类创建页面逻辑
+export default class my extends wepy.page {
+  config = {
+    "navigationBarTitleText": "我的",
+    "navigationBarBackgroundColor": "#FB6A4C",
+    "navigationBarTextStyle": "#fff"
+  };
+
+  components = {
+    menu: menu,
+    myHeader: myHeader,
+    numBox: numBox,
+    applyList: applyList,
+    activitySwiper: activitySwiper,
+    serviceList: serviceList
   }
+  /**
+   * 页面的初始数据
+   */
+  data = {
+    currentMenu: 'C',
+    userId: wx.getStorageSync('userId'),
+    isBill: 'N',
+    score: '2', // 签到成功加的分值
+    userInfo: {
+      couponNum: 'couponNum',
+      integralNum: '1000',
+      balance: 'balance',
+      qcSrc: 'http://jzm-1252389350.cosgz.myqcloud.com/iconHeaded/%25QH74RAN7GT%5D%24%5DK%7DJ5RCVXM1535783933372.png',
+      nickName: 'nickName',
+      faceSrc: 'http://jzm-1252389350.cosgz.myqcloud.com/iconHeaded/%25QH74RAN7GT%5D%24%5DK%7DJ5RCVXM1535783933372.png',
+      gradeName: 'gradeName',
+      shopName: 'shopName',
+      member: '10000',
+      sex: '男',
+      phone: '1564654545'
+    },
+    isSignInPopup: false, // 签到成功弹窗
+    memberDetailPopup: false, // 会员详情弹窗
+    shareData: {
+      title: '猜金价',
+      desc: "猜金价",
+      imageUrl: '',
+      path: '/pages/tabBar/merchant/merchant'
+    }
+  }
+
+  // 更新用户基本信息
+  // async smallProgramUserInfo () {
+  //   console.log('更新用户基本信息', this.userId)
+  //   let _self = this
+  //   let json = await api.smallProgramUserInfo({userId: _self.userId})
+  //   // _self.userInfo = json
+  //   // _self.shareData.title = '西金'
+  //   // _self.$apply()
+  // }
+
+  // 电子账单
+  async electronicBilling () {
+    let _self = this
+    let json = await api.electronicBilling({userId: _self.userId})
+    // if (json.dataList.length) {
+    //   this.isBill = 'Y'
+    // }
+    // _self.$apply()
+  }
+
+  methods = {
+    filterScore (parm) {
+      if (Number(parm) > 999) {
+        return '999+'
+      }
+      return parm
+    },
+
+    // 签到
+    _rportByWeChat () {
+      if (this.userInfo.sign != 'N') {
+        return
+      }
+      let options = {
+        memberId: wx.getStorageSync('memberId'),
+      }
+      requestData(rportByWeChat, options)
+        .then(res => {
+          this.userInfo.score = Number(this.userInfo.score) + Number(res.score)
+          this.userInfo.sign = 'Y'
+          this.setData({
+            score: res.score,
+            isSignInPopup: !this.isSignInPopup
+          })
+          setTimeout(() => {
+            this.setData({
+              isSignInPopup: !this.isSignInPopup,
+              userInfo: this.userInfo
+            })
+          }, 3000)
+        })
+      
+    },
+
+    onShareAppMessage: function (res) {
+      return this.data.shareData
+    },
+
+    // 分享
+    handleTapShareButton() {
+      if (!((typeof wx.canIUse === 'function') && wx.canIUse('button.open-type.share'))) {
+        wx.showModal({
+          title: '当前版本不支持转发按钮',
+          content: '请升级至最新版本微信客户端',
+          showCancel: false
+        })
+      }
+    },
+
+    setMember () {
+      this.setData({
+        memberDetailPopup: !this.data.memberDetailPopup
+      })
+    }
+  }
+// </script>
+// <style lang="less" scoped>
+//   .underConstruction{
+//       width: 519rpx;
+//       height: 542rpx;
+//       background-color:#FFF;
+//       border-radius: 17rpx;
+//       >text{
+//         &:first-of-type{
+//           margin-top: 76rpx;
+//           font-size: 34rpx;
+//           color: #333333;
+//           font-weight: bold;
+//           line-height: 34rpx;
+//         }
+//         &:last-of-type{
+//           margin-top: 76rpx;
+//           width: 442rpx;
+//           font-size: 26rpx;
+//           color: #999999;
+//           line-height: 47rpx;
+//         }
+//       }
+//       >view{
+//         margin-top: 117rpx;
+//         width: 400rpx;
+//         height: 76rpx;
+//         border-radius: 76rpx;
+//         font-size: 34rpx;
+//         line-height: 76rpx;
+//         font-weight: bold;
+//         text-align: center;
+//         color: #fff;
+//         background: -webkit-linear-gradient(left, #FC894F, #FB6F4D);
+//         /* Safari 5.1 - 6.0 */
+//         background: -o-linear-gradient(right, #FC894F, #FB6F4D);
+//         /* Opera 11.1 - 12.0 */
+//         background: -moz-linear-gradient(right, #FC894F, #FB6F4D);
+//         /* Firefox 3.6 - 15 */
+//         background: linear-gradient(to right, #FC894F, #FB6F4D);
+//         /* 标准的语法 */
+//       }
+//   }
+// </style>
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad (options) {
+    let self = this
+    this.$parent.getUserInfo(function (userInfo) {
+      if (userInfo) {
+        self.userInfo = userInfo
+      }
+      self.$apply()
+    })
+    // this.electronicBilling()
+  }
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow () {
+    // this.userInfo = this.$parent.globalData.userInfo
+    this.electronicBilling()
+  }
+
+
+
+}
 </script>
-<style lang="less" scoped>
-  .underConstruction{
-      width: 519rpx;
-      height: 542rpx;
-      background-color:#FFF;
-      border-radius: 17rpx;
-      >text{
-        &:first-of-type{
-          margin-top: 76rpx;
-          font-size: 34rpx;
-          color: #333333;
-          font-weight: bold;
-          line-height: 34rpx;
-        }
-        &:last-of-type{
-          margin-top: 76rpx;
-          width: 442rpx;
-          font-size: 26rpx;
-          color: #999999;
-          line-height: 47rpx;
-        }
-      }
-      >view{
-        margin-top: 117rpx;
-        width: 400rpx;
-        height: 76rpx;
-        border-radius: 76rpx;
-        font-size: 34rpx;
-        line-height: 76rpx;
-        font-weight: bold;
-        text-align: center;
-        color: #fff;
-        background: -webkit-linear-gradient(left, #FC894F, #FB6F4D);
-        /* Safari 5.1 - 6.0 */
-        background: -o-linear-gradient(right, #FC894F, #FB6F4D);
-        /* Opera 11.1 - 12.0 */
-        background: -moz-linear-gradient(right, #FC894F, #FB6F4D);
-        /* Firefox 3.6 - 15 */
-        background: linear-gradient(to right, #FC894F, #FB6F4D);
-        /* 标准的语法 */
-      }
-  }
+<style lang="less">
+.my-main{
+  background-color: #f4f4f4;
+}
+/* 内容 */
+
+.button-share {
+   /* display: none;  */
+  position: absolute!important; 
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.01;
+  border: 1rpx solid red;
+}
+.mr-10{
+  margin-right: 10rpx;
+}
+.opacity-08{
+  opacity: 0.8;
+}
+.mt-10{
+  margin-top: 12rpx;
+}
 </style>

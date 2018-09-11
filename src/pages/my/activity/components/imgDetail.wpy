@@ -1,0 +1,66 @@
+<template>
+  <view class="img-detail-box">
+    <view class="inner-wrap">
+      <image class="h-img" src="http://jzm-1252389350.cosgz.myqcloud.com/iconHeaded/%E5%95%86%E5%93%81%E8%AF%A6%E6%83%85%403x1536313368831.png"></image>
+      <view class="h-t m-c">
+        从美学与专业角度展现砖石打发看法就开饭你没得法饭店房间啊
+      </view>
+      <view class="item-img">
+        <image src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3426935536,74687823&fm=27&gp=0.jpg"></image>
+      </view>
+      <view class="item-img">
+        <image src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3426935536,74687823&fm=27&gp=0.jpg"></image>
+      </view>
+      <view class="item-img">
+        <image src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3426935536,74687823&fm=27&gp=0.jpg"></image>
+      </view>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+//通过继承自wepy.page的类创建页面逻辑
+export default class MAimgDetail extends wepy.component {
+
+}
+
+</script>
+<style lang="less">
+.img-detail-box {
+  overflow: hidden;
+  padding-top: 100rpx;
+  .inner-wrap {
+    position: relative;
+    background-color: #fff;
+    margin: 0 38rpx;
+    border-radius: 5rpx;
+    padding: 80rpx 20rpx 100rpx 20rpx;
+    .h-img {
+      position: absolute;
+      top: -45rpx;
+      left: 0;
+      right: 0;
+      margin: auto;
+      width: 476rpx;
+      height: 95rpx;
+    }
+    .h-t{
+      font-size: 28rpx;
+      line-height: 40rpx;
+      padding: 26rpx 20rpx 20rpx 50rpx;
+      background-color: #fff5f0; 
+      margin-bottom: 50rpx;
+    }
+    .item-img{
+      height: 500rpx;
+      width: 100%;
+      margin-top: 50rpx;
+      image{
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+}
+
+</style>

@@ -1,0 +1,131 @@
+<template>
+  <view class="ranking-list-box">
+    <view class="inner-wrap">
+      <image class="h-img" src="http://jzm-1252389350.cosgz.myqcloud.com/iconHeaded/%E7%A0%8D%E4%BB%B7%E6%8E%92%E8%A1%8C%403x1536316334953.png"></image>
+      <view class="r-user-list-wrap">
+        <block wx:for="{{showList}}" wx:key="{{item}}">
+          <view class="r-user-list">
+            <text class="index-tit">{{index + 1}}</text>
+            <view class="img-b">
+              <image src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3426935536,74687823&fm=27&gp=0.jpg"></image> 
+            </view>
+            <text class="nick-name">{{item.monny}}</text>
+            <text class="r-t m-c">{{item.monny}}</text>
+          </view>
+        </block>
+      </view>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+//通过继承自wepy.page的类创建页面逻辑
+export default class MArankingList extends wepy.component {
+  data = {
+    showList: [
+      {
+        logo: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3426935536,74687823&fm=27&gp=0.jpg',
+        nickName: 'nickName',
+        monny: '1000',
+      },
+      {
+        logo: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3426935536,74687823&fm=27&gp=0.jpg',
+        nickName: 'nickName',
+        monny: '1000',
+      },
+      {
+        logo: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3426935536,74687823&fm=27&gp=0.jpg',
+        nickName: 'nickName',
+        monny: '1000',
+      },
+      {
+        logo: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3426935536,74687823&fm=27&gp=0.jpg',
+        nickName: 'nickName',
+        monny: '1000',
+      },
+      {
+        logo: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3426935536,74687823&fm=27&gp=0.jpg',
+        nickName: 'nickName',
+        monny: '1000',
+      }
+    ]
+  }
+}
+
+</script>
+<style lang="less">
+.ranking-list-box {
+  overflow: hidden;
+  padding-top: 100rpx;
+  .inner-wrap {
+    position: relative;
+    background-color: #fff;
+    margin: 0 38rpx;
+    border-radius: 5rpx;
+    padding: 80rpx 20rpx 100rpx 20rpx;
+    .h-img {
+      position: absolute;
+      top: -45rpx;
+      left: 0;
+      right: 0;
+      margin: auto;
+      width: 476rpx;
+      height: 95rpx;
+    }
+    .r-user-list-wrap{
+      .r-user-list{
+        height: 60rpx;
+        margin-top: 50rpx;
+        background-color: #fff4f1;
+        border-radius: 30rpx;
+        .index-tit{
+          display: inline-block;
+          width: 80rpx;
+          text-align: center;
+          font-size: 30rpx;;
+        }
+        .img-b{
+          display: inline-block;
+          vertical-align: top;
+          width: 80rpx;
+          height: 80rpx;
+          border-radius: 50%;
+          overflow: hidden;
+          margin: -10rpx 20rpx 0 20rpx;
+          image{
+            width: 100%;
+            height: 100%;
+          }
+        }
+        .nick-name{
+          font-size: 24rpx;
+          color: #000;
+        }
+        .r-t{
+          float: right;
+          height: 60rpx;
+          line-height: 60rpx;
+          font-size: 24rpx;
+          margin-right: 20rpx;
+        }
+      }
+      .r-user-list:nth-child(1){
+        .index-tit{
+          color: #f6486b;
+        }
+      }
+      .r-user-list:nth-child(2){
+        .index-tit{
+          color: #338af8;
+        }
+      }
+      .r-user-list:nth-child(3){
+        .index-tit{
+          color: #9734db;
+        }
+      }
+    }
+  }
+}
+
+</style>

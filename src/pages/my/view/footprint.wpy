@@ -43,7 +43,7 @@
   import wepy from "wepy";
   import wepyCanlendar from '../components/dateTag';
   import Sticky from "@components/sticky";
-  import {getVisitLogList} from "@Api/mine/mineApi";
+  import api from "Api";
   // import Refresh from '@components/ScrollViewRefresh';
   export default class FootPrint extends wepy.page {
     config = {
@@ -123,7 +123,7 @@
         beginTime,
         endTime
       } = this.requestData;
-      let res =await getVisitLogList({shopId,userId,memberId,beginTime,endTime})
+      let res =await api.getVisitLogList({shopId,userId,memberId,beginTime,endTime})
       return res;
       console.log(res);
     }

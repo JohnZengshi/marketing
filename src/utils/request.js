@@ -1,63 +1,54 @@
-import wepy from "wepy";
-import Tip from "./tip";
-/**
- * @param  {[Object]} params [请求的参数]
- * @param  {[String]} url    [请求的url]
- * @param  {[Number]} t      [第几次请求] [接口文档要求：收到数据后，返回状态为200，为正常。若未收到返回，则系统会在第10秒、第60秒、第180秒后再次发送，共发送四次数据包]
- * @return {[type]}          [description]
- */
-const wxRequest = async (params, url ,t) => {
-  Tip.loading();
-  let companyId = wx.getStorageSync('companyId');
-  let userId = wx.getStorageSync('userId');
-  let unit = {
-    companyId: companyId,
-    channel: 3,
-    OS: "web",
-    ip: "",
-    userId: userId,
-    tokenId: "361ab44de4e622c29d92bad1a7ed2f91"
-  }
-  console.log(`第${t}次请求`)
-  let Data = {
-    data:{},
-    unit:{},
-  }
-  Data.data = params;
-  Data.unit = unit;
-  let res = await wepy.request({
-    url: url,
-    method: 'POST',
-    data: Data,
-    header: {
-      'Content-Type': 'application/json'
-    },
-  });
-  if(res.data.state == '200'){
-    Tip.loaded();
-    return res.data;
-  }else{
-    let time;
-    if(t == 1){
-      time = 1000;
-    }else if(t == 2){
-      time = 5000;
-    }else if(t == 3){
-      time = 12000;
-    }else{
-      Tip.loaded();
-      Tip.error(res.data.msg);
-      return res.data;
-    }
-    return new Promise((resolve)=>{
-      setTimeout(() => {
-        let res = wxRequest(params, url , t+1);
-        resolve(res);
-      }, time);
+<<<<<<< HEAD
+import wepy from 'wepy';
+const wxRequest = async (options, url) => {
+    wx.showLoading({title: '加载中'})
+    let baseData = Object.assign({}, {
+      // shopId: wx.getStorageSync('shopId'),
+      // userId: wx.getStorageSync('userId'),
+      // memberId: wx.getStorageSync('memberId')
+      latitude: wx.getStorageSync('latitude'),
+      longitude: wx.getStorageSync('longitude'),
+      shopId: '0427664a21464e2ca52f84e755f9e3d6',
+      userId: '00256e1bd5774da7943b439c3369971b',
+      memberId: '03ed51007bbc4549af0b748866a317dd'
+    }, options)
+    
+    console.log('shopId', wx.getStorageSync('shopId'))
+    console.log('userId', wx.getStorageSync('userId'))
+    console.log('memberId', wx.getStorageSync('memberId'))
+    console.log('baseData', baseData)
+    let res = await wepy.request({
+        url: url,
+        method: 'POST',
+        data: {
+          data: baseData,
+          unit: {
+            "channel": 3,
+            "OS": "web",
+            "ip": "string",
+            "userId": wx.getStorageSync('userId')
+          }
+        },
+        header: { 'content-type': 'application/json' }, // 默认值
     });
-  }
+    if (res.data.state == 200) {
+        wx.hideLoading()
+        return res.data.data
+    } else if (res.statusCode == 404 || res.statusCode == 504){
+        wx.showToast({
+          title: '服务器繁忙',
+          icon: 'none',
+          duration: 2000
+        })
+    } else {
+        wx.showToast({
+          title: res.data.msg,
+          icon: 'none',
+          duration: 2000
+        })
+    }
 };
 
 module.exports = {
-  wxRequest
+    wxRequest
 }

@@ -120,7 +120,7 @@
   import {
     _getDomRect
   } from "@utils/getDom";
-  import {getGrade} from "@Api/mine/mineApi";
+  import api from 'Api'
   export default class UpGrade extends wepy.page {
     config = {
       navigationBarTitleText: "升等级",
@@ -189,8 +189,8 @@
         userId,
         memberId
       } = this.$parent.globalData;
-      let res =await getGrade({shopId,userId,memberId});
-      return res.data;
+      let res =await api.getGrade({shopId,userId,memberId});
+      return res;
     }
   }
 </script>

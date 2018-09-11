@@ -1,0 +1,69 @@
+<template>
+  <view class="page-section page-section-spacing swiper">
+    <swiper style="height: 750rpx;"
+      indicator-dots="true"
+      indicator-active-color="#2993f8"
+      autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+
+      <block wx:for="{{showList}}" wx:key="item">
+        <swiper-item>
+          <view class="swiper-item {{item}}">
+              <image style="width: 100%;height:100%;"
+              mode="aspectFill" src="{{item.logoSrc}}"></image>
+          </view>
+        </swiper-item>
+      </block>
+
+    </swiper>
+
+    <navigator wx:if="{{url}}" hover-class="none" class="cut-video-icon" url="../video/video?url={{url}}" hover-class="navigator-hover">
+      <image style="width: 122rpx;;height: 50rpx;" mode="aspectFit" src="/images/cut-video-icon.png"></image>
+    </navigator>
+      
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+//通过继承自wepy.page的类创建页面逻辑
+export default class productSwiper extends wepy.component {
+
+  props = {
+    showList: {
+      type: Array,
+      default: []
+    },
+    url: {
+      type: String,
+      default: ''
+    }
+  }
+
+  data = {
+    autoplay: true,
+    interval: 4000,
+    duration: 500,
+  }
+
+
+  methods = {
+  }
+}
+</script>
+</script>
+<style lang="less">
+.page-section{
+  position: relative;
+  height: 750rpx;
+}
+.swiper-item{
+  display: block;
+  height: 750rpx;
+}
+.cut-video-icon{
+  position: absolute;
+  bottom: 20rpx;
+  right: 20rpx;
+  width: 122rpx;
+  height: 50rpx;
+}
+</style>

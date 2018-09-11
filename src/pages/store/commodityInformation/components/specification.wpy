@@ -1,0 +1,206 @@
+<template>
+  <popupBottom :headName.sync="headName" @close.user="close">
+      <text class="head-hint-tit">规格默认显示首饰名称、件重、手寸。点击可查看更多</text>
+      <view class="specification-list-inner" id="specificationScollMainH">
+        <scroll-view scroll-y style="height: 100%" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
+          <block wx:for="{{specificationsData}}" wx:key="{{item.productId}}">
+
+            <view bindtap='openSpecification' class="specification-navigator" hover-class="navigator-hover" data-sign="{{item.productId}}">
+              <view class="navigator-text">
+                {{item.jewelryName ? item.jewelryName + ' /' : ''}}
+                {{item.weightUnit ? item.weightUnit + ' /' : ''}}
+                {{item.handUnit}}
+              </view>
+              <view class="specification-navigator-arrow">
+                <text class="pecification-monny-unit">￥</text>
+                <text>{{item.price}}</text>
+              </view>
+            </view>
+
+            <block wx:if="{{openSpecificationType == item.productId}}">
+              <view class="one-item">
+                <view class='item-list mr50'>
+                  <text class="bill-body-tit-left">主石规格:</text>
+                  <text class="bill-body-tit-right">{{item.mainSpec}}</text>
+                </view>
+
+                <view class='item-list'>
+                  <text class="bill-body-tit-left">净度:</text>
+                  <text class="bill-body-tit-right">{{item.neatness}}</text>
+                </view>
+              </view>
+
+              <view class="one-item">
+                <view class='item-list mr50'>
+                  <text class="bill-body-tit-left">主石重:</text>
+                  <text class="bill-body-tit-right">{{item.mainWeight}}</text>
+                </view>
+
+                <view class='item-list'>
+                  <text class="bill-body-tit-left">切工:</text>
+                  <text class="bill-body-tit-right">{{item.blackout}}</text>
+                </view>
+              </view>
+
+              <view class="one-item">
+                <view class='item-list mr26'>
+                  <text class="bill-body-tit-left">颜色:</text>
+                  <text class="bill-body-tit-right">{{item.colour}}</text>
+                </view>
+
+                <view class='item-list'>
+                  <text class="bill-body-tit-left">对称:</text>
+                  <text class="bill-body-tit-right">{{item.symmetry}}</text>
+                </view>
+              </view>
+            </block>
+
+          </block>
+        </scroll-view>
+      </view>
+  </popupBottom>
+</template>
+<script>
+import wepy from 'wepy';
+import api from 'Api'
+import popupBottom from 'common/popupBottom'
+//通过继承自wepy.page的类创建页面逻辑
+export default class specification extends wepy.component {
+
+  components = {
+    popupBottom: popupBottom
+  }
+
+  props = {
+    styleId: {
+      type: String,
+      default: ''
+    }
+  }
+
+  data = {
+    headName: '产品规格',
+    specificationsData: [] // 产品规格
+  }
+
+  // 参数规格
+  async productSpecifications () {
+    let _self = this
+    let json = await api.productSpecifications({styleId: this.styleId})
+    _self.specificationsData = json.dataList,
+    _self.openSpecificationType = json.dataList[0] ? json.dataList[0].productId : ''
+    _self.$apply()
+  }
+
+  methods = {
+    open () {
+      if (!this.specificationsData.length) {
+        this.productSpecifications()
+      }
+      this.$invoke('popupBottom', 'open')
+    },
+    close () {
+      this.$emit('close')
+    }
+  }
+
+  onLoad () {
+    
+  }
+}
+</script>
+</script>
+<style lang="less">
+.head-hint-tit{
+  color: #999;
+  font-size: 22rpx;
+  margin-left: 26rpx;
+}
+.specification-list-inner{
+  overflow: hidden;
+  flex: 1;
+  /* margin-top: 20rpx; */
+  /* padding: 0 26rpx; */
+}
+.specification-navigator {
+  background-color: #fff;
+  padding: 30rpx 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin: 0 26rpx;
+}
+.specification-navigator:before {
+  content: " ";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 1px;
+  border-top: 1rpx solid #D8D8D8;
+  color: #D8D8D8;
+}
+.specification-navigator:first-child:after {
+  content: " ";
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: 1px;
+  border-top: 1rpx solid #D8D8D8;
+  color: #D8D8D8;
+}
+
+.one-item{
+  padding: 28rpx 26rpx;
+  margin: 0 26rpx;
+  display: flex;
+  border-bottom: 1px solid #ededed;
+  background-color: #e9f4fe;
+}
+.item-list{
+  /* height: 28rpx; */
+  flex: 1;
+  display: flex;
+}
+.bill-body-tit-left{
+  display: inline-block;
+  vertical-align: top;
+  font-size: 24rpx;
+  line-height: 24rpx;
+  /* min-width: 110rpx; */
+  color: #999;
+  border-right: 1px solid #ededed;
+}
+.bill-body-tit-right{
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 12rpx;
+  font-size: 24rpx;
+  line-height: 24rpx;
+  overflow: hidden;
+  text-align: right; 
+  color: #333;
+  flex: 1;
+}
+.mr26{
+  margin-right: 26rpx;
+}
+.mr50{
+  margin-right: 50rpx;
+}
+.navigator-text {
+  flex: 1;
+  font-size: 28rpx;
+  color: #666;
+}
+.specification-navigator-arrow{
+  padding-right: 26rpx;
+  position: relative;
+  font-size: 32rpx;
+  color: #fc5b56;
+}
+.pecification-monny-unit{
+  font-size: 24rpx;
+}
+</style>

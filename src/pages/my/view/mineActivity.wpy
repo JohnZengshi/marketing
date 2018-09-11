@@ -92,7 +92,7 @@ import wepy from "wepy";
 import Tabs from "@components/tabs";
 import Swiper from "@components/swiper";
 import Card from "../components/card";
-import {getActivityList} from "@Api/mine/mineApi";
+import api from 'Api'
 // import Refresh from '@components/ScrollViewRefresh';
 
 export default class MineActivity extends wepy.page {
@@ -220,12 +220,13 @@ export default class MineActivity extends wepy.page {
           userId,
           memberId
         } = this.$parent.globalData;
-        let res =await getActivityList({shopId,userId,memberId,clazz,type,status})
-        if(res.msg == 'OK'){
-            return res.data;
-        }else{
-            return []
-        }
+        let res =await api.getActivityList({shopId,userId,memberId,clazz,type,status})
+        return res
+        // if(res.msg == 'OK'){
+        //     return res.data;
+        // }else{
+        //     return []
+        // }
     }
 }
 </script>

@@ -1,0 +1,83 @@
+<!--会员信息-->
+<template>
+  <view class="userinfo-main">
+
+    <navigator class="navigator" url="../userName/userName?name={{userInfo.memberName}}" hover-class="navigator-hover">
+      <view class="navigator-text">姓名</view>
+      <view class="navigator-text-inner">{{userInfo.memberName}}</view>
+      <view class="navigator-arrow"></view>
+    </navigator>
+
+    <navigator class="navigator" url="../birthday/birthday?birthday={{userInfo.birthday}}" hover-class="navigator-hover">
+      <view class="navigator-text">生日</view>
+      <view class="navigator-text-inner">{{userInfo.birthday}}</view>
+      <view class="navigator-arrow"></view>
+    </navigator>
+
+    <view class="navigator">
+      <view class="navigator-text">手机号码</view>
+      <view class="navigator-text-inner">{{userInfo.phone}}</view>
+    </view>
+
+    <view class="navigator">
+      <view class="navigator-text">会员号</view>
+      <view class="navigator-text-inner">{{userInfo.memberNo}}</view>
+    </view>
+
+    <view class="navigator">
+      <view class="navigator-text">注册时间</view>
+      <view class="navigator-text-inner">{{userInfo.registeredTime}}</view>
+    </view>
+
+    <view class="navigator">
+      <view class="navigator-text">历史总消费</view>
+      <view class="navigator-text-inner">{{userInfo.totalConsumption}}元</view>
+    </view>
+
+  </view>
+</template>
+<script>
+import wepy from "wepy"
+import api from 'Api'
+import utils from '@utils'
+export default class mUserinfo extends wepy.component {
+  data = {
+    userInfo: {}
+  }
+
+  // 更新用户基本信息
+  async smallProgramUserInfo {
+    let json = await api.smallProgramUserInfo({userId: wx.getStorageSync('userId')})
+    json.birthday = utils.extractXjTime(json.birthday)
+    json.registeredTime = utils.extractXjTime(json.registeredTime)
+    this.userInfo = json
+    this.$apply()
+  }
+
+  /**
+ * 生命周期函数--监听页面显示
+ */
+  onShow: function () {
+    this.smallProgramUserInfo()
+  },
+
+  // 更新用户基本信息
+  // updateUserInfo() {
+  //   let _self = this
+  //   if (!wx.getStorageSync('userId')) {
+  //     return
+  //   }
+  //   let options = {
+  //     userId: wx.getStorageSync('userId')
+  //   }
+  //   requestData(smallProgramUserInfo, options)
+  //     .then(res => {
+  //       let datas = res
+  //       datas.birthday = util.extractXjTime(datas.birthday)
+  //       datas.registeredTime = util.extractXjTime(datas.registeredTime)
+  //       this.setData({
+  //         userInfo: datas
+  //       })
+  //     })
+  // },
+}

@@ -1,0 +1,75 @@
+<template>
+  <view class="activity-main">
+    <view class="p-b y-y">音乐</view>
+    <view class="p-b f-x">分享</view>
+    <view class="p-b t-s">投诉</view>
+
+    <view class="h-img">
+      <image src="http://jzm-1252389350.cosgz.myqcloud.com/iconHeaded/banner%403x1536232797135.png"></image>
+    </view>
+    <!-- 时间倒计时 -->
+    <productDetail></productDetail>
+    <!-- 商品详情 -->
+    <imgDetail></imgDetail>
+    <!-- 活动说明 -->
+    <activityDetail></activityDetail>
+    <!-- 砍价排行 -->
+    <rankingList></rankingList>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+import api from 'Api';
+import productDetail from './components/productDetail'
+import imgDetail from './components/imgDetail'
+import activityDetail from './components/activityDetail'
+import rankingList from './components/rankingList'
+//通过继承自wepy.page的类创建页面逻辑
+export default class mActivity extends wepy.page {
+  components = {
+    productDetail: productDetail,
+    imgDetail: imgDetail,
+    activityDetail: activityDetail,
+    rankingList: rankingList,
+  }
+}
+</script>
+<style lang="less">
+.activity-main{
+  position: relative;
+  background-color: #FA3A4D;
+  min-height: 100%;
+  overflow: hidden;
+  .p-b{
+    position: absolute;
+    width: 80rpx;
+    height: 80rpx;
+    font-size: 20rpx;
+    line-height: 80rpx;
+    text-align: center;
+    color: #fff;
+    border-radius: 50%;
+    background-color: #7d1e26;
+  }
+  .y-y{
+    left: 30rpx;
+    top: 30rpx;
+  }
+  .f-x{
+    top: 30rpx;
+    right: 30rpx;
+  }
+  .t-s{
+    top: 130rpx;
+    right: 30rpx;
+  }
+  .h-img{
+    height: 526rpx;
+    width: 750rpx;
+    image{
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+</style>

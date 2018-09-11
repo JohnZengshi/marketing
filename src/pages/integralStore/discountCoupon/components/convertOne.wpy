@@ -1,0 +1,125 @@
+<template>
+  <view class="i-convert-main">
+    <text class="i-c-h">490积分</text>
+    <text class="i-c-tit">已选{{num}}张</text>
+    <view class="i-c-body">
+      <text>兑换数量</text>
+      <view class="add-subtract-wrap">
+        <view @tap="subtractNum">
+          -
+        </view>
+        <input confirm-type="done" bindinput="updateNum" maxlength="6" value="{{num}}" auto-focus/>
+        <view @tap="addNum">
+          +
+        </view>
+      </view>
+    </view>
+    <view class="table-l-box">
+      <view class="table-l-item">
+        <view class="l-text">所剩积分</view>
+        <view class="r-text">KKKKKKK</view>
+      </view>
+    </view>
+    <view class="grad b-btn" @tap="affirm">确认兑换</view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+//通过继承自wepy.page的类创建页面逻辑
+export default class convertOne extends wepy.component {
+  data = {
+    // headName: '确认兑换信息',
+    headName: '',
+    num: 1
+  }
+
+  methods = {
+    open () {
+      this.$invoke('popupBottom', 'open')
+    },
+    // 更新用户名
+    updateNum(e) {
+      this.num = e.detail.value
+    },
+    addNum () {
+      console.log('执行')
+      this.num = Number(this.num) + 1
+    },
+    subtractNum () {
+      if (this.num == 1) {
+        return
+      }
+      this.num = Number(this.num) - 1
+    },
+    affirm () {
+      // 积分不足
+      wx.showToast({
+        title: '积分不足',
+        icon: 'none',
+        duration: 2000
+      })
+      // 积分足
+      this.$emit('affirm')
+    }
+  }
+}
+</script>
+<style lang="less">
+.i-convert-main{
+  flex: 1;
+  padding: 0 26rpx;
+  .i-c-h{
+    display: block;
+    color: #fb684c;
+    margin-top: 50rpx;
+  }
+  .i-c-tit{
+    display: block;
+    font-size: 22rpx;
+    color: #333;
+    margin: 10rpx 0 50rpx 0;
+  }
+  .i-c-body{
+    padding-top: 70rpx;
+    border-top: 1px solid #ededed;
+    margin-bottom: 50rpx;
+    .add-subtract-wrap{
+      float: right;
+      view{
+        display: inline-block;
+        vertical-align: top;
+        width: 60rpx;
+        height: 54rpx;
+        line-height: 54rpx;
+        color: #999;
+        text-align: center;
+        font-weight: bold;
+        background-color: #f6f6f6;
+      }
+      input{
+        display: inline-block;
+        vertical-align: top;
+        height: 54rpx;
+        width: 68rpx;
+        margin: 0 2rpx;
+        font-size: 26rpx;
+        text-align: center;
+        color: #000;
+        background-color: #f6f6f6;
+      }
+    }
+  }
+  .b-btn{
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    font-size: 32rpx;
+    color: #fff;
+    text-align: center;
+    height: 90rpx;
+    line-height: 90rpx;
+    width: 100%;
+  }
+}
+</style>

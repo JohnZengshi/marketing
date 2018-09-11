@@ -1,0 +1,149 @@
+<template>
+  <view class="i-t-convert-main">
+    <view class="h-data">
+        <view class="logo-wrap">
+          <image class="pic-inner-wrap" mode="aspectFill" src="{{showData.logo}}"></image>
+        </view>
+        <view class="right-wrap">
+          <view class="num-tit">
+            {{showData.shopPhone}}分
+          </view>
+
+          <view class="all-num">库存{{showData.shopName}}件</view>
+
+          <view class="change-tit">
+            已选:
+          </view>
+
+        </view>
+    </view>
+    
+    <view class="table-l-box i-t-b">
+      <view class="table-l-item">
+        <view class="l-text">商品名称</view>
+        <view class="r-text">KKKKKKK</view>
+      </view>
+
+      <view class="table-l-item">
+        <view class="l-text">数量</view>
+        <view class="r-text">KKKKKKK</view>
+      </view>
+
+      <view class="table-l-item">
+        <view class="l-text">重量</view>
+        <view class="r-text">KKKKKKK</view>
+      </view>
+
+      <view class="table-l-item">
+        <view class="l-text">重量</view>
+        <view class="r-text">KKKKKKK</view>
+      </view>
+      
+    </view>
+
+    <navigator class="grad b-btn" hover-class="none" open-type="reLaunch" url="/pages/integralStore/discountResult/discountResult">
+      确认
+    </navigator>
+
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+//通过继承自wepy.page的类创建页面逻辑
+export default class convertOne extends wepy.component {
+  data = {
+    // headName: '确认兑换信息',
+    headName: '',
+    num: 1,
+    showData: {
+        logo: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1758343206,1224786249&fm=58&bpow=1024&bpoh=1536',
+        shopName: 'shopName',
+        shopPhone: '0775-88888888',
+        shopAddress: 'shopAddress',
+        longitude: 'longitude',
+        latitude: 22.530001,
+        shopId: 113.935364,
+        state: '店铺介绍'
+    }
+  }
+
+  methods = {
+    open () {
+      this.$invoke('popupBottom', 'open')
+    },
+    // 更新用户名
+    updateNum(e) {
+      this.num = e.detail.value
+    },
+    addNum () {
+      console.log('执行')
+      this.num = Number(this.num) + 1
+    },
+    subtractNum () {
+      if (this.num == 1) {
+        return
+      }
+      this.num = Number(this.num) - 1
+    }
+  }
+}
+</script>
+<style lang="less">
+.i-t-convert-main{
+  flex: 1;
+  .h-data{
+    height: 194rpx;
+    display: flex;
+    background-color: #fff;
+    padding: 18rpx 0 36rpx 0;
+    border-bottom: 1px solid #ededed;
+    .logo-wrap{
+      display: inline-block;
+      vertical-align: top;
+      width: 200rpx;
+      height: 200rpx;
+      image{
+        width: 100%;
+        height: 100%;
+        border-radius: 10rpx;
+      }
+    }
+    .right-wrap{
+      display: inline-block;
+      vertical-align: top;
+      height: 172rpx;
+      padding-left: 30rpx;
+      flex: 1;
+      .num-tit{
+        font-size: 32rpx;
+        color: #fb684c;
+        margin-top: 92rpx;
+      }
+      .all-num{
+        font-size: 22rpx;
+        color: #666;
+        margin-bottom: 14rpx;
+      }
+      .change-tit{
+        font-size: 22rpx;
+        color: #333;
+      }
+    }
+  }
+  .i-t-b{
+    margin: 0 26rpx;
+  }
+  .b-btn{
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    font-size: 32rpx;
+    color: #fff;
+    text-align: center;
+    height: 90rpx;
+    line-height: 90rpx;
+    width: 100%;
+  }
+}
+</style>

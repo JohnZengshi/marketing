@@ -90,7 +90,7 @@
   import wepy from "wepy";
   import picker from "@components/picker";
   import Sticky from "@components/sticky";
-  import {getIntegral,getIntegralUseList,getIntegralUseAllNum} from "@Api/mine/mineApi";
+  import api from 'Api'
   export default class ExchangeRecord extends wepy.page {
     config = {
       navigationBarTitleText: "兑换记录",
@@ -168,7 +168,7 @@
         userId,
         memberId
       } = this.$parent.globalData;
-      let res = await getIntegral({
+      let res = await api.getIntegral({
         shopId,
         userId,
         memberId
@@ -187,7 +187,7 @@
         beginTime,
         endTime
       } = this.requestData;
-      let res = await getIntegralUseList({
+      let res = await api.getIntegralUseList({
         shopId,
         userId,
         memberId,
@@ -204,7 +204,7 @@
         userId,
         memberId
       } = this.$parent.globalData;
-      let res =await getIntegralUseAllNum({
+      let res =await api.getIntegralUseAllNum({
         shopId,
         userId,
         memberId

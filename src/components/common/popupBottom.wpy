@@ -1,0 +1,105 @@
+<template>
+  <view bindtap="close" class="c-popup-bottom-main {{isShow ? 'c-popup-bottom-main-on' : ''}}">
+    <view class="popup-bottom-inner {{isShow ? 'slide-fade-leave-active' : 'list-slide-leave-active'}}" style="height: {{innerHeight}}" catchtap='relieveClick'>
+
+      <view class="close-icon" bindtap="close">
+        <image class="close-icon-inner" src="/images/close-icon.png"></image>
+      </view>
+      <text class="head-tit" wx:if="{{headName}}">{{headName}}</text>
+      <slot></slot>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+//通过继承自wepy.page的类创建页面逻辑
+export default class cpopupBottom extends wepy.component {
+
+  props = {
+    innerHeight: {
+      type: String,
+      default: '810rpx'
+    },
+    headName: {
+      type: String,
+      default: ''
+    }
+  }
+
+  data = {
+    isShow: false
+  }
+
+
+  methods = {
+    open () {
+      this.isShow = true
+    },
+    close () {
+      this.isShow = false
+      this.$emit('close')
+    }
+  }
+}
+</script>
+</script>
+<style lang="less">
+.c-popup-bottom-main{
+  background-color: rgba(0,0,0,0);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  visibility: hidden;
+  transition: all .5s ease;
+  &.c-popup-bottom-main-on{
+    background-color: rgba(0,0,0,.3);
+    visibility: visible;
+  }
+  .popup-bottom-inner{
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+   // height: 810rpx;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background-color: #fff;
+    border-radius: 10rpx 10rpx 0 0;
+    .close-icon{
+      position: absolute;
+      right: 20rpx;
+      top: 20rpx;
+      width: 58rpx;
+      height: 58rpx;
+      z-index: 10;
+      .close-icon-inner{
+        width: 38rpx;
+        height: 38rpx;
+        float: right;
+      }
+    }
+    .head-tit{
+      display: block;
+      font-size: 32rpx;
+      color: #333;
+      margin: 28rpx 0;
+      text-align: center;
+    }
+  }
+    /* 外壳动画控制 */
+  .list-slide-leave-active {
+    opacity: 0.3;
+    transform: translateY(100%);
+    transition: all 0.4s ease;
+  }
+  .slide-fade-leave-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.4s ease;
+  }
+}
+</style>

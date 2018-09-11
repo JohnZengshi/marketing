@@ -1,0 +1,127 @@
+<template>
+  <view class="bottom-btn-main"> 
+    <view class="c-menu-wrap">
+
+      <navigator class="c-menu-btn br-r" hover-class="none" open-type="reLaunch" url="/pages/tabBar/store/store">
+        <view class="c-menu-img-wrap">
+          <image mode='aspectFit' src="/images/store-icon.png"></image>
+        </view>
+        <view class="b-tit">首页</view>
+      </navigator>
+
+      <view class="c-menu-btn">
+        <button open-type="contact" class="button-contact"></button>
+        <view class="c-menu-img-wrap">
+          <image class="img-box" mode='aspectFit' src="/images/integralStore/service-icon.png"></image>
+        </view>
+        <view class="b-tit">联系客服</view>
+      </view>
+
+      <view class="grad right-btn" @tap="open">
+        我要兑换
+      </view>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+import api from 'Api';
+//通过继承自wepy.page的类创建页面逻辑
+export default class bottomBtn extends wepy.component {
+  props = {
+    menu: {
+      type: String,
+      default: ''
+    },
+    userId: {
+      type: String,
+      default: ''
+    },
+    id: {
+      type: String,
+      default: ''
+    }
+  }
+
+  data = {
+    globalData: {
+      hasLogin: false,
+      userInfo: {},
+      shopInfo: {},
+      code: ''
+    }
+  }
+
+  methods = {
+    open () {
+      this.$emit('open')
+    }
+  }
+}
+</script>
+<style lang="less">
+.bottom-btn-main{
+  height: 90rpx;
+  .c-menu-wrap{
+    position: fixed;
+    height: 90rpx;
+    width: 100%;
+    background-color: #fff;
+    bottom: 0;
+    z-index: 200;
+    display: flex;
+    border-top: 1px solid #ededed;
+  }
+  .c-menu-btn{
+    // flex: 1;
+    width: 160rpx;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    .c-menu-img-wrap{
+      width: 36rpx;
+      height: 36rpx;
+      margin: 8rpx auto 0 auto;
+      .img-box{
+        width: 36rpx;
+        height: 36rpx;
+      }
+      image{
+        width: 36rpx;
+        height: 36rpx;
+      }
+    }
+    .b-tit{
+      margin-top: 10rpx;
+      font-size: 20rpx;
+      color: #666;
+    }
+  }
+  .right-btn{
+    flex: 1;
+    color: #fff;
+    height: 100%;
+    text-align: center;
+    line-height: 90rpx;
+  }
+  .get-phone-number{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    opacity: 0.01;
+  }
+  .button-contact {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 1px solid blue;
+    opacity: 0;
+    // display: none;
+  }
+}
+</style>

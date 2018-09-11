@@ -1,0 +1,167 @@
+<template>
+  <view class="product-list-main">
+
+    <image wx:if="{{isHasProduct}}" class="no-product-data" src="/images/no-product-data.png"></image>
+
+    <scroll-view wx:else class="border-box" scroll-y>
+        <view class="scroll-view-item">
+
+          <block wx:for="{{productList}}" wx:key="{{item}}">
+
+            <navigator url="../../store/commodityInformation/commodityInformation?styleId={{item.styleId}}&sellType={{item.sellType}}" hover-class="other-navigator-hover" class="scroll-img-item">
+
+              <view class="pic-wrap">
+                <image class="pic-inner-wrap" mode="aspectFill" src="{{item.pic}}"></image>
+              </view>
+
+              <view class="store-scroll-tit-h">
+                <image wx:if="{{item.sellType == 1}}" class="store-scroll-tit-h-icon" src="/images/list-spot-goods-icon.png"></image>
+                <image wx:else class="store-scroll-tit-h-icon" src="/images/list-presell-icon.png"></image>
+                <text class="store-product-scroll-name">{{item.styleName}}</text>
+              </view>
+
+              <view class="store-scroll-tit-b">
+                <text class="price-symbol-b">￥</text>
+                <text class="store-product-price-tit">
+                  {{item.lowestPrice}}~{{item.highestPrice}}
+                </text>
+                <text class="store-product-hot-tit">热度：{{item.hot}}</text>
+              </view>
+
+            </navigator>
+
+          </block>
+
+          <view style="display: block; float: left;height: 100rpx;width: 100%;" class="scroll-view-item"></view> 
+          
+        </view>
+    </scroll-view>
+
+  </view>
+
+</template>
+
+<script>
+    import wepy from 'wepy';
+
+    export default class productList extends wepy.component {
+      props = {
+        productList: {
+          type: Array,
+          default: []
+        },
+        isHasProduct: {
+          type: Boolean,
+          default: false
+        }
+      }
+    }
+</script>
+<style lang="less">
+.product-list-main {
+  flex: 1;
+  overflow: hidden;
+  /* display: flex;
+  flex-direction: column; */
+  margin-top: 10rpx;
+  .border-box{
+    height: 100%;
+  }
+}
+
+/* .scroll-view-item{
+  flex-direction: row;
+} */
+
+.scroll-img-item {
+  width: 370rpx;
+  height: 490rpx;
+  float: left;
+  background: #fff;
+  margin-bottom: 10rpx;
+  margin-right: 10rpx;
+}
+
+.scroll-img-item:nth-child(2n) {
+  margin-right: 0;
+}
+
+.scroll-img-right {
+  background: yellow;
+}
+
+.pic-wrap {
+  height: 370rpx;
+}
+
+.pic-inner-wrap {
+  width: 100%;
+  height: 100%;
+}
+
+.store-scroll-tit-h {
+  padding: 0 20rpx;
+  margin-top: 20rpx;
+  height: 26rpx;
+}
+
+.store-scroll-tit-h-icon {
+  width: 50rpx;
+  vertical-align: top;
+  height: 26rpx;
+}
+
+.store-product-scroll-name {
+  display: inline-block;
+  vertical-align: top;
+  max-width: 260rpx;
+  margin-left: 10rpx;
+  font-size: 26rpx;
+  line-height: 26rpx;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.store-scroll-tit-b {
+  /* position: relative; */
+  display: flex;
+  margin-top: 26rpx;
+  overflow: hidden;
+}
+
+.store-product-price-tit {
+  padding: 0 4rpx;
+  flex: 1;
+  color: #fc5b56;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+  font-size: 28rpx;
+   line-height: 14rpx; 
+}
+.price-symbol-b{
+  padding-left: 20rpx;
+  width: 24rpx;
+  color: #fc5b56;
+  font-size: 24rpx;
+}
+
+.store-product-hot-tit {
+  color: #666;
+  font-size: 18rpx;
+  margin-top: 5rpx;
+  margin-right: 20rpx;
+}
+.no-product-data{
+  position: absolute;
+  width: 307rpx;
+  height: 400rpx;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+</style>
