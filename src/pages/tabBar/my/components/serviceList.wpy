@@ -45,7 +45,7 @@
     </view>
 
     <view class="service-list-item">
-      <navigator class="my-body-item br-e5" hover-class="none" url="../../my/pages/userinfo/userinfo">
+      <navigator class="my-body-item br-e5" hover-class="none" url="/pages/my/view/afterSaleCriterion">
 
         <view class="icon-wrap">
           <image src="/images/my/service-5.png"></image>
@@ -74,7 +74,7 @@
 
       </navigator>
 
-      <navigator class="my-body-item br-e5" hover-class="none" url="../../my/pages/bill/bill?isBill={{isBill}}">
+      <navigator class="my-body-item br-e5" hover-class="none" url="/pages/my/view/aboutUs">
 
         <view class="icon-wrap">
           <image src="/images/my/service-8.png"></image>

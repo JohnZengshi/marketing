@@ -2,23 +2,29 @@
 <template>
   <view class="cardContent flex flex-v">
     <view class="time flex flex-r flex-pack-justify">
-      <text class="timeDetial">活动时间：2018.12.08 12:30~2018.1.8 12:30</text>
+      <text class="timeDetial">活动时间：{{cardData.beginTime}}~{{cardData.endTime}}</text>
       <view class="status flex flex-r flex-align-center">
         <image src="/images/mine/1 我的活动－活动状态@3x.png"></image>
-        <text>进行中</text>
+        <block>
+          <text wx:if="{{cardData.status == '1'}}">进行中</text>
+          <text wx:elif="{{cardData.status == '2'}}">已结束</text>
+        </block>
       </view>
     </view>
     <view class="content flex flex-r flex-pack-justify">
       <view class="pic">
-        <image></image>
+        <image src="{{cardData.logoUrl}}"></image>
       </view>
       <view class="rigth flex flex-v">
         <view class="title flex flex-r flex-align-center">
-          <text>[砍价]</text>
-          <text>周年庆全民砍价大狂欢</text>
+          <block>
+            <text wx:if="{{cardData.type == '1'}}">[砍价]</text>
+            <text wx:elif="{{cardData.type == '2'}}">[砸金蛋]</text>
+          </block>
+          <text>{{cardData.name}}</text>
         </view>
         <view class="des flex">
-          <text>活动详情，伙伴一起砍价吧，砍到什么算什么...</text>
+          <text>{{cardData.state}}</text>
         </view>
         <view class="tag flex">
           <view>未验证</view>
@@ -30,7 +36,11 @@
 <script>
   import wepy from "wepy"
   export default class Card extends wepy.component {
-
+    props = {
+      cardData:{
+        type: Object,
+      }
+    }
   }
 </script>
 <style lang="less" scoped>
@@ -62,7 +72,6 @@
     .pic{
       width: 150rpx;
       height: 150rpx;
-      background-color: #FB684C;
       border-radius: 10rpx;
       image{
         width: 100%;
@@ -70,6 +79,7 @@
       }
     }
     .rigth{
+      width: 500rpx;
       .title{
         margin-top: 20rpx;
         >text{
@@ -91,6 +101,16 @@
           font-size: 24rpx;
           line-height: 24rpx;
           color: #999999;
+          word-break: break-all;
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          /*限制在一个块元素显示的文本的行数*/
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          -o-text-overflow: ellipsis;
+          -webkit-text-overflow: ellipsis;
+          -moz-text-overflow: ellipsis;
         }
       }
       .tag{

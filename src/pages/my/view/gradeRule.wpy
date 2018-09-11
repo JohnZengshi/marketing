@@ -1,0 +1,72 @@
+<template>
+  <view class="GradeRule">
+    <ExplainTemplate :explainList.sync="explainList"></ExplainTemplate>
+  </view>
+</template>
+<script>
+  import wepy from "wepy";
+  import ExplainTemplate from "../components/explainTemplate";
+  export default class GradeRule extends wepy.page {
+    config = {
+      navigationBarTitleText: "等级规则",
+      navigationBarTextStyle: "black",
+      backgroundTextStyle: "light"
+    };
+    data = {
+      explainList: [{
+        titleName: "会员等级解释",
+        list: [{
+          listName: "",
+          wordList: [{
+            word: "售后无明显质量问题，概不退货货售后无明显质量问题售后无明显质量问题，概不退货",
+          }, {
+            word: "售后无明显质量问题，概不退货货售后无明显质量问题",
+          }]
+        }]
+      }, {
+        titleName: "升等级说明",
+        list: [{
+          listName: "",
+          wordList: [{
+            word: "售后无明显质量问题，概不退货货售后无明显质量问题售后无明显质量问题，概不退货货售后",
+          }, {
+            word: "售后无明显质量问题，概不退货货售后无明显质量问题",
+          }]
+        }]
+      }, {
+        titleName: "会员等级",
+        list: [{
+          listName: "",
+          wordList: [{
+            word: "普通会员",
+          }, {
+            word: "铂金会员",
+          }, {
+            word: "黄金会员",
+          }, {
+            word: "砖石会员",
+          }]
+        }]
+      }, {
+        titleName: "惠享说明",
+        list: [{
+          listName: "",
+          wordList: [{
+            word: "普通会员",
+          }, {
+            word: "铂金会员",
+          }, {
+            word: "黄金会员",
+          }, {
+            word: "砖石会员",
+          }]
+        }]
+      }]
+    };
+    components = {
+      ExplainTemplate,
+    };
+  }
+</script>
+<style lang="less" scoped>
+</style>

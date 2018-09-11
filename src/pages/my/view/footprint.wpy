@@ -1,0 +1,203 @@
+<template>
+<scroll-view 
+      scroll-y="{{true}}" 
+      class="refresh-scroll__container" 
+      scroll-with-animation="{{true}}" 
+      style="width:100%;height:100%;"
+      catchscroll="scroll">
+      <view>
+        <wepyCanlendar 
+          :currentDate.sync="currentDate" 
+          :startDate.sync="startDate"
+          :hasIconList.sync="hasIconList" 
+          :moduleId.sync="'step1Canlendar'"></wepyCanlendar>
+        <view class="footPrintGoodsList">
+          <Sticky>
+            <view slot="stickyContent" class="dateTitle flex flex-r flex-align-center flex-pack-justify">
+              <text>8月8日</text>
+              <view class="delBtn">删除</view>
+            </view>
+          </Sticky>
+          <!-- <scroll-view 
+              scroll-y="{{true}}" 
+              class="refresh-scroll__container" 
+              scroll-with-animation="{{true}}" 
+              style="width:100%;height:100%;"> -->
+              <!-- <GoodsListRefresh :scrollTop.sync="scrollTop"> -->
+                <view slot="refresh-content" class="goodsList clearfix">
+                  <repeat for="{{goodsList}}" key="index" index="index" item="item">
+                    <view class="item flex flex-v flex-align-center">
+                      <image></image>
+                      <text>{{item.productName}}</text>
+                      <text>{{item.score}}</text>
+                    </view>
+                  </repeat>
+                </view>
+              <!-- </GoodsListRefresh> -->
+          <!-- </scroll-view> -->
+        </view>
+      </view>
+  </scroll-view>
+</template>
+<script>
+  import wepy from "wepy";
+  import wepyCanlendar from '../components/dateTag';
+  import Sticky from "@components/sticky";
+  import api from "Api";
+  // import Refresh from '@components/ScrollViewRefresh';
+  export default class FootPrint extends wepy.page {
+    config = {
+      navigationBarTitleText: "足迹",
+      navigationBarTextStyle: "black",
+      backgroundTextStyle: "light"
+    };
+    data = {
+      currentDate: "2018-09-01",
+      startDate: '2008-01-01',
+      endDate: '2028-02-01',
+      hasIconList: ['2018-09-01', '2018-09-06', '2018-09-09', '2018-09-10', '2018-09-15'],
+      goodsList: [],
+      requestData:{ //请求的数据
+        beginTime: "",
+        endTime: "",
+      }
+    };
+    components = {
+      wepyCanlendar,
+      Sticky,
+      // GoodsListRefresh:Refresh,
+    };
+    onLoad() {
+      this.$broadcast("startRenderCalendar"); //通知日历组件可以开始渲染
+    };
+    async onShow() {
+      this.goodsList =await this.getVisitLogList();
+      this.$apply();
+    }
+    methods = {
+      scroll(e) {
+        let scrollTop = e.detail.scrollTop;
+        this.$broadcast("PageScroll");
+      }
+    }
+    events = { // 声明组件之间的事件处理函数
+      "calChangeCurrentMonth": (date, moduleId, e)=> {
+        //日历当前月份改变回调
+        //单个用例只需用到date
+        //多个用例是通过传回来的moduleId去判断是那个用例，从而操作不懂逻辑：
+        //if(moduleId=='xxxx'){
+        //     
+        // }else{
+        // }
+      },
+      "calChangeSelectedDay": (date, moduleId, e)=> {
+        console.log(date)
+        this.requestData.beginTime = val;
+        // (async()=>{
+        //   this.goodsList =await this.getVisitLogList();
+        //   this.$apply();
+        // })()
+      },
+      'refresh': (name,res) => {
+          if (res === 'success') {
+            setTimeout(() => {
+              this.$invoke(name, 'reset')
+            }, 3000)
+          }
+        }
+    };
+
+    async onPageScroll(e) {
+      let scrollTop = e.scrollTop;
+      this.$broadcast("PageScroll");
+    };
+
+    // 获取访问足迹
+    async getVisitLogList() {
+      let {
+        shopId,
+        userId,
+        memberId
+      } = this.$parent.globalData;
+      let {
+        beginTime,
+        endTime
+      } = this.requestData;
+      let res =await api.getVisitLogList({shopId,userId,memberId,beginTime,endTime})
+      return res;
+      console.log(res);
+    }
+  }
+</script>
+<style lang="less" scoped>
+  .footPrintGoodsList {
+    background-color: #F6F7F8;
+    overflow: visible;
+
+    .dateTitle {
+      height: 70rpx;
+      width: 100%;
+      background-color: #F6F7F8;
+      padding: 0 29rpx 0 23rpx;
+      box-sizing: border-box;
+      transition: all 0.8s;
+
+      >text {
+        font-size: 22rpx;
+        color: #999999;
+      }
+
+      .delBtn {
+        font-size: 22rpx;
+        color: #999999;
+      }
+    }
+
+    .goodsList {
+      .item {
+        width: 246rpx;
+        height: 349rpx;
+        float: left;
+        margin-right: 5rpx;
+        margin-bottom: 6rpx;
+        background-color: #fff;
+
+        >image {
+          width: 100%;
+          height: 247rpx;
+          background-color: #999999;
+        }
+
+        >text {
+          &:first-of-type {
+            padding: 0 17rpx 0 24rpx;
+            margin-top: 23rpx;
+            font-size: 23rpx;
+            color: #333333;
+            word-break: break-all;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            /*限制在一个块元素显示的文本的行数*/
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -o-text-overflow: ellipsis;
+            -webkit-text-overflow: ellipsis;
+            -moz-text-overflow: ellipsis;
+          }
+
+          &:last-of-type {
+            font-size: 22rpx;
+            line-height: 22rpx;
+            margin-top: 16rpx;
+            color: #F32E40;
+          }
+        }
+
+        &:nth-child(3n) {
+          margin-right: 0rpx;
+        }
+      }
+    }
+  }
+</style>

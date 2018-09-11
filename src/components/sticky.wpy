@@ -1,0 +1,60 @@
+<template>
+  <view class="replaceBox" style="height: {{replaceBoxHeight}}px"></view>
+  <view id="stickyContent" class="{{isFixed? 'fixed': ''}} ">
+    <slot name="stickyContent"></slot>
+  </view>
+</template>
+<script>
+  import wepy from "wepy";
+  import {
+    _getDomRect
+  } from "@utils/getDom";
+  export default class Stick extends wepy.component {
+    data = {
+      isFixed: false,
+      stickyHeight: 0,
+      replaceBoxHeight: 0,
+    };
+    events = {
+      'PageScroll': () => { //页面滚动
+        ;
+        (async () => {
+          let Dom = await _getDomRect(".replaceBox");
+          let replaceBoxTop = Dom.top;
+          if (replaceBoxTop <= 0) {
+            this.isFixed = true;
+            this.replaceBoxHeight = this.stickyHeight;
+          } else {
+            this.isFixed = false;
+            this.replaceBoxHeight = 0;
+          }
+          this.$apply();
+        })()
+      }
+    };
+    async onLoad() {
+      this.resetDom();
+    };
+    // 初始化组件
+    async resetDom() {
+      let Dom = await _getDomRect("#stickyContent");
+      this.stickyHeight = Dom.height;
+      this.$apply();
+    }
+  }
+</script>
+<style lang="less" scoped>
+  #stickyContent {
+    width: 100%;
+    z-index: 9999;
+    &.fixed {
+      position: fixed;
+      top: 0;
+    }
+  }
+
+  .replaceBox {
+    width: 100%;
+    // transition: all 0.5s;
+  }
+</style>

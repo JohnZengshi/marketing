@@ -19,6 +19,7 @@ module.exports = {
       'Api': path.join(__dirname, 'src/api/api'),
       "@images": path.join(__dirname, 'src/images'),
       'common':path.join(__dirname, 'src/components/common'),
+      '@Api': path.join(__dirname, 'src/Api'),
       '@components':path.join(__dirname, 'src/components'),
       '@util':path.join(__dirname, 'src/utils/util'),
       '@utils':path.join(__dirname, 'src/utils'),
@@ -30,9 +31,9 @@ module.exports = {
     less: {
       compress: prod
     },
-    /*sass: {
-      outputStyle: 'compressed'
-    },*/
+    sass: {
+      'outputStyle': 'compressed'
+    },
     babel: {
       sourceMap: true,
       presets: [
@@ -54,16 +55,21 @@ module.exports = {
 }
 
 if (prod) {
-
   // 压缩sass
-  // module.exports.compilers['sass'] = {outputStyle: 'compressed'}
+  module.exports.compilers['sass'] = {
+    'outputStyle': 'compressed'
+  };
+  // 压缩less
+  module.exports.compilers['less'] = {
+    'compress': true
+  };
+
 
   // 压缩js
   module.exports.plugins = {
     uglifyjs: {
       filter: /\.js$/,
-      config: {
-      }
+      config: {}
     },
     imagemin: {
       filter: /\.(jpg|png|jpeg)$/,

@@ -1,0 +1,277 @@
+<template>
+  <view>
+    <Tabs :tabs.sync="tabs" height="90" fontSize="30" :currentIndex.sync="currentIndex"></Tabs>
+    <Swiper @changeSwiper="changeSwiper" :currentIndex.sync="currentIndex" height="1120" backColor="#F6F7F8">
+        <swiper-item slot="swiperItem" wx:for="{{coupon}}" wx:key="index" wx:for-index="index" wx:for-item="item">
+            <view class="activityItem">
+                <scroll-view scroll-y="{{true}}" class="refresh-scroll__container" scroll-with-animation="{{true}}"
+                    bindscrolltolower="lower" style="width:100%;height:100%;" catchscroll="scroll">
+                    <view style="width:100%;height:100%;">
+                        <!-- <UnUsed wx:if="{{item.name == '未使用'}}" :scrollTop.sync="scrollTop"> -->
+                          <view class="flex flex-v flex-align-center" slot="refresh-content">
+                                <view wx:if="{{item.couponCardData.length == 0}}" class="noData">暂无数据</view>
+                                <block wx:else>
+                                  <view class="tip">优惠券仅限线下门店使用</view>
+                                  <repeat for="{{item.couponCardData}}" key="index" index="index" item="i">
+                                      <CouponCard 
+                                          :useStatus.sync="item.useStatus" 
+                                          :couponType.sync="i.type"
+                                          :couponCardData.sync="i"></CouponCard>
+                                  </repeat>
+                                </block>
+                          </view>
+                        <!-- </UnUsed> -->
+                        <!-- <haveUsed wx:elif="{{item.name == '已使用'}}" :scrollTop.sync="scrollTop"> -->
+                          <!-- <view class="flex flex-v flex-align-center" slot="refresh-content" style="margin-top:90rpx;"> -->
+                                <!-- <view class="tip">优惠券仅限线下门店使用</view>
+                                <repeat for="{{item.couponCardData}}" key="index" index="index" item="i">
+                                    <CouponCard 
+                                        :useStatus.sync="item.useStatus" 
+                                        :couponType.sync="i.type"
+                                        :couponCardData.sync="i"></CouponCard>
+                                </repeat> -->
+                            <!-- </view> -->
+                        <!-- </haveUsed> -->
+                        <!-- <Expired wx:elif="{{item.name == '已过期'}}" :scrollTop.sync="scrollTop"> -->
+                          <!-- <view class="flex flex-v flex-align-center" slot="refresh-content" style="margin-top:90rpx;"> -->
+                                <!-- <view class="tip">优惠券仅限线下门店使用</view>
+                                <repeat for="{{item.couponCardData}}" key="index" index="index" item="i">
+                                    <CouponCard 
+                                        :useStatus.sync="item.useStatus" 
+                                        :couponType.sync="i.type"
+                                        :couponCardData.sync="i"></CouponCard>
+                                </repeat> -->
+                            <!-- </view> -->
+                        <!-- </Expired> -->
+                    </view>
+                </scroll-view>
+            </view>
+        </swiper-item>
+    </Swiper>
+  </view>
+</template>
+<script>
+  import wepy from "wepy";
+  import Tabs from "@components/tabs";
+  import Swiper from "@components/swiper";
+  import CouponCard from "../components/couponCard";
+  import api from 'Api'
+  // import Refresh from '@components/ScrollViewRefresh';
+  export default class Coupon extends wepy.page {
+    config = {
+      navigationBarTitleText: "优惠券",
+      navigationBarTextStyle: "black",
+      backgroundTextStyle: "light"
+    };
+    data = {
+      haveUsedData: [], //未使用
+      unUsedData: [], //已使用
+      expiredData: [], //已过期
+      
+      currentIndex: "0",
+      scrollTop: 0
+    };
+    components = {
+      Tabs,
+      Swiper,
+      CouponCard,
+      // UnUsed:Refresh,
+      // haveUsed:Refresh,
+      // Expired:Refresh,
+      
+    };
+    computed = {
+      tabs() {
+        return [`未使用(${this.haveUsedData.length})`, `已使用(${this.unUsedData.length})`, `已过期(${this.expiredData.length})`]
+      },
+      coupon() {
+        return [{
+          name: "未使用",
+          useStatus: "1",
+          couponCardData: this.haveUsedData,
+          // couponCardData: [
+          //   // {
+          //   //   type: "1",
+          //   //   couponTitle: "满减优惠券",
+          //   //   couponDes: "",
+          //   //   validityDate: "2018-08-01~0218-09-01",
+          //   //   couponVal: "50",
+          //   //   explain: "满500元可用",
+          //   //   tip: "剩3天"
+          //   // },
+          //   // {
+          //   //   type: "2",
+          //   //   couponTitle: "折扣券",
+          //   //   couponDes: "仅限珠宝，黄金，白金，银饰，砖石，蓝宝石，红珠宝，蓝宝石，红珠宝，蓝宝石，红珠宝",
+          //   //   validityDate: "2018-08-01~0218-09-01",
+          //   //   couponVal: "5",
+          //   //   explain: "",
+          //   //   tip: ""
+          //   // }, {
+          //   //   type: "3",
+          //   //   couponTitle: "退货券",
+          //   //   couponDes: "仅限珠宝，黄金，白金，银饰，砖石，",
+          //   //   validityDate: "2018-08-01~0218-09-01",
+          //   //   couponVal: "50",
+          //   //   explain: "满1000元可用",
+          //   //   tip: ""
+          //   // }, {
+          //   //   type: "4",
+          //   //   couponTitle: "免工费券",
+          //   //   couponDes: "仅限珠宝，黄金，白金，银饰",
+          //   //   validityDate: "2018-08-01~0218-09-01",
+          //   //   couponVal: "免工费",
+          //   //   explain: "",
+          //   // }
+          // ]
+        }, {
+          name: "已使用",
+          useStatus: "2",
+          couponCardData: this.unUsedData,
+          // couponCardData: [
+          //   //   {
+          //   //   type: "1",
+          //   //   couponTitle: "满500元减50元",
+          //   //   couponDes: "仅限指定店铺使用",
+          //   //   validityDate: "2018-08-01~0218-09-01",
+          //   //   couponVal: "50",
+          //   // }
+          // ]
+        }, {
+          name: "已过期",
+          useStatus: "3",
+          couponCardData: this.expiredData,
+          // couponCardData: [
+          //   //   {
+          //   //   type: "1",
+          //   //   couponTitle: "满500元减50元",
+          //   //   couponDes: "仅限指定店铺使用",
+          //   //   validityDate: "2018-08-01~0218-09-01",
+          //   //   couponVal: "50",
+          //   // }
+          // ]
+        }]
+      }
+    };
+    methods = {
+      lower(index) {
+        // console.log(index)
+      },
+      scroll(e) { //页面滚动
+        this.scrollTop = e.detail.scrollTop
+        this.$apply()
+      },
+    };
+    events = {
+      "changeSwiper"(index) {
+        this.currentIndex = index;
+      },
+      "changeSliderLine"(index) {
+        this.currentIndex = index;
+      },
+      'refresh': (name,res) => {
+        if (res === 'success') {
+          setTimeout(() => {
+            this.$invoke(name, 'reset')
+          }, 3000)
+        }
+      }
+    };
+    onLoad() {};
+    async onShow() {
+      let haveUsedData = await this.getTicketList(1);
+      let unUsedData = await this.getTicketList(2);
+      let expiredData = await this.getTicketList(3);
+      this.haveUsedData =await this.resetCouponData(haveUsedData);
+      this.unUsedData =await this.resetCouponData(unUsedData);
+      this.expiredData =await this.resetCouponData(expiredData);
+      this.$apply();
+      console.log(this.coupon);
+    };
+    // 获取优惠券列表
+    /**
+     * @param  {[String]}    type   [优惠券类型：1未使用，2已使用，3已过期]
+     * @param  {[String]}  orderId  [订单ID]
+     * @return {[Array]}            [数组]
+     */
+    async getTicketList(type="1",orderId) {
+      let {shopId,userId,memberId} = this.$parent.globalData;
+      let option = {shopId,userId,memberId,type};
+      let res = await api.getTicketList(option);
+      return res.data.dataList;
+    };
+    // 优惠券数据过滤
+    /**
+     * @param  {[Array]}    data    [优惠券原数据]
+     * @return {[Array]}            [数组]
+     */
+    resetCouponData(data) {
+      data.map((val, index) => {
+
+
+        if(val.type == '1'){ //优惠券类型
+          val.typeName = '购物券';
+        }else if(val.type == '2'){
+          val.typeName = '退贷券';
+        }else if(val.type == '3'){
+          val.typeName = '售后券';
+        }
+
+        if(val.subType == '11'){ //优惠券具体类型购物券
+          val.subTypeName = '满减券';
+        }else if(val.subType == '12'){
+          val.subTypeName = '折扣券';
+        }else if(val.subType == '13'){
+          val.subTypeName = '免工费退贷券';
+        }else if(val.subType == '21'){
+          val.subTypeName = '免工费售后类';
+        }
+
+        if(val.limitShop == '0'){ //限定店铺
+          val.limitShopName = '不限定店铺';
+        }else if(val.limitShop == '1'){
+          val.limitShopName = '限定指定店铺';
+        }
+
+        if(val.limitProduct.length != 0){ //限定商品
+          val.limitProductName = `仅限${val.limitProduct.join("")}`;
+        }else{
+          val.limitProductName = "";
+        }
+
+        if(val.termMoney){ //优惠券面额
+          val.couponValType = "0"
+        }else if(val.deduction){
+          val.couponValType = "1"
+        }
+      });
+      return data
+    };
+  }
+</script>
+<style lang="less" scoped>
+  .activityItem {
+    width: 100%;
+    height: 100%;
+    .noData {
+      position: absolute;
+      font-size: 24rpx;
+      line-height: 24rpx;
+      top: 50%;
+      width: 100%;
+      text-align: center;
+      margin-top: -12rpx;
+    }
+    .tip{
+      font-size: 22rpx;
+      color: #999;
+      line-height: 22rpx;
+      text-align: right;
+      width: 100%;
+      margin-top: 20rpx;
+      margin-bottom: 5rpx;
+      padding-right: 26rpx;
+      box-sizing: border-box;
+    }
+  }
+</style>

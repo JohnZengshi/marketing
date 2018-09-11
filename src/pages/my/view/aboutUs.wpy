@@ -1,0 +1,117 @@
+<template>
+  <view class="AboutUs">
+    <image src="/images/mine/6关于我们－背景@3x.png" mode="scaleToFill" lazy-load="false"></image>
+    <view class="content">
+      <carouselSwiper></carouselSwiper>
+      <view class="flex flex-v flex-align-center">
+        <view class="shopName flex flex-r flex-align-center">
+          <image></image>
+          <text>香港金六福珠宝店</text>
+        </view>
+        <view class="lable flex flex-r flex-pack-center flex-align-start">
+          <text>店铺介绍</text>
+          <view class="flex flex-r flex-align-center">
+              <text>香港金六福珠宝店于2002年在香港成立，是一家集首饰原料采购是一家集首饰原料采购是一家集首饰原料采购是一家集首饰原料采购是一家集首饰原料采购是一家集首饰原料采购是一家集首饰原料采购是一家集首饰原料采购是一家集首饰原料采购</text>
+          </view>
+        </view>
+        <view class="lable flex flex-r flex-pack-center flex-align-start">
+          <text>店铺电话</text>
+          <view class="flex flex-r flex-align-center">
+            <text>13612458458</text>
+            <image src="/images/mine/6.1关于我们－电话@3x.png"></image>
+          </view>
+        </view>
+        <view class="lable flex flex-r flex-pack-center flex-align-start">
+          <text>店铺地址</text>
+          <view class="flex flex-r flex-align-center">
+            <text>深圳市地址啊啊撒啊啊啊啊</text>
+            <image src="/images/mine/6.2关于我们－位置@3x.png"></image>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+<script>
+  import wepy from "wepy";
+  import carouselSwiper from "../components/carouselSwiper";
+  export default class AboutUs extends wepy.page {
+    config = {
+      navigationBarTitleText: "关于我们",
+      navigationBarTextStyle: "black",
+      backgroundTextStyle: "light"
+    };
+    data = {
+
+    };
+    components = {
+      carouselSwiper,
+    }
+  }
+</script>
+<style lang="less" scoped>
+  .AboutUs {
+    width: 100%;
+    height: 100%;
+    position: relative;
+
+    >image {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+    }
+
+    >.content {
+      position: absolute;
+      top: 24rpx;
+      left: 30rpx;
+      width: 689rpx;
+      height: 1154rpx;
+      background-color: rgba(254, 254, 254, 0.94);
+
+      .shopName {
+          margin-top: 47rpx;
+        >image {
+          width: 60rpx;
+          height: 60rpx;
+          background-color: #fb684c;
+          border-radius: 50%;
+          margin-right: 9rpx;
+        }
+
+        >text {
+          font-size: 28rpx;
+          color: #333;
+        }
+      }
+
+      .lable {
+        width: 100%;
+        margin-top: 33rpx;
+        >text {
+          font-size: 24rpx;
+          color: #fb684c;
+          font-weight: bold;
+          margin-right: 20rpx;
+        }
+
+        >view {
+            width: 489rpx;
+          >text {
+            font-size: 24rpx;
+            color: #333;
+            line-height: 38rpx;
+          }
+
+          >image {
+            margin-left: 10rpx;
+            width: 24rpx;
+            height: 24rpx;
+          }
+        }
+      }
+    }
+  }
+</style>

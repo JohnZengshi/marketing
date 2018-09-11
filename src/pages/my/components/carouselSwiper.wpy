@@ -1,0 +1,64 @@
+<template>
+  <block wx:if="{{imgUrls.lenght != 0}}">
+    <Swiper height="360">
+      <swiper-item slot="swiperItem" class="swiperItem flex flex-r flex-pack-center" wx:for="{{imgUrls}}" wx:key="{{index}}"
+        wx:for-index="index" wx:for-item="item">
+        <image src="{{item}}" class="slide-image" />
+      </swiper-item>
+    </Swiper>
+    <view class="indicator flex flex-r flex-pack-center">
+      <view wx:for="{{imgUrls}}" wx:key="{{index}}" wx:for-index="index" wx:for-item="item" class="tag {{currentIndex == index?'currentTag':''}}"></view>
+    </view>
+  </block>
+</template>
+<script>
+  import wepy from "wepy";
+  import Swiper from "@components/swiper";
+  export default class carouselSwiper extends wepy.component {
+    data = {
+      imgUrls: [
+        'http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg',
+        'http://img06.tooopen.com/images/20160818/tooopen_sy_175866434296.jpg',
+        'http://img06.tooopen.com/images/20160818/tooopen_sy_175833047715.jpg'
+      ],
+      currentIndex: 0
+    };
+    components = {
+      Swiper,
+    };
+    events = {
+      'changeSwiper': (currentIndex) => {
+        this.currentIndex = currentIndex;
+      }
+    }
+  }
+</script>
+<style lang="less" scoped>
+  .swiperItem {
+    .slide-image {
+      margin-top: 40rpx;
+      width: 571rpx;
+      height: 320rpx;
+      border-radius: 8rpx;
+    }
+  }
+
+  .indicator {
+    margin-top: 10rpx;
+
+    .tag {
+      width: 10rpx;
+      height: 10rpx;
+      border: 1rpx #fb684c solid;
+      border-radius: 50%;
+      margin-right: 10rpx;
+      transition: all 0.5s;
+
+      &.currentTag {
+        width: 30rpx;
+        background-color: #fb684c;
+        border-radius: 10rpx;
+      }
+    }
+  }
+</style>

@@ -1,0 +1,236 @@
+<template>
+  <view class="content">
+    <repeat for="{{presonalDataConfig}}" key="index" index="index" item="item">
+      <view class="lineContent">
+        <view class="flex flex-r flex-pack-justify">
+          <view class="left flex flex-r flex-align-center">
+            <view class="required" wx:if="{{item.required}}">*</view>
+            <view class="text">{{item.text}}</view>
+          </view>
+          <view class="right flex flex-r flex-align-center" bindtap="operationLine({{item}},{{index}})">
+            <block wx:if="{{item.type == 'pic'}}">
+              <image class="contentPic" src="{{item.value}}"></image>
+            </block>
+            <block wx:elif="{{item.type == 'text'}}">
+              <text>{{item.value}}</text>
+            </block>
+            <image class="back" src="/images/mine/1.3我的活动－返回@3x.png"></image>
+          </view>
+        </view>
+      </view>
+    </repeat>
+    <wepyCropper :params.sync="clipParams"></wepyCropper>
+  </view>
+</template>
+<script>
+  import wepy from "wepy";
+  import wepyCropper from 'wepy-cropper';
+  import api from 'Api'
+  export default class presonalData extends wepy.page {
+    config = {
+      navigationBarTitleText: "个人资料",
+      navigationBarTextStyle: "black",
+      backgroundTextStyle: "light"
+    };
+    data = {
+      UserInfo: null,
+      clipParams: {
+        src: '', //字符串, 图片path 必填
+        mode: "rectangle", //选填,默认rectangle
+        /* 两种模式
+        通过的mode设定
+        mode:'rectangle' 返回图片
+        mode:'quadrangle' 并不返回图片，只返回在图片中的四个点，用于perspective correction（可以查找OpenCV相关资料）
+        */
+        sizeType: ["compressed"], //数组,选填 ['original', 'compressed'], 默认original
+        visable: false
+      },
+      currentOperation: "0"
+    };
+    computed = {
+      presonalDataConfig() {
+        if (this.UserInfo) {
+          return [{
+            text: "头像",
+            type: "pic",
+            value: this.UserInfo.qcSrc,
+            required: true,
+            operation: "changeHeadPortrait"
+          }, {
+            text: "姓名",
+            type: "text",
+            value: this.UserInfo.nickName,
+            required: true,
+            operation: "setName"
+          }, {
+            text: "性别",
+            type: "text",
+            value: this.UserInfo.sex == '1' ? '男' : '女',
+            required: true,
+            operation: "setGender"
+          }, {
+            text: "生日",
+            type: "text",
+            value: "2018-02-03",
+            required: true,
+            operation: "setBirthday"
+          }, {
+            text: "纪念日",
+            type: "text",
+            value: "",
+            required: false,
+            operation: "qushezhi"
+          }, {
+            text: "微信号",
+            type: "text",
+            value: "",
+            required: false,
+            operation: "qushezhi"
+          }, {
+            text: "邮箱",
+            type: "text",
+            value: "",
+            required: false,
+            operation: "qushezhi"
+          }, {
+            text: "地址",
+            type: "text",
+            value: "",
+            required: false,
+            operation: "setAddress"
+          }, {
+            text: "详细地址",
+            type: "text",
+            value: "",
+            required: false,
+            operation: "qushezhi"
+          }]
+        }else{
+          return [];
+        }
+      }
+    };
+    components = {
+      wepyCropper
+    };
+    methods = {
+      operationLine(item, index) {
+        console.log(index);
+        this.currentOperation = index;
+        let operation = item.operation;
+        if (operation == 'changeHeadPortrait') { //换头像
+          this.setTouXaing();
+        } else {  //跳转设置页面
+          this.toSetPersonalData(operation);
+        }
+      }
+    };
+    events = {
+      //裁剪完的图片
+      wepyCropperFinsh(path) {
+        console.log(path);
+        this.clipParams.src = path;
+        this.presonalDataConfig[this.currentOperation].value = this.clipParams.src;
+        this.$apply();
+      }
+    };
+    onLoad() {};
+    async onShow() {
+      this.UserInfo =await this.getUserInfo();
+      this.$apply();
+    }
+    // 获取用户的信息
+    async getUserInfo() {
+      let {shopId,userId,memberId} = this.$parent.globalData;
+      let res = await api.getUserInfo({shopId,userId,memberId});
+      return res
+    };
+    // 跳转到设置页面
+    toSetPersonalData(operation) {
+      console.log(operation)
+      let urlStr;
+      if (operation == 'setName') { //设置姓名
+        urlStr = 'setName';
+      } else if (operation == 'setGender') { //设置性别
+        urlStr = 'setGender'
+      } else if (operation == 'setBirthday') { //设置生日
+        urlStr = 'setBirthday'
+      } else if (operation == 'setAddress') { //设置地址
+        urlStr = 'setAddress'
+      } else {
+        return;
+      }
+      wx.navigateTo({
+        url: '/pages/my/view/setPersonalData/pages/' + urlStr
+      })
+    };
+    // 设置剪切头像
+    setTouXaing() {
+      let chooseImage = new Promise((resolve, reject) => {
+        wx.chooseImage({
+          count: 1, // 默认9
+          sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+          sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+          success(res) {
+            resolve(res.tempFilePaths[0]);
+          }
+        })
+      })
+      chooseImage.then((path) => {
+        this.clipParams.src = path;
+        this.clipParams.visable = true;
+        this.$apply();
+      })
+    };
+  }
+</script>
+<style lang="less" scoped>
+  .content {
+    background-color: #F6F7F8;
+    width: 100%;
+    height: 100%;
+    padding-top: 19rpx;
+    .lineContent {
+      padding: 0 25rpx;
+      background-color: #fff;
+      >view {
+        min-height: 80rpx;
+        border-bottom: 1rpx #eee solid;
+        .left {
+          .required {
+            color: #E82323;
+          }
+          .text {
+            font-size: 30rpx;
+            color: #333333;
+          }
+        }
+
+        .right {
+          .contentPic {
+            width: 120rpx;
+            height: 120rpx;
+            border-radius: 50%;
+            border: 1rpx #F9E0D3 solid;
+            // background-color: #FB684C;
+            margin:15rpx 20rpx;
+          }
+
+          text {
+            font-size: 30rpx;
+            color: #666666;
+            margin-right: 20rpx;
+          }
+
+          .back {
+            width: 23rpx;
+            height: 23rpx;
+          }
+        }
+      }
+      &:nth-of-type(5){
+        margin-top: 28rpx;
+      }
+    }
+  }
+</style>

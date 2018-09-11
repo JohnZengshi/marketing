@@ -1,0 +1,54 @@
+<template>
+  <view class="DiscountExplain">
+    <ExplainTemplate :explainList.sync="explainList"></ExplainTemplate>
+  </view>
+</template>
+<script>
+  import wepy from "wepy";
+  import ExplainTemplate from "../components/explainTemplate";
+  export default class DiscountExplain extends wepy.page {
+    config = {
+      navigationBarTitleText: "积分说明",
+      navigationBarTextStyle: "black",
+      backgroundTextStyle: "light"
+    };
+    data = {
+      explainList: [{
+        titleName: "赚积分",
+        list: [{
+          listName: "签到赚积分",
+          wordList: [{
+            word: "售后无明显质量问题，概不退货货售后无明显质量问题售后无明显质量问题，概不退货",
+          }, {
+            word: "售后无明显质量问题，概不退货货售后无明显质量问题",
+          }]
+        }]
+      }, {
+        titleName: "积分消耗",
+        list: [{
+          listName: "签到赚积分",
+          wordList: [{
+            word: "售后无明显质量问题，概不退货货售后无明显质量问题售后无明显质量问题，概不退货货售后",
+          }, {
+            word: "售后无明显质量问题，概不退货货售后无明显质量问题",
+          }]
+        }]
+      }, {
+        titleName: "积分抵扣说明",
+        list: [{
+          listName: "签到赚积分",
+          wordList: [{
+            word: "售后无明显质量问题，概不退货货售后无明显质量问题",
+          }, {
+            word: "售后无明显质量问题，概不退货货售后无明显质量问题",
+          }]
+        }]
+      }]
+    };
+    components = {
+      ExplainTemplate,
+    };
+  }
+</script>
+<style lang="less" scoped>
+</style>

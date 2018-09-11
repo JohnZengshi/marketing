@@ -23,7 +23,7 @@
       this.sliderWidth = sliderDom.width;
       this.translateX = sliderDom.left;
       this.$apply();
-    }
+    };
     props = {
       tabs: {
         type: Array,
@@ -35,7 +35,7 @@
       },
       fontSize: {
         type: String,
-        default: "15",
+        default: "15"
       },
       color: {
         type: String,
@@ -51,25 +51,22 @@
       translateX: 0,
     };
     watch = {
-        currentIndex(val){ //监听当前index
+        currentIndex(val) { //监听当前index
             this.sliderLineMove(val);
         }
     };
-    computed = {
-    };
+    computed = {};
     methods = {
       clickItem(index) {
         this.sliderLineMove(index);
-        this.$emit("changeSliderLine",index);
+        this.$emit("changeSliderLine", index);
       }
     };
-    events = {}
+    events = {};
     onLoad() {
       this.sliderLineMove(0);
     };
-    onReady() {
-      
-    }
+    onReady() {}
   }
 </script>
 <style lang="less" scoped>

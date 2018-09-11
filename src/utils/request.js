@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import wepy from 'wepy';
 const wxRequest = async (options, url) => {
     wx.showLoading({title: '加载中'})

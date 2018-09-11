@@ -48,6 +48,26 @@ const productDetail = (params) => wxRequest(params, `${host}v1/sem/shop/productD
 // 门店地址列表
 const findShopListByProductId = (params) => wxRequest(params, `${host}v1/sem/shop/findShopListByProductId`)
 
+// 等级信息
+const getGrade = (params) => wxRequest(params, `${host}v1/sem/user/grade`)
+// 访问足迹
+const getVisitLogList = (params) => wxRequest(params, `${host}v1/sem/user/visitLogList`)
+// 兑换消耗总积分
+const getIntegralUseAllNum = (params) => wxRequest(params, `${host}v1/sem/user/integralUseAllNum`)
+// 积分兑换记录
+const getIntegralUseList = (params) => wxRequest(params, `${host}v1/sem/user/integralUseList`)
+// 积分信息
+const getIntegral = (params) => wxRequest(params, `${host}v1/sem/user/integral`)
+// 积分日志
+const getIntegralList = (params) => wxRequest(params, `${host}v1/sem/user/integralList`)
+// 优惠券列表
+const getTicketList = (params) => wxRequest(params, `${host}v1/sem/user/ticketList`)
+// 会员信息
+const getUserInfo = (params) => wxRequest(params, `${host}v1/sem/user/info`)
+// 活动列表
+const getActivityList = (params) => wxRequest(params, `${host}v1/sem/user/activityList`)
+
+
 export default {
     mallsShopInfo,
     showProductClassesList,
@@ -70,5 +90,15 @@ export default {
     productList,
     ticketDetail,
     productDetail,
-    findShopListByProductId
+    findShopListByProductId,
+
+    getGrade,
+    getVisitLogList,
+    getIntegralUseAllNum,
+    getIntegralUseList,
+    getIntegral,
+    getIntegralList,
+    getTicketList,
+    getUserInfo,
+    getActivityList
 }
