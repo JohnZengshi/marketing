@@ -1,0 +1,102 @@
+<template>
+  <view class="i-t-convert-main">
+    <view class="i-c-t-h">
+      <text>满100减满100减满100减</text>
+      <text>490</text>
+      <text>分</text>
+    </view>
+    
+    <view class="table-l-box i-t-b">
+      <view class="table-l-item">
+        <view class="l-text">商品名称</view>
+        <view class="r-text">KKKKKKK</view>
+      </view>
+
+      <view class="table-l-item">
+        <view class="l-text">数量</view>
+        <view class="r-text">KKKKKKK</view>
+      </view>
+
+      <view class="table-l-item">
+        <view class="l-text">所剩积分</view>
+        <view class="r-text">KKKKKKK</view>
+      </view>
+    </view>
+
+    <navigator class="grad b-btn" hover-class="none" open-type="reLaunch" url="/pages/integralStore/discountResult/discountResult">
+      确认
+    </navigator>
+
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+//通过继承自wepy.page的类创建页面逻辑
+export default class convertOne extends wepy.component {
+  data = {
+    // headName: '确认兑换信息',
+    headName: '',
+    num: 1
+  }
+
+  methods = {
+    open () {
+      this.$invoke('popupBottom', 'open')
+    },
+    // 更新用户名
+    updateNum(e) {
+      this.num = e.detail.value
+    },
+    addNum () {
+      console.log('执行')
+      this.num = Number(this.num) + 1
+    },
+    subtractNum () {
+      if (this.num == 1) {
+        return
+      }
+      this.num = Number(this.num) - 1
+    }
+  }
+}
+</script>
+<style lang="less">
+.i-t-convert-main{
+  flex: 1;
+  .i-c-t-h{
+    height: 150rpx;
+    background-color: #f6f6f6;
+    padding: 0 26rpx;
+    overflow: hidden;
+    text:first-child{
+      display: block;
+      font-size: 32rpx;
+      color: #333;
+      margin: 26rpx 0 22rpx 0;
+    }
+    text:nth-child(2){
+      font-size: 32rpx;
+      color: #fb684c;
+    }
+    text:nth-child(3){
+      font-size: 24rpx;
+      color: #fb684c;
+    }
+  }
+  .i-t-b{
+    margin: 0 26rpx;
+  }
+  .b-btn{
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    font-size: 32rpx;
+    color: #fff;
+    text-align: center;
+    height: 90rpx;
+    line-height: 90rpx;
+    width: 100%;
+  }
+}
+</style>

@@ -16,6 +16,7 @@ import 'wepy-async-function'
 
 import { setStore } from 'wepy-redux'
 import configStore from './store'
+import api from 'Api'
 
 const store = configStore()
 setStore(store)
@@ -24,37 +25,44 @@ export default class extends wepy.app {
   config = {
     pages: [
       'pages/tabBar/store/store',
-      'pages/tabBar/my/my',
+      'pages/common/map/showMap',
+      'pages/my/shopList/shopList',
       'pages/tabBar/integralStore/integralStore',
+      'pages/integralStore/discountCoupon/discountCoupon',
+      'pages/tabBar/my/my',
+      'pages/my/signIn/signIn',
+      'pages/my/birthday/birthday',
+      'pages/my/activity/activity',
+      'pages/integralStore/integralDetails/integralDetails',
+      'pages/integralStore/discountResult/discountResult',
       'pages/my/record/record',
+      'pages/store/commodityInformation/commodityInformation',
+      'pages/store/video/video',
       'pages/my/view/mineActivity',
       'pages/my/view/bargainSucceed',
-      'pages/discountCoupon/discountCoupon',
-      'pages/shopList/shopList',
-      'pages/location/location',
-      'pages/index'
+      'pages/index',
     ],
-    "tabBar": {
-      "backgroundColor": '#fff',
-      "selectedColor": '#FB684C',
-      "color": "#666",
-      "list": [{
-        "pagePath": "pages/tabBar/store/store",
-        "iconPath": "./images/store-icon.png",
-        "selectedIconPath": "./images/store-icon-actions.png",
-        "text": "商城"
-      }, {
-        "pagePath": "pages/tabBar/integralStore/integralStore",
-        "iconPath": "./images/integral-store-icon.png",
-        "selectedIconPath": "./images/integral-store-icon-actions.png",
-        "text": "积分商城"
-      }, {
-        "pagePath": "pages/tabBar/my/my",
-        "iconPath": "./images/my-icon.png",
-        "selectedIconPath": "./images/my-icon-actions.png",
-        "text": "我的"
-      }]
-    },
+    // "tabBar": {
+    //   "backgroundColor": '#fff',
+    //   "selectedColor": '#FB684C',
+    //   "color": "#666",
+    //   "list": [{
+    //     "pagePath": "pages/tabBar/store/store",
+    //     "iconPath": "./images/store-icon.png",
+    //     "selectedIconPath": "./images/store-icon-actions.png",
+    //     "text": "商城"
+    //   }, {
+    //     "pagePath": "pages/tabBar/integralStore/integralStore",
+    //     "iconPath": "./images/integral-store-icon.png",
+    //     "selectedIconPath": "./images/integral-store-icon-actions.png",
+    //     "text": "积分商城"
+    //   }, {
+    //     "pagePath": "pages/tabBar/my/my",
+    //     "iconPath": "./images/my-icon.png",
+    //     "selectedIconPath": "./images/my-icon-actions.png",
+    //     "text": "我的"
+    //   }]
+    // },
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
@@ -70,33 +78,117 @@ export default class extends wepy.app {
   constructor () {
     super()
     this.use('requestfix')
+    this.use('promisify')
   }
 
   onLaunch() {
-    this.testAsync()
+    console.log('latitude', wx.getStorageSync('latitude'))
+    console.log('longitude', wx.getStorageSync('longitude'))
+    // wx.setStorageSync('shopId', '0427664a21464e2ca52f84e755f9e3d6')
+    // wx.setStorageSync('userId', '00256e1bd5774da7943b439c3369971b')
+    // wx.setStorageSync('memberId', '03ed51007bbc4549af0b748866a317dd')
+    this.getLocation()
+    // 更新用户基本信息
+    this.updateUserInfo()
+    // this.wxGetterUserData()
   }
 
-  sleep (s) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve('promise resolved')
-      }, s * 1000)
+  // 更新用户基本信息
+  updateUserInfo() {
+    let _self = this
+    if (!wx.getStorageSync('userId')) {
+      wx.login({
+        success: res => {
+          let options = {
+            code: res.code
+          }
+          _self.smallProgramUserInfo(options)
+        }
+      })
+    } else {
+      let options = {
+        userId: wx.getStorageSync('userId')
+      }
+      _self.smallProgramUserInfo(options)
+    }
+    
+  }
+
+  // 验证是否已经注册
+  async smallProgramUserInfo (options) {
+    let json = await api.smallProgramUserInfo(options)
+    this.globalData.userInfo = json
+    wx.setStorageSync('userId', json.userId)
+    wx.setStorageSync('memberId', json.memberId)
+    // 没有用户id,就是没有注册的
+    if (!json.userId) {
+      this.wxGetterUserData()
+    }
+  }
+
+  // 获取当前位置
+  getLocation () {
+    wx.getLocation({
+      type: 'wgs84',
+      success: function(res) {
+        wx.setStorageSync('latitude', res.latitude)
+        wx.setStorageSync('longitude', res.longitude)
+        var latitude = res.latitude
+        var longitude = res.longitude
+        var speed = res.speed
+        var accuracy = res.accuracy
+      }
+    })
+  }
+  
+
+  // 微信获取用户信息
+  wxGetterUserData () {
+    let _self = this
+    wx.getSetting({
+      success: res => {
+        if (!res.authSetting['scope.userInfo']) {
+          console.log('换起授权', res.authSetting['scope.userInfo'])
+          wx.authorize({
+            scope: 'scope.userInfo',
+            success() {
+              wx.getUserInfo({
+                success: res => {
+                  console.log('换起授权-', res)
+                  _self.globalData.userInfo = {
+                    nickName: res.userInfo.nickName,
+                    sex: res.userInfo.gender,
+                    avatarUrl: res.userInfo.avatarUrl
+                  }
+                }
+              })
+            }
+          })
+        } else {
+          console.log('已经授权过了')
+          wx.getUserInfo({
+            success: res => {
+              console.log('已经授权过了得到的用户数据', res)
+              _self.globalData.userInfo = {
+                nickName: res.userInfo.nickName,
+                sex: res.userInfo.gender,
+                avatarUrl: res.userInfo.avatarUrl
+              }
+            }
+          })
+        }
+      }
     })
   }
 
-  async testAsync () {
-    const data = await this.sleep(3)
-    console.log(data)
-  }
-
   getUserInfo(cb) {
-    const that = this
+    const self = this
     if (this.globalData.userInfo) {
       return this.globalData.userInfo
     }
     wepy.getUserInfo({
       success (res) {
-        that.globalData.userInfo = res.userInfo
+        self.globalData.userInfo = res.userInfo
         cb && cb(res.userInfo)
       }
     })

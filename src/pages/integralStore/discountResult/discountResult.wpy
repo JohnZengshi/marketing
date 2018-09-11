@@ -1,0 +1,83 @@
+<template>
+  <view class="discount-result-main">
+    <image class="hint-img" src="http://jzm-1252389350.cosgz.myqcloud.com/iconHeaded/%E5%85%91%E6%8D%A2%E6%88%90%E5%8A%9F%403x1536135919992.png"></image>
+    <text class="h-hint">恭喜您，您已兑换成功</text>
+    <text class="s-tit">请前去<text class="m-c">兑换记录</text>查看</text>
+    <view class="btn-wrap">
+      <navigator class="btn grad m-b-36" hover-class="none" open-type="reLaunch" url="/pages/tabBar/integralStore/integralStore">
+        继续兑换
+      </navigator>
+      <navigator class="btn default-btn" hover-class="none" open-type="reLaunch" url="/pages/tabBar/store/store">
+        返回首页
+      </navigator>
+    </view>
+    <text class="b-tit">查看<text class="m-c">可兑换门店</text></text>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import api from 'Api';
+//通过继承自wepy.page的类创建页面逻辑
+export default class discountResult extends wepy.page {
+
+}
+</script>
+<style lang="less">
+.discount-result-main{
+  position: relative;
+  height: 100%;
+  .hint-img{
+    display: block;
+    width: 690rpx;
+    height: 555rpx;
+    margin: 0 auto;
+  }
+  .h-hint{
+    display: block;
+    text-align: center;
+    font-size: 36rpx;
+    color: #333;
+  }
+  .s-tit{
+    display: block;
+    text-align: center;
+    font-size: 24rpx;
+    margin-top: 24rpx;
+    color: #999;
+  }
+  .btn-wrap{
+    margin: 100rpx auto 36rpx auto;
+    width: 480rpx;
+    .btn{
+      width: 480rpx;
+      height: 76rpx;
+      line-height: 76rpx;
+      text-align: center;
+      color: #fff;
+      border-radius: 10rpx;
+    }
+    .default-btn{
+      border: 1rpx solid #fc8d4f;
+      color: #fc8d4f;
+    }
+    .m-b-36{
+      margin-bottom: 36rpx;
+    }
+  }
+  .b-tit{
+    display: inline-block;
+    position: absolute;
+    bottom: 50rpx;
+    left: 0;
+    right: 0;
+    text-align: center;
+    margin: auto;
+    font-size: 24rpx;
+    color: #999;
+  }
+  .m-c{
+    color: #fc8d4f;
+  }
+}
+</style>

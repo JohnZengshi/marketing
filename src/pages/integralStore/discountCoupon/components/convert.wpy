@@ -1,0 +1,108 @@
+<template>
+  <popupBottom :headName.sync="headName">
+    <convertOne wx:if="{{headName == ''}}" @affirm.user="toTwo"></convertOne>
+    <convertTwo wx:else></convertTwo>
+  </popupBottom>
+</template>
+<script>
+import wepy from 'wepy';
+import api from 'Api'
+import popupBottom from 'common/popupBottom'
+import convertOne from './convertOne'
+import convertTwo from './convertTwo'
+//通过继承自wepy.page的类创建页面逻辑
+export default class specification extends wepy.component {
+  components = {
+    popupBottom: popupBottom,
+    convertOne: convertOne,
+    convertTwo: convertTwo,
+  }
+
+  data = {
+    // headName: '确认兑换信息',
+    headName: '确认兑换信息'
+  }
+
+  methods = {
+    open () {
+      this.headName = ''
+      this.$invoke('popupBottom', 'open')
+    },
+    // 更新用户名
+    updateNum(e) {
+      this.num = e.detail.value
+    },
+    addNum () {
+      console.log('执行')
+      this.num = Number(this.num) + 1
+    },
+    subtractNum () {
+      if (this.num == 1) {
+        return
+      }
+      this.num = Number(this.num) - 1
+    },
+    toTwo () {
+      this.headName = '确认兑换信息'
+    }
+  }
+}
+</script>
+<style lang="less">
+.i-convert-main{
+  flex: 1;
+  padding: 0 26rpx;
+  .i-c-h{
+    display: block;
+    color: #fb684c;
+    margin-top: 50rpx;
+  }
+  .i-c-tit{
+    display: block;
+    font-size: 22rpx;
+    color: #333;
+    margin: 10rpx 0 50rpx 0;
+  }
+  .i-c-body{
+    padding-top: 70rpx;
+    border-top: 1px solid #ededed;
+    .add-subtract-wrap{
+      float: right;
+      view{
+        display: inline-block;
+        vertical-align: top;
+        width: 60rpx;
+        height: 54rpx;
+        line-height: 54rpx;
+        color: #999;
+        text-align: center;
+        font-weight: bold;
+        background-color: #f6f6f6;
+      }
+      input{
+        display: inline-block;
+        vertical-align: top;
+        height: 54rpx;
+        width: 68rpx;
+        margin: 0 2rpx;
+        font-size: 26rpx;
+        text-align: center;
+        color: #000;
+        background-color: #f6f6f6;
+      }
+    }
+  }
+  .b-btn{
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    font-size: 32rpx;
+    color: #fff;
+    text-align: center;
+    height: 90rpx;
+    line-height: 90rpx;
+    width: 100%;
+  }
+}
+</style>

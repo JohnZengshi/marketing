@@ -16,7 +16,11 @@ module.exports = {
     alias: {
       counter: path.join(__dirname, 'src/components/counter'),
       '@': path.join(__dirname, 'src'),
+      'Api': path.join(__dirname, 'src/api/api'),
+      "@images": path.join(__dirname, 'src/images'),
+      'common':path.join(__dirname, 'src/components/common'),
       '@components':path.join(__dirname, 'src/components'),
+      '@util':path.join(__dirname, 'src/utils/util'),
       '@utils':path.join(__dirname, 'src/utils'),
     },
     aliasFields: ['wepy', 'weapp'],

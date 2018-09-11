@@ -1,0 +1,240 @@
+<template>
+  <view class="m-product-detail-box">
+    <view class="inner-wrap">
+      <text class="h-tit">玫瑰金项链</text>
+      <view class="time-wrap">
+        <view class="logo-wrap">
+          <image src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3426935536,74687823&fm=27&gp=0.jpg"></image>
+        </view>
+        <view class="right-b">
+          <view class="r-b-h">
+            <text class="new-m m-c">￥580元</text>
+            <text class="old-m">原价198元</text>
+          </view>
+          <view class="time-b">
+            <text class="t-item">{{dates.day}}</text>
+            <text>天</text>
+            <text class="t-item">{{dates.hour}}</text>
+            <text>时</text>
+            <text class="t-item">{{dates.minute}}</text>
+            <text>分</text>
+            <text class="t-item">{{dates.second}}</text>
+            <text>秒</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="type-wrap">
+        <view class="type-h-t">
+          <text>当前价格：</text>
+          <text class="m-c">88元</text>
+        </view>
+        <view class="user-list">
+          <view class="img-b">
+            <image src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2194443278,3038115542&fm=27&gp=0.jpg"></image> 
+          </view>
+
+                    <view class="img-b">
+            <image src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3426935536,74687823&fm=27&gp=0.jpg"></image> 
+          </view>
+
+                    <view class="img-b">
+            <image src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2080323882,2505525319&fm=27&gp=0.jpg"></image> 
+          </view>
+
+                  <view class="img-b">
+            <image src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2604203743,2962061082&fm=27&gp=0.jpg"></image> 
+          </view>
+
+          <text class="n-tit">目前共<text class="m-c">100</text>位砍友帮忙砍价</text>
+        </view>
+      </view>
+
+      <view class="m-p-b">
+        <image src="http://jzm-1252389350.cosgz.myqcloud.com/iconHeaded/%E6%88%91%E8%A6%81%E7%A0%8D%E4%BB%B7%402x1536234413487.png"></image>
+      </view>
+
+    </view>
+
+    <view class="b-img">
+      <image src="http://jzm-1252389350.cosgz.myqcloud.com/iconHeaded/%E9%94%AF%E9%BD%BF%403x1536234342581.png"></image>
+    </view>
+
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+//通过继承自wepy.page的类创建页面逻辑
+export default class MAproductDetail extends wepy.component {
+  data = {
+    dates: {
+      day: '2', // 日
+      hour: '1', // 时
+      minute: '0', // 分
+      second: '5', // 秒
+    }
+  }
+
+  countDown () {
+    setInterval(()=> {
+      if (this.dates.second == 0) {
+        this.dates.second = 59
+        // 分
+        let HD = Number(this.dates.hour) > 0 || Number(this.dates.day) > 0
+        if (this.dates.minute == 0 && HD) {
+          this.dates.minute = 59
+          // 时
+          if (this.dates.hour == 0 && Number(this.day) > 0) {
+            this.dates.hour = 23
+            // 日
+            this.day = Number(this.day) - 1
+          } else {
+            this.dates.hour = Number(this.dates.hour) - 1
+          }
+        } else {
+          this.dates.minute = Number(this.dates.minute) - 1
+        }
+
+      } else {
+        this.dates.second = Number(this.dates.second) - 1
+      }
+      this.$apply()
+    }, 1000)
+  }
+
+  methods = {
+
+  }
+
+  //页面的生命周期函数
+  onLoad () {
+    this.countDown()
+  }
+}
+</script>
+<style lang="less">
+.m-product-detail-box{
+  // height: 500rpx;
+  width: 100%;
+  overflow: hidden;
+  font-size: 0;
+  image{
+    width: 100%;
+    height: 100%;
+  }
+  // text-decoration:line-through 中划线
+  .inner-wrap{
+    // height: 500rpx;
+    overflow: hidden;
+    background-color: #fff;
+    margin: 0 38rpx;
+    padding: 0 20rpx;
+    .h-tit{
+      font-size: 30rpx;
+      display: block;
+      width: 100%;
+      text-align: center;
+      overflow: hidden;
+    }
+    .time-wrap{
+      display: flex;
+      padding-bottom: 30rpx;
+      border-bottom: 1px dashed #ededed;
+      .logo-wrap{
+        display: inline-block;
+        vertical-align: top;
+        width: 150rpx;
+        height: 150rpx;
+        margin-top: 22rpx;
+        image{
+          border-radius: 10rpx;
+        }
+      }
+      .right-b{
+          display: inline-block;
+          vertical-align: top;
+          margin-top: 22rpx;
+          height: 172rpx;
+          padding-left: 30rpx;
+          flex: 1;
+          .r-b-h{
+            margin: 35rpx 0;
+            .new-m{
+              font-size: 32rpx;
+            }
+            .old-m{
+              margin-left: 30rpx;
+              color: #999;
+              font-size: 24rpx;
+              text-decoration:line-through; // 中划线
+            }
+          }
+          .time-b{
+            margin-top: 30rpx;
+            text{
+              font-size: 26rpx;
+              color: #000;
+            }
+            .t-item{
+              background-color: #1b1d1c;
+              padding: 5rpx 10rpx;
+              border-radius: 10rpx;
+              color: #fff;
+              margin: 0 10rpx; 
+            }
+            .t-item:first-child{
+              margin-left: 0;
+            }
+          }
+      }
+    }
+    .type-wrap{
+      .type-h-t{
+        margin: 40rpx auto;
+        text-align: center;
+        text:first-child{
+          font-size: 26rpx;
+          color: #333;
+        }
+        text:last-child{
+          font-size: 32rpx;
+        }
+      }
+      .user-list{
+        font-size: 0;
+        text-align: center;
+        .img-b{
+          width: 80rpx;
+          height: 80rpx;
+          display: inline-block;
+          margin-left: -20rpx;
+          border-radius: 50%;
+          overflow: hidden;
+        }
+        .img-b:first-child{
+          margin-left: 0;
+        }
+        .n-tit{
+          margin-left: 16rpx;
+        }
+        text{
+          display: inline-block;
+          vertical-align: bottom;
+          font-size: 24rpx;
+        }
+      }
+    }
+    .m-p-b{
+      width: 431rpx;
+      height: 76rpx;
+      margin: 20rpx auto;
+      // margin-top: 30rpx;
+    }
+  }
+  .b-img{
+    // width: 100%;
+    height: 22rpx;
+    margin: 0 38rpx;
+  }
+}
+</style>

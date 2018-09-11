@@ -1,0 +1,69 @@
+<template>
+  <view class="activity-detail-box">
+    <view class="inner-wrap">
+
+      <image class="h-img" src="http://jzm-1252389350.cosgz.myqcloud.com/iconHeaded/%E6%B4%BB%E5%8A%A8%E8%AF%B4%E6%98%8E%403x1536314657628.png"></image>
+
+      <view class="h-t m-c">
+        <view>1.从美学与专业角度展现砖石打发看法就开饭你没得法饭店房间啊</view>
+        <view>2.从美学与专业角度展现砖石打发看法就开饭你没得法饭店房间啊</view>
+        <view>3.从美学与专业角度展现砖石打发看法就开饭你没得法饭店房间啊</view>
+      </view>
+      
+      <view class="bottom-t">兑换时间：2018-8-17 至 2018-8-31</view>
+      <view class="bottom-t">兑换电话：0775-26845455</view>
+      <view class="bottom-t">兑换地址：深圳市南山区某某街道kkk</view>
+
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+//通过继承自wepy.page的类创建页面逻辑
+export default class MAactivityDetail extends wepy.component {
+
+}
+
+</script>
+<style lang="less">
+.activity-detail-box {
+  overflow: hidden;
+  padding-top: 100rpx;
+  .inner-wrap {
+    position: relative;
+    background-color: #fff;
+    margin: 0 38rpx;
+    border-radius: 5rpx;
+    padding: 80rpx 20rpx 100rpx 20rpx;
+    background-image: url(http://jzm-1252389350.cosgz.myqcloud.com/iconHeaded/%E6%B0%B4%E5%8D%B0%E5%88%B8%403x1536315111585.png);
+    background-repeat: no-repeat;
+    background-size: 231rpx 320rpx;
+    background-position: bottom left;
+    .h-img {
+      position: absolute;
+      top: -45rpx;
+      left: 0;
+      right: 0;
+      margin: auto;
+      width: 476rpx;
+      height: 95rpx;
+    }
+    .h-t{
+      padding: 26rpx 20rpx 20rpx 50rpx;
+      background-color: #fff5f0; 
+      margin-bottom: 50rpx;
+      view{
+        font-size: 28rpx;
+        line-height: 40rpx;
+        margin-bottom: 20rpx;
+      }
+    }
+    .bottom-t{
+      text-indent: 20rpx;
+      font-size: 28rpx;
+      margin-top: 60rpx;
+    }
+  }
+}
+
+</style>

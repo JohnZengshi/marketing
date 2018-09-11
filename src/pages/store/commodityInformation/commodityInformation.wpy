@@ -1,0 +1,326 @@
+<template>
+  <view class="product-detail-main {{popupBug ? 'product-detail-main-fixed' : ''}}">
+    <!-- 轮播图 -->
+    <productSwiper :showList.sync="swiperList" :url.sync="swiperUrl"></productSwiper>
+
+    
+    <headIntroduce :girardInfo.sync="girardInfo"></headIntroduce>
+
+
+    <!-- 查看参数 -->
+    <view class="product-parameter-wrap">
+      <view class="navigator" bindtap='setParameter' hover-class="navigator-hover">
+        <view class="navigator-text">产品参数</view>
+        <view class="navigator-arrow"></view>
+      </view>
+
+      <view class="navigator" wx:if="{{sellType == 1}}" bindtap='setSpecification' hover-class="navigator-hover">
+        <view class="navigator-text">产品规格</view>
+        <view class="navigator-arrow"></view>
+      </view>
+    </view>
+
+    <!-- 商品图片列表 -->
+    <productImageList :girardInfo.sync="prodectImgList"></productImageList>
+
+    <view class="product-bottom-wrap">
+      <view class="product-bottom-btn">
+        <view wx:if="{{sellType == 1}}" class="p-btn-item" bindtap='setSpecification'>
+          查看库存
+          <view class="decorate-wire">
+          </view>
+        </view>
+        <view class="p-btn-item" bindtap='phoneCall'>
+          联系我们
+          <view wx:if="{{isShare == 'Y'}}" class="decorate-wire">
+          </view>
+        </view>
+        <navigator wx:if="{{isShare == 'Y'}}" hover-class="none" class="p-btn-item" open-type="reLaunch" url="/pages/tabBar/store/store">
+          进入商城
+        </navigator>
+      </view>
+    </view>
+    <!-- 产品参数 -->
+    <parameterList :styleId.sync="styleId" @close.user="closePopupBug"></parameterList>
+    <!-- 产品规格 -->
+    <specification :styleId.sync="styleId" @close.user="closePopupBug"></specification>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy';
+  import productSwiper from 'common/productSwiper';
+  import productImageList from 'common/productImageList';
+  import headIntroduce from './components/headIntroduce';
+  import parameterList from './components/parameterList';
+  import specification from './components/specification';
+  import api from '@/api/api'
+  //通过继承自wepy.page的类创建页面逻辑
+  export default class commodityInformation extends wepy.page {
+    components = {
+      productImageList: productImageList,
+      productSwiper: productSwiper,
+      headIntroduce: headIntroduce,
+      parameterList: parameterList,
+      specification: specification
+    }
+
+    data = {
+      popupBug: false, // 弹窗滚动bug
+      sellType: 1, // 查看库存权限
+      shopId: '', // 店铺id
+      isShare: 'N', // 是否是分享过来的
+      girardInfo: {}, // 款式明细
+      prodectImgList: [], // 商品图片列表
+      swiperList: [], // 轮播图列表
+      swiperUrl: '', // 视频地址
+      // parametersData: [], // 产品参数列表
+      parameterListScollMainH: 0,
+      specificationScollMainH: 0,
+      // specificationsData: [], // 产品规格
+      openSpecificationType: '', // 打开产品规格
+      parameterPopup: false, // 产品参数弹窗
+      specificationPopup: false, // 产品规格弹窗
+      indicatorDots: true,
+      vertical: false,
+      styleId: '',
+      shareData: {
+        title: '商品详情',
+        desc: '商品详情',
+        path: ''
+      }
+    }
+
+    // 款式明细
+    async programGirardInfo (parm) {
+      let _self = this
+      let json = await api.programGirardInfo(parm)
+      _self.girardInfo = json
+      for (let i of json.picResList) {
+        i.url = i.logoSrc
+      }
+      _self.prodectImgList = json.picResList
+      _self.swiperList = json.dataList
+      _self.swiperUrl = json.url
+      // 分享header
+      _self.shareData.title = json.styleName
+      _self.$apply()
+    }
+
+    // 小程序归属的店铺
+    async smallProgramShopList (parm) {
+      let _self = this
+      let json = await api.smallProgramShopList()
+      _self.globalData.shopInfo = res.dataList[0]
+    }
+
+    methods = {
+      onShareAppMessage: function () {
+        return this.data.shareData
+      },
+
+      // 获取滚动可视区的高度
+      setScollHeight() {
+        var _self = this
+        setTimeout(() => {
+          wx.createSelectorQuery().select('#parameterListScollMainH').fields({
+            dataset: true,
+            size: true,
+            scrollOffset: true,
+            properties: ['scrollX', 'scrollY']
+          }, function (res) {
+            _self.setData({
+              parameterListScollMainH: res.height
+            })
+          }).exec()
+        }, 500)
+
+        setTimeout(() => {
+          wx.createSelectorQuery().select('#specificationScollMainH').fields({
+            dataset: true,
+            size: true,
+            scrollOffset: true,
+            properties: ['scrollX', 'scrollY']
+          }, function (res) {
+            _self.setData({
+              specificationScollMainH: res.height - 2
+            })
+          }).exec()
+        }, 500)
+      },
+
+      // 设置产品参数弹窗
+      setParameter() {
+        this.$invoke('parameterList', 'open')
+        this.popupBug = true
+      },
+
+      // 设置产品规格
+      setSpecification() {
+        this.$invoke('specification', 'open')
+        this.popupBug = true
+      },
+      closePopupBug () {
+        console.log('关闭')
+        this.popupBug = false
+      },
+      // 查看产品规格的明细
+      openSpecification(e) {
+        if (this.data.openSpecificationType === e.currentTarget.dataset.sign) {
+          this.setData({
+            openSpecificationType: ''
+          })
+        } else {
+          this.setData({
+            openSpecificationType: e.currentTarget.dataset.sign
+          })
+        }
+      },
+
+      changeIndicatorDots: function (e) {
+        this.setData({
+          indicatorDots: !this.data.indicatorDots
+        })
+      },
+
+      changeAutoplay: function (e) {
+        this.setData({
+          autoplay: !this.data.autoplay
+        })
+      },
+
+      intervalChange: function (e) {
+        this.setData({
+          interval: e.detail.value
+        })
+      },
+
+      durationChange: function (e) {
+        this.setData({
+          duration: e.detail.value
+        })
+      },
+
+      // 打电话
+      phoneCall () {
+        wx.makePhoneCall({
+          phoneNumber: this.data.girardInfo.phone //仅为示例，并非真实的电话号码
+        })
+      },
+
+      // 分享
+      handleTapShareButton () {
+        if (!((typeof wx.canIUse === 'function') && wx.canIUse('button.open-type.share'))) {
+          wx.showModal({
+            title: '当前版本不支持转发按钮',
+            content: '请升级至最新版本微信客户端',
+            showCancel: false
+          })
+        }
+      },
+
+      /**
+      * 生命周期函数--监听页面加载
+      */
+    }
+    onLoad (options) {
+      this.styleId = options.styleId,
+      this.sellType = options.sellType,
+      this.isShare = options.isShare ? options.isShare : 'N',
+      this.shareData.path = 'pages/store/pages/commodityInformation/commodityInformation?styleId=' + options.styleId + '&sellType=' + options.sellType + '&isShare=' + 'Y'
+      this.programGirardInfo({styleId: options.styleId})
+    }
+  }
+</script>
+<style lang="less">
+
+.product-detail-main{
+  min-height: 100%;
+  background-color: #f8f8f8;
+  .product-parameter-wrap{
+    margin-top: 20rpx;
+    .navigator {
+      background-color: #fff;
+      padding: 20rpx 30rpx;
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .navigator:before {
+      content: " ";
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      height: 1px;
+      border-top: 1rpx solid #D8D8D8;
+      color: #D8D8D8;
+    }
+    .navigator:first-child:before {
+      display: none;
+    }
+    .navigator-text {
+      flex: 1;
+      font-size: 28rpx;
+      color: #666;
+    }
+    .navigator-arrow {
+      padding-right: 26rpx;
+      position: relative;
+    }
+    .navigator-arrow:after {
+      content: " ";
+      display: inline-block;
+      height: 18rpx;
+      width: 18rpx;
+      border-width: 2rpx 2rpx 0 0;
+      border-color: #888888;
+      border-style: solid;
+      transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+      position: absolute;
+      top: 50%;
+      margin-top: -8rpx;
+      right: 0;
+    }
+  }
+  .product-bottom-wrap{
+    height: 97rpx;
+    background-color: #fff;
+    .product-bottom-btn{
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      display: flex;
+    }
+    .p-btn-item{
+      position: relative;
+      display: block;
+      font-size: 32rpx;
+      color: #fff;
+      flex: 1;
+      text-align: center;
+      padding: 30rpx 0;
+      background-color: #2993f8;
+    }
+    .decorate-wire{
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+      height: 60rpx;
+      border-right: 1rpx solid #fff;
+    }
+  }
+}
+.product-detail-main-fixed{
+  position: fixed;
+  width: 100%;
+}
+
+// button{
+//   margin-bottom: 30rpx;
+// }
+// button:last-child{
+//   margin-bottom: 0;
+// }
+</style>

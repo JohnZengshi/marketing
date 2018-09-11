@@ -1,0 +1,162 @@
+<template name="cMenu">
+  <view class="c-menu-main" id="menuTwoId">
+    <view class="c-menu-wrap">
+
+      <navigator class="c-menu-btn" hover-class="none" open-type="reLaunch" url="/pages/tabBar/store/store">
+        <view class="c-menu-img-wrap">
+          <image wx:if="{{menu == 'A'}}" class="c-menu-img" mode='aspectFit' src="/images/tabBar/store-icon-actions.png"></image>
+          <image wx:else class="c-menu-img" mode='aspectFit' src="/images/tabBar/store-icon.png"></image>
+        </view>
+      </navigator>
+
+      <navigator class="c-menu-btn" hover-class="none" open-type="reLaunch" url="/pages/tabBar/integralStore/integralStore">
+        <view class="c-menu-img-wrap">
+          <image wx:if="{{menu == 'B'}}" class="c-menu-img" mode='aspectFit' src="/images/tabBar/integral-store-icon-actions.png"></image>
+          <image wx:else class="c-menu-img" mode='aspectFit' src="/images/tabBar/integral-store-icon.png"></image>
+        </view>
+      </navigator>
+
+      
+      <navigator wx:if="{{userId}}" hover-class="none" class="c-menu-btn" open-type="reLaunch" url="/pages/tabBar/my/my">
+        <view class="c-menu-img-wrap">
+          <image wx:if="{{menu == 'C'}}" class="c-menu-img" mode='aspectFit' src="/images/tabBar/my-icon-actions.png"></image>
+          <image wx:else class="c-menu-img" mode='aspectFit' src="/images/tabBar/my-icon.png"></image>
+        </view>
+      </navigator>
+      
+      <view wx:else class="c-menu-btn">
+        <view class="c-menu-img-wrap">
+          <image wx:if="{{menu == 'C'}}" class="c-menu-img" mode='aspectFit' src="/images/tabBar/my-icon-actions.png"></image>
+          <image wx:else class="c-menu-img" mode='aspectFit' src="/images/tabBar/my-icon.png"></image>
+          <button class="get-phone-number" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber"></button> 
+        </view>
+      </view>
+
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+import api from 'Api'
+//通过继承自wepy.page的类创建页面逻辑
+export default class menu extends wepy.component {
+  props = {
+    menu: {
+      type: String,
+      default: ''
+    },
+    userId: {
+      type: String,
+      default: ''
+    },
+    id: {
+      type: String,
+      default: ''
+    }
+  }
+
+  data = {
+    globalData: {
+      hasLogin: false,
+      userInfo: {},
+      shopInfo: {},
+      code: ''
+    }
+  }
+
+  async smallProgramMemberExists (options) {
+    wx.navigateTo({
+        url: '../../my/signIn/signIn'
+    })
+    let json = await api.smallProgramMemberExists(options)
+    wx.setStorageSync('userId', json.userId)
+    // 未绑定且有手机号码
+    // if (json.status == 2 && options.phone) {
+    //   wx.navigateTo({
+    //     url: '/pages/my/signIn/signIn'
+    //   })
+    // } else if (json.status == 1) {
+    //   wx.navigateTo({
+    //     url: '/pages/tabBar/my/my'
+    //   })
+    // }
+  }
+
+  async getEncrypteInfo (options) {
+    let json = await api.getEncrypteInfo(options)
+    wx.setStorageSync('phone', json.phoneNumber)
+    wx.login({
+      success: res => {
+        let options = {
+          phone: json.phoneNumber,
+          code: res.code,
+          nickName: this.globalData.userInfo.nickName,
+          avatarUrl: this.globalData.userInfo.avatarUrl,
+          sex: this.globalData.userInfo.sex
+        }
+        this.smallProgramMemberExists(options)
+      }
+    })
+  }
+
+  methods = {
+    getPhoneNumber(e) {
+      if (e.detail.encryptedData) {
+        wx.login({
+          success: res => {
+            let options = {
+              code: res.code,
+              encryptedData: e.detail.encryptedData,
+              iv: e.detail.iv
+            }
+            this.getEncrypteInfo(options)
+          }
+        })
+      }
+    }
+  }
+}
+</script>
+<style lang="less">
+.c-menu-main{
+  height: 90rpx;
+}
+.c-menu-wrap{
+  position: fixed;
+  height: 90rpx;
+  width: 100%;
+  background-color: #fff;
+  bottom: 0;
+  z-index: 200;
+  display: flex;
+  border-top: 1px solid #ededed;
+}
+.c-menu-btn{
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+.c-menu-img-wrap{
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  top: 0;
+  right: 0;
+  margin: auto;
+  width: 80rpx;
+  height: 73rpx;
+}
+.c-menu-img{
+  width: 80rpx;
+  height: 73rpx;
+}
+.get-phone-number{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 0.01;
+  border: 1px solid red;
+}
+</style>

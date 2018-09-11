@@ -1,0 +1,105 @@
+<template>
+  <view class="head-introduce-wrap">
+
+    <view class="product-detail-tit-h">
+      <image class="product-detail-tit-h-icon" src="/images/list-spot-goods-icon.png"></image>
+      <text class="product-detail-product-name">{{girardInfo.styleName}}</text>
+    </view>
+
+    <view>
+       <text class="price-right-tit"><text class="price-symbol">￥</text>{{girardInfo.lowestPrice}}~{{girardInfo.highestPrice}}</text>
+       <text class="hot-tit">热度：{{girardInfo.hot}}</text>
+    </view>
+    
+    <view class="product-share-icon">
+      <button bindtap="handleTapShareButton" open-type="share" class="button-share" id="share-button">
+      </button>
+      <label for="share-button">
+        <image style="width: 36rpx;height: 54rpx;float: right;" mode="scaleToFill" src="/images/product-share-icon.png"></image>
+      </label>
+    </view>
+    
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+//通过继承自wepy.page的类创建页面逻辑
+export default class headIntroduce extends wepy.component {
+
+  props = {
+    girardInfo: {
+      type: Object,
+      default: []
+    }
+  }
+
+  data = {
+    autoplay: true,
+    interval: 4000,
+    duration: 500,
+  }
+
+
+  methods = {
+  }
+}
+</script>
+</script>
+<style lang="less">
+/* 中部介绍 */
+.head-introduce-wrap{
+  position: relative;
+  padding: 20rpx 0 20rpx 26rpx; 
+  background-color: #fff;
+}
+/* 图片和文字排序 */
+.product-detail-tit-h {
+  overflow: hidden;
+  /* height: 28rpx; */
+  /* margin-bottom: 26rpx; */
+}
+.product-detail-tit-h-icon {
+  display: inline-block;
+  width: 50rpx;
+  vertical-align: top;
+  height: 26rpx;
+  line-height: 28rpx;
+  margin-right: 10rpx;
+}
+.product-detail-product-name {
+  display: inline-block;
+  vertical-align: top;
+  max-width: 500rpx;
+  margin-right: 20rpx;
+  font-size: 28rpx;
+  line-height: 28rpx;
+  /* line-height: 34rpx; */
+  color: #333;
+}
+/* 价格 */
+.price-right-tit{
+  margin: auto;
+  height: 40rpx;
+  font-size: 32rpx;
+  line-height: 40rpx;
+  color: #f84f45;
+}
+.price-symbol{
+  font-size: 24rpx;
+  color: #f84f45;
+}
+.hot-tit{
+  float: right;
+  font-size: 20rpx;
+  color: #999;
+  margin-top: 20rpx;
+  margin-right: 26rpx;
+}
+.product-share-icon{
+  position: absolute;
+  right: 20rpx;
+  top: 20rpx;
+  width: 53rpx;
+  height: 74rpx;
+}
+</style>

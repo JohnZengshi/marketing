@@ -1,0 +1,126 @@
+<style lang="less">
+  .scroll-view_H{
+    white-space: nowrap;
+  }
+  .classes-item-t{
+    font-size: 28rpx;
+  }
+  .scroll-view-item_H{
+    position: relative;
+    display: inline-block;
+    height: 80rpx;
+    line-height: 80rpx;
+    margin-right: 60rpx;
+  }
+  .h-classes-item-on{
+    color: #2993f8;
+  }
+  .classes-on-icon{
+    position: absolute;
+    bottom: 0;
+    height: 6rpx;
+    width: 100%;
+    border-radius: 6rpx;
+    background-color: #2993f8;
+  }
+</style>
+<template>
+  <view class="classes-item-wrap">
+    <scroll-view class="scroll-view_H" scroll-x="true" style="width: 100%">
+      <view
+        class="scroll-view-item_H"
+        wx:for="{{showList}}"
+        wx:key="{{item.id}}"
+        data-id="{{item.id}}"
+        data-item="{{item}}"
+        @tap="bindViewTap"
+      >
+        <text class="classes-item-t {{currentId == item.id ? 'h-classes-item-on' : ''}}">{{item.name}}</text>
+        <view wx:if="{{currentId == item.id}}" class="classes-on-icon"></view>
+      </view>
+    </scroll-view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+//通过继承自wepy.page的类创建页面逻辑
+export default class scrollBox extends wepy.component {
+    props = {
+      showList: {
+        type: Array,
+        default: []
+      },
+      // 父向子单向动态传值
+      currentId: {
+          type: String,
+          default: ''
+      },
+      num: {
+        type: [Number, String],
+        default: 50
+      },
+    };
+
+    // 监听器函数名必须跟需要被监听的data对象中的属性num同名，
+    // 其参数中的newValue为属性改变后的新值，oldValue为改变前的旧值
+    watch = {
+        currentId (newValue, oldValue) {
+            console.log('新旧', `num value: ${oldValue} -> ${newValue}`)
+            this.$apply()
+        }
+    }
+
+    //可用于页面模板绑定的数据
+    data = {
+        motto: 'Hello World',
+        userInfo: {},
+        // showList: [
+        //   {
+        //     id: 'id1',
+        //     name: 'classesName'
+        //   },
+        //   {
+        //     id: 'classesId2',
+        //     name: 'classesName'
+        //   },
+        //   {
+        //     id: 'classesId3',
+        //     name: 'classesName'
+        //   },
+        //   {
+        //     id: 'classesId4',
+        //     name: 'classesName'
+        //   },
+        //   {
+        //     id: 'classesId5',
+        //     name: 'classesName'
+        //   },
+        //   {
+        //     id: 'classesId6',
+        //     name: 'classesName'
+        //   },
+        //   {
+        //     id: 'classesId7',
+        //     name: 'classesName'
+        //   },
+        //   {
+        //     id: 'classesId8',
+        //     name: 'classesName'
+        //   }
+        // ],
+    };
+
+    //事件处理函数(集中保存在methods对象中)
+    methods = {
+        bindViewTap (e) {
+          this.$emit('change-event', e)
+        }
+    };
+
+    //页面的生命周期函数
+    onLoad() {
+        console.log('onLoad');
+    };
+}
+</script>

@@ -1,0 +1,105 @@
+<template>
+  <view class='my-apply-list-box'>
+    <navigator class="my-body-item br-e5" hover-class="none" url="../../my/pages/userinfo/userinfo">
+
+      <view class="icon-wrap">
+        <image src="/images/my-activity@3x.png"></image>
+      </view>
+      <text class="icon-tit">我的活动</text>
+
+    </navigator>
+
+    <navigator class="my-body-item br-e5" hover-class="none" url="../../my/pages/bill/bill?isBill={{isBill}}">
+
+      <view class="icon-wrap">
+        <image src="/images/grade@3x.png"></image>
+      </view>
+      
+      <text class="icon-tit">升等级</text>
+
+    </navigator>
+
+    <navigator class="my-body-item br-e5" hover-class="none" url="../../my/pages/bill/bill?isBill={{isBill}}">
+
+      <view class="icon-wrap">
+        <image src="/images/my-bill@3x.png"></image>
+      </view>
+      
+      <text class="icon-tit">电子账单</text>
+
+    </navigator>
+
+    <navigator class="my-body-item br-e5" hover-class="none" url="../../my/pages/bill/bill?isBill={{isBill}}">
+
+      <view class="icon-wrap">
+        <image src="/images/my-collect@3x.png"></image>
+      </view>
+      
+      <text class="icon-tit">收藏</text>
+
+    </navigator>
+
+    <navigator class="my-body-item br-e5" hover-class="none" url="../../my/pages/bill/bill?isBill={{isBill}}">
+
+      <view class="icon-wrap">
+        <image src="/images/my-track@3x.png"></image>
+      </view>
+      
+      <text class="icon-tit">足迹</text>
+
+    </navigator>
+
+<!--     <view class="my-body-item br-e5">
+      <button bindtap="handleTapShareButton" open-type="share" class="button-share" id="share-button-my">
+      </button>
+      <view class="icon-wrap">
+        <image style="width: 100%;height: 100%;" src="/images/my-share-icon.png"></image>
+      </view>
+      <text class="icon-tit">分享小程序</text>
+    </view> -->
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+export default class myHeader extends wepy.component {
+  props = {
+    userInfo: {
+      type: Object,
+      default: {}
+    }
+  }
+}
+
+</script>
+<style lang="less">
+.my-apply-list-box {
+  position: relative;
+  margin: 0 14rpx 0 14rpx;
+  height: 166rpx;
+  margin-top: 20rpx;
+  background-color: #fff;
+  border-radius: 10rpx;
+  display: flex;
+  .my-body-item{
+    position: relative;
+    flex: 1;
+    overflow: hidden;
+  }
+  .icon-wrap{
+    width: 68rpx;
+    height: 68rpx;
+    margin: 28rpx auto 24rpx auto;
+    >image{
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .icon-tit{
+    display: block;
+    font-size: 22rpx;
+    text-align: center;
+    color: #000;
+  }
+}
+
+</style>

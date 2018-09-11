@@ -1,0 +1,60 @@
+<template>
+  <view class="img-list">
+    <view class="img-list-head">
+      <image class="product-img-list-head" mode="scaleToFill" src="/images/product-img-list-head.png"></image>
+    </view>
+    
+    <block wx:for="{{showList}}" wx:key="item">
+      <view class="img-list-wrap">
+         <image style='width: 100%;' mode="widthFix" src="{{item.url}}"></image> 
+      </view>
+    </block>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+//通过继承自wepy.page的类创建页面逻辑
+export default class cpopupBottom extends wepy.component {
+
+  props = {
+    showList: {
+      type: String,
+      default: []
+    }
+  }
+
+  data = {
+    isShow: false
+  }
+
+
+  methods = {
+
+  }
+}
+</script>
+</script>
+<style lang="less">
+.img-list{
+  background-color: #fff;
+}
+.img-list-head{
+  position: relative;
+  height: 64rpx;
+  background-color: #f8f8f8;
+}
+.product-img-list-head{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  width: 281rpx;
+  height: 22rpx;
+}
+.img-list-wrap{
+  width: 100%;
+  font-size: 0;
+}
+</style>

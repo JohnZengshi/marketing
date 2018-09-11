@@ -1,0 +1,190 @@
+<template>
+  <view class='my-service-list-box'>
+
+    <view class="header-tit">商家服务</view>
+
+    <view class="service-list-item">
+      <navigator class="my-body-item br-e5" hover-class="none" url="/pages/my/record/record">
+
+        <view class="icon-wrap">
+          <image src="/images/my/service-1.png"></image>
+        </view>
+        <text class="icon-tit">私人顾问</text>
+
+      </navigator>
+
+      <navigator class="my-body-item br-e5" hover-class="none" url="../../my/pages/bill/bill?isBill={{isBill}}">
+
+        <view class="icon-wrap">
+          <image src="/images/my/service-2.png"></image>
+        </view>
+        
+        <text class="icon-tit">保养指南</text>
+
+      </navigator>
+
+      <navigator class="my-body-item br-e5" hover-class="none" url="../../my/pages/bill/bill?isBill={{isBill}}">
+
+        <view class="icon-wrap">
+          <image src="/images/my/service-3.png"></image>
+        </view>
+        
+        <text class="icon-tit">常见问题</text>
+
+      </navigator>
+
+      <navigator class="my-body-item br-e5" hover-class="none" url="../../my/pages/bill/bill?isBill={{isBill}}">
+
+        <view class="icon-wrap">
+          <image src="/images/my/service-4.png"></image>
+        </view>
+        
+        <text class="icon-tit">预约上门</text>
+
+      </navigator>
+    </view>
+
+    <view class="service-list-item">
+      <navigator class="my-body-item br-e5" hover-class="none" url="../../my/pages/userinfo/userinfo">
+
+        <view class="icon-wrap">
+          <image src="/images/my/service-5.png"></image>
+        </view>
+        <text class="icon-tit">售后准则</text>
+
+      </navigator>
+
+      <navigator class="my-body-item br-e5" hover-class="none" url="../../my/pages/bill/bill?isBill={{isBill}}">
+
+        <view class="icon-wrap">
+          <image src="/images/my/service-6.png"></image>
+        </view>
+        
+        <text class="icon-tit">珠宝百科</text>
+
+      </navigator>
+
+      <navigator class="my-body-item br-e5" hover-class="none" url="../../my/pages/bill/bill?isBill={{isBill}}">
+
+        <view class="icon-wrap">
+          <image src="/images/my/service-7.png"></image>
+        </view>
+        
+        <text class="icon-tit">在线客服</text>
+
+      </navigator>
+
+      <navigator class="my-body-item br-e5" hover-class="none" url="../../my/pages/bill/bill?isBill={{isBill}}">
+
+        <view class="icon-wrap">
+          <image src="/images/my/service-8.png"></image>
+        </view>
+        
+        <text class="icon-tit">关于我们</text>
+
+      </navigator>
+    </view>
+
+    <view class="service-list-item">
+
+      <navigator class="my-body-item br-e5" hover-class="none" url="../../my/pages/userinfo/userinfo">
+
+        <view class="icon-wrap">
+          <image src="/images/my/service-9.png"></image>
+        </view>
+        <text class="icon-tit">产品验证</text>
+
+      </navigator>
+
+      <navigator class="my-body-item br-e5" hover-class="none" url="../../my/pages/userinfo/userinfo">
+
+        <view class="icon-wrap">
+          <image src="/images/my/service-10.png"></image>
+        </view>
+        <text class="icon-tit">今日金价</text>
+
+      </navigator>
+
+      <navigator class="my-body-item br-e5" hover-class="none" url="../../my/pages/userinfo/userinfo">
+
+        <view class="icon-wrap">
+          <image src="/images/my/service-11.png"></image>
+        </view>
+        <text class="icon-tit">店铺地址</text>
+
+      </navigator>
+  
+      <view class="my-body-item br-e5">
+
+      </view>
+
+    </view>
+
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+export default class myHeader extends wepy.component {
+  props = {
+    userInfo: {
+      type: Object,
+      default: {}
+    }
+  }
+
+  // data = {
+  //   showList: [
+  //     {
+  //       itemList: [
+  //         {
+  //           name: '私人顾问',
+  //           url: '/images/my/my-activity@3x.png'
+  //         }
+  //       ]
+  //     }
+  //   ]
+  // }
+}
+
+</script>
+<style lang="less">
+.my-service-list-box {
+  position: relative;
+  margin: 20rpx 14rpx 0 14rpx;
+  background-color: #fff;
+  border-radius: 10rpx;
+  overflow: hidden;
+  .header-tit{
+    color: #000;
+    font-size: 28rpx;
+    margin: 30rpx 0 0 30rpx;
+  }
+  .service-list-item{
+    margin: 0 14rpx 0 14rpx;
+    height: 166rpx;
+    display: flex;
+    margin-top: 34rpx;
+    .my-body-item{
+      position: relative;
+      flex: 1;
+      overflow: hidden;
+    }
+    .icon-wrap{
+      width: 68rpx;
+      height: 68rpx;
+      margin: 28rpx auto 24rpx auto;
+      >image{
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .icon-tit{
+      display: block;
+      font-size: 22rpx;
+      text-align: center;
+      color: #000;
+    }
+  }
+}
+
+</style>

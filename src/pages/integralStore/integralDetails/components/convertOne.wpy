@@ -1,0 +1,315 @@
+<template>
+  <view class="i-convert-main">
+    <scroll-view scroll-y style="height: 720rpx;" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
+        <view class="h-data">
+          <view class="logo-wrap">
+            <image class="pic-inner-wrap" mode="aspectFill" src="{{showData.logo}}"></image>
+          </view>
+          <view class="right-wrap">
+            <view class="num-tit">
+              {{showData.shopPhone}}分
+            </view>
+
+            <view class="all-num">库存{{showData.shopName}}件</view>
+
+            <view class="change-tit">
+              已选:
+            </view>
+
+          </view>
+        </view>
+        <view class="change-wrap">
+          <!-- 首饰类别大类 -->
+          <view class="filter-container border-box">
+            <block wx:for="{{proGroupList}}" wx:key="{{item}}">
+              <view class="filter-content-list filter-root">
+                <view class="classes-item-head">
+                  <span class="classes-item-head-tit">{{item.name}}</span>
+                </view>
+                <view class="big-classes-list-wrap">
+                  <view
+                    catchtap="changeJewelryBigClassId"
+                    wx:for="{{item.proList}}"
+                    wx:for-item="itemT"
+                    wx:key="{{itemT.id}}"
+                    data-id="{{itemT.id}}"
+                    data-item="{{itemT}}"
+                    class="classes-item {{currentFillter.jewelryBigClassId == itemT.id ? 'classes-item-on' : ''}}"
+                  >
+                    {{itemT.parameterValue}}
+                  </view>
+                </view>
+              </view>
+            </block>
+          </view>
+
+        </view>
+
+        <view class="i-c-body">
+          <text>兑换数量</text>
+          <view class="add-subtract-wrap">
+            <view @tap="subtractNum">
+              -
+            </view>
+            <input confirm-type="done" bindinput="updateNum" maxlength="6" value="{{num}}" auto-focus/>
+            <view @tap="addNum">
+              +
+            </view>
+          </view>
+        </view>
+    </scroll-view>
+    <view class="b-btn-wrap">
+      <view class="grad b-btn" @tap="affirm">确认兑换</view>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+//通过继承自wepy.page的类创建页面逻辑
+export default class iConvertOne extends wepy.component {
+  data = {
+    // headName: '确认兑换信息',
+    currentFillter: {
+      jewelryBigClassId: ''
+    },
+    headName: '',
+    num: 1,
+    proGroupList: [
+      {
+        name: 'AAA',
+        proList: [
+          {
+            id: '10000',
+            parameterValue: 'KKKK'
+          },
+          {
+            id: '20000',
+            parameterValue: '2222'
+          }
+        ]
+      },
+      {
+        name: 'CCC',
+        proList: [
+          {
+            id: '10000',
+            parameterValue: 'KKKK'
+          },
+          {
+            id: '20000',
+            parameterValue: '2222'
+          }
+        ]
+      },
+      {
+        name: 'BBB',
+        proList: [
+          {
+            id: '10000',
+            parameterValue: 'KKKK'
+          },
+          {
+            id: '20000',
+            parameterValue: '2222'
+          }
+        ]
+      }
+    ],
+
+    jewelryList: [
+      {
+        id: '789',
+        classesName: 'KKKK'
+      },
+      {
+        id: '666',
+        classesName: '666'
+      },
+      {
+        id: '789',
+        classesName: 'KKKK'
+      },
+      {
+        id: '666',
+        classesName: '666'
+      }
+    ],
+    showData: {
+        logo: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1758343206,1224786249&fm=58&bpow=1024&bpoh=1536',
+        shopName: 'shopName',
+        shopPhone: '0775-88888888',
+        shopAddress: 'shopAddress',
+        longitude: 'longitude',
+        latitude: 22.530001,
+        shopId: 113.935364,
+        state: '店铺介绍'
+    }
+  }
+
+  methods = {
+    // 选择大类-首饰类型
+    changeJewelryBigClassId(e) {
+      if (this.currentFillter.jewelryBigClassId == e.currentTarget.dataset.item.id) {
+        this.currentFillter.jewelryBigClassId = ''
+      } else {
+        this.currentFillter.jewelryBigClassId = e.currentTarget.dataset.item.id
+      }
+    },
+    open () {
+      this.$invoke('popupBottom', 'open')
+    },
+    // 更新用户名
+    updateNum(e) {
+      this.num = e.detail.value
+    },
+    addNum () {
+      this.num = Number(this.num) + 1
+    },
+    subtractNum () {
+      if (this.num == 1) {
+        return
+      }
+      this.num = Number(this.num) - 1
+    },
+    affirm () {
+      // 积分足
+      this.$emit('affirm')
+    }
+  }
+}
+</script>
+<style lang="less">
+.i-convert-main{
+  height: 100%;
+  padding: 0 26rpx;
+  .h-data{
+    height: 194rpx;
+    display: flex;
+    background-color: #fff;
+    padding: 18rpx 0 36rpx 0;
+    border-bottom: 1px solid #ededed;
+    .logo-wrap{
+      display: inline-block;
+      vertical-align: top;
+      width: 200rpx;
+      height: 200rpx;
+      image{
+        width: 100%;
+        height: 100%;
+        border-radius: 10rpx;
+      }
+    }
+    .right-wrap{
+      display: inline-block;
+      vertical-align: top;
+      height: 172rpx;
+      padding-left: 30rpx;
+      flex: 1;
+      .num-tit{
+        font-size: 32rpx;
+        color: #fb684c;
+        margin-top: 92rpx;
+      }
+      .all-num{
+        font-size: 22rpx;
+        color: #666;
+        margin-bottom: 14rpx;
+      }
+      .change-tit{
+        font-size: 22rpx;
+        color: #333;
+      }
+    }
+  }
+  .change-wrap{
+    .filter-container {
+      flex: 1;
+      overflow: hidden;
+      .filter-root {
+        padding: 30rpx 26rpx 0 26rpx;
+        border-top: 1rpx solid #f9f9f9;
+        .classes-item-head {
+          height: 40rpx;
+          line-height: 40rpx;
+          font-size: 28rpx;
+          margin-bottom: 24rpx;
+          .classes-item-head-tit {
+            color: #333;
+          }
+        }
+        .big-classes-list-wrap {
+          font-size: 0;
+          box-sizing: border-box;
+          .classes-item {
+            box-sizing: border-box;
+            width: 192rpx;
+            display: inline-block;
+            text-align: center;
+            font-size: 28rpx;
+            padding: 16rpx 0;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            text-overflow: ellipsis;
+            background-color: #f8f8f8;
+            border: 1rpx solid #f8f8f8;
+            margin-right: 12rpx;
+            margin-bottom: 22rpx;
+            border-radius: 10rpx;
+          }
+          .classes-item-on {
+            border: 1rpx solid #fb684c;
+            color: #fb684c;
+            background-color: #FFF7F6;
+          }
+        }
+      }
+    }
+  }
+  .i-c-body{
+    padding-top: 70rpx;
+    border-top: 1px solid #ededed;
+    margin-bottom: 50rpx;
+    .add-subtract-wrap{
+      float: right;
+      view{
+        display: inline-block;
+        vertical-align: top;
+        width: 60rpx;
+        height: 54rpx;
+        line-height: 54rpx;
+        color: #999;
+        text-align: center;
+        font-weight: bold;
+        background-color: #f6f6f6;
+      }
+      input{
+        display: inline-block;
+        vertical-align: top;
+        height: 54rpx;
+        width: 68rpx;
+        margin: 0 2rpx;
+        font-size: 26rpx;
+        text-align: center;
+        color: #000;
+        background-color: #f6f6f6;
+      }
+    }
+  }
+  .b-btn-wrap{
+    height: 90rpx;
+    .b-btn{
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      font-size: 32rpx;
+      color: #fff;
+      text-align: center;
+      height: 90rpx;
+      line-height: 90rpx;
+      width: 100%;
+    }
+  }
+}
+</style>

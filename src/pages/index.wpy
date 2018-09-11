@@ -33,7 +33,7 @@
       <text class="info">{{num}}</text>
       <text class="info">{{asyncNum}}</text>
       <text class="info">{{sumNum}}</text>
-      <button @tap="plus('a')" size="mini">  +  </button>
+      <button @tap="plus('a')" size="mini">  +好  </button>
     </panel>
 
     <panel>
@@ -60,6 +60,7 @@
       <text class="testcounter">计数组件2: </text>
 
       <view class="counterview">
+        <text>好好</text>
         <counter2 :num.sync="mynum"></counter2>
       </view>
     </panel>

@@ -1,0 +1,271 @@
+<template>
+
+    <popupBottom :headName.sync="headName" @close.user="close">
+      <view class="specification-list-inner" id="parameterListScollMainH">
+        <scroll-view scroll-y style="height: 100%">
+          <!-- <block wx:if="{{item.isShow}}" wx:for="{{parametersData}}" wx:key="{{item.productId}}"> -->
+          <block wx:for="{{parametersData}}" wx:key="{{item.productId}}" wx:if="{{item.isShow}}">
+            <view class="parameter-list-tit-h">
+              <image mode="parameterList" class="parameter-list-tit-h-icon" src="/images/parameter-left-icon.png"></image>
+              <text class="parameter-list-product-name">{{item.name}}</text>
+            </view>
+            <!-- <block wx:if="{{page.value}}" wx:for-items="{{item.child}}" wx:for-item="page" wx:key="item"> -->
+            <block wx:for-items="{{item.child}}" wx:for-item="page" wx:key="item" wx:if="{{page.value}}">
+              <view bindtap='openSpecification' class="specification-navigator" hover-class="navigator-hover" data-sign="{{item.productId}}">
+                <view class="parameter-list-navigator-text">
+                  {{page.name}}
+                </view>
+                <view class="parameter-list-navigator-arrow">
+                  {{page.value}}
+                </view>
+              </view>
+            </block>
+          </block>
+        </scroll-view>
+      </view>
+    </popupBottom>
+</template>
+<script>
+import wepy from 'wepy';
+import api from 'Api';
+import popupBottom from 'common/popupBottom'
+//通过继承自wepy.page的类创建页面逻辑
+export default class parameterList extends wepy.component {
+
+
+  components = {
+    popupBottom: popupBottom
+  }
+
+  props = {
+    styleId: {
+      type: String,
+      default: ''
+    }
+  }
+
+  data = {
+    headName: '产品参数',
+    parametersData: [], // 产品参数列表
+    parameterPopup: false
+  }
+
+  // 产品参数
+  async productParameters () {
+    let _self = this
+    let res = await api.productParameters({styleId: this.styleId})
+    var configurationData = {
+      colorSmallClass: new Set(),
+      gemSmallClass: new Set(),
+      jewelrySmallClass: new Set(),
+      handUnit: new Set(),
+      weightUnit: new Set(),
+      mainSpec: new Set(),
+      mainWeight: new Set(),
+      colour: new Set(),
+      neatness: new Set(),
+      blackout: new Set(),
+      polishing: new Set(),
+      symmetry: new Set(),
+      fluorescent: new Set(),
+      deputySpec: new Set(),
+      deputyWeight: new Set(),
+      certificateName: new Set(),
+      certificateNo: new Set(),
+      detection: new Set()
+    }
+    // 去重拼接
+    for (let i of res.dataList) {
+      for (let j in i) {
+        if (i[j]) {
+          if (configurationData[j]) {
+            configurationData[j].add(i[j])
+          }
+        }
+      }
+    }
+    // 转换为字符串
+    for (let i in configurationData) {
+      let transitionData = ''
+      for (let j of [...configurationData[i]]) {
+        if (transitionData) {
+          transitionData += `、${j}`
+        } else {
+          transitionData += j
+        }
+      }
+      configurationData[i] = transitionData
+    }
+    // 组合
+    _self.parametersData = [
+      {
+        name: '款式基本信息',
+        isShow: configurationData.handUnit || configurationData.colorSmallClass || configurationData.gemSmallClass || configurationData.jewelrySmallClass || configurationData.weightUnit,
+        child: [
+          {
+            name: '手寸',
+            value: configurationData.handUnit,
+          },
+          {
+            name: '金属成色',
+            value: configurationData.colorSmallClass
+          },
+          {
+            name: '宝石小类',
+            value: configurationData.gemSmallClass
+          },
+          {
+            name: '首饰小类',
+            value: configurationData.jewelrySmallClass
+          },
+          {
+            name: '重量',
+            value: configurationData.weightUnit
+          }
+        ]
+      },
+      {
+        name: '主石信息',
+        isShow: configurationData.mainSpec || configurationData.mainWeight || configurationData.colour || configurationData.neatness || configurationData.blackout || configurationData.polishing || configurationData.symmetry || configurationData.fluorescent || configurationData.mainPrice,
+        child: [
+          {
+            name: '主石规格',
+            value: configurationData.mainSpec
+          },
+          {
+            name: '主石重',
+            value: configurationData.mainWeight
+          },
+          {
+            name: '颜色',
+            value: configurationData.colour
+          },
+          {
+            name: '净度',
+            value: configurationData.neatness
+          },
+          {
+            name: '切工',
+            value: configurationData.blackout
+          },
+          {
+            name: '抛光',
+            value: configurationData.polishing
+          },
+          {
+            name: '对称',
+            value: configurationData.symmetry
+          },
+          {
+            name: '荧光',
+            value: configurationData.fluorescent
+          },
+          {
+            name: '主石额',
+            value: configurationData.mainPrice
+          }
+        ]
+      },
+      {
+        name: '副石信息',
+        isShow: configurationData.deputySpec || configurationData.deputyWeight,
+        child: [
+          {
+            name: '副石规格',
+            value: configurationData.deputySpec
+          },
+          {
+            name: '副石重',
+            value: configurationData.deputyWeight
+          }
+        ]
+      },
+      {
+        name: '证书',
+        isShow: configurationData.certificateName || configurationData.certificateNo || configurationData.detection,
+        child: [
+          {
+            name: '证书名',
+            value: configurationData.certificateName
+          },
+          {
+            name: '证书号',
+            value: configurationData.certificateNo
+          },
+          {
+            name: '检测机构',
+            value: configurationData.detection
+          }
+        ]
+      }
+    ]
+    _self.$apply()
+  }
+
+  methods = {
+    open () {
+      if (!this.parametersData.length) {
+        this.productParameters()
+      }
+      this.$invoke('popupBottom', 'open')
+    },
+    close () {
+      this.$emit('close')
+    }
+  }
+
+  onLoad () {
+    
+  }
+}
+</script>
+<style lang="less">
+
+/* 图文排序 */
+.parameter-list-tit-h {
+  /* overflow: hidden; */
+  /* height: 28rpx; */
+  margin-left: 26rpx;
+  margin-top: 20rpx;
+  margin-bottom: 0;
+}
+.parameter-list-tit-h:first-child {
+   margin-top: 0;
+}
+
+.parameter-list-tit-h-icon {
+  display: inline-block;
+  width: 6rpx;
+  vertical-align: middle;
+  height: 36rpx;
+  margin-right: 10rpx;
+}
+.parameter-list-product-name {
+  display: inline-block;
+  vertical-align: middle;
+  max-width: 500rpx;
+  margin-right: 20rpx;
+  font-size: 28rpx;
+  line-height: 28rpx;
+  /* line-height: 34rpx; */
+  color: #333;
+}
+
+.parameter-list-navigator-text {
+  width: 160rpx;
+  font-size: 26rpx;
+  color: #888999;
+}
+.parameter-list-navigator-arrow {
+  flex: 1;
+  width: 100rpx;
+  font-size: 26rpx;
+  color: #555;
+  padding-right: 26rpx;
+  position: relative;
+  word-break:break-all;
+}
+.specification-list-inner{
+  flex: 1;
+}
+</style>

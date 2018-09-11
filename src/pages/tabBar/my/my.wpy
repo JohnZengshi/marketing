@@ -1,39 +1,206 @@
-<style lang="less">
-
-
-</style>
 <template>
-  <view class="flex flex_column margin_left margin_right font_normal">
-    我的界面
+  <view class="my-main">
+
+    <!-- 头像信息 -->
+    <myHeader :userInfo.sync="userInfo"></myHeader>
+    
+    <!-- 数据集合 -->
+    <numBox :userInfo.sync="userInfo"></numBox>
+
+    <!-- 我的应用列表 -->
+    <applyList></applyList>
+  
+    <!-- 活动轮播图 -->
+    <activitySwiper></activitySwiper>
+
+    <!-- 商家服务 -->
+    <serviceList></serviceList>
+
+    <!-- 底部导航 -->
+    <menu :menu.sync="currentMenu" :userId.sync="userId"></menu>
   </view>
 </template>
 
 <script>
 import wepy from 'wepy';
+import api from 'Api'
+import menu from 'common/menu';
+import myHeader from './components/header';
+import numBox from './components/numBox';
+import applyList from './components/applyList';
+import activitySwiper from './components/activitySwiper';
+import serviceList from './components/serviceList';
 
-  //通过继承自wepy.page的类创建页面逻辑
-  export default class Index extends wepy.page {
-      //可用于页面模板绑定的数据
-      data = {
-          list: [
-            {
-              hao: '123'
-            }
-          ],
-          motto: 'Hello World',
-          userInfo: {}
-      };
+//通过继承自wepy.page的类创建页面逻辑
+export default class my extends wepy.page {
+  config = {
+    "navigationBarTitleText": "我的",
+    "navigationBarBackgroundColor": "#FB6A4C",
+    "navigationBarTextStyle": "#fff"
+  };
 
-      //事件处理函数(集中保存在methods对象中)
-      methods = {
-          bindViewTap () {
-              console.log('button clicked');
-          }
-      };
-
-      //页面的生命周期函数
-      onLoad() {
-          console.log('onLoad');
-      };
+  components = {
+    menu: menu,
+    myHeader: myHeader,
+    numBox: numBox,
+    applyList: applyList,
+    activitySwiper: activitySwiper,
+    serviceList: serviceList
   }
+  /**
+   * 页面的初始数据
+   */
+  data = {
+    currentMenu: 'C',
+    userId: wx.getStorageSync('userId'),
+    isBill: 'N',
+    score: '2', // 签到成功加的分值
+    userInfo: {
+      couponNum: 'couponNum',
+      integralNum: '1000',
+      balance: 'balance',
+      qcSrc: 'http://jzm-1252389350.cosgz.myqcloud.com/iconHeaded/%25QH74RAN7GT%5D%24%5DK%7DJ5RCVXM1535783933372.png',
+      nickName: 'nickName',
+      faceSrc: 'http://jzm-1252389350.cosgz.myqcloud.com/iconHeaded/%25QH74RAN7GT%5D%24%5DK%7DJ5RCVXM1535783933372.png',
+      gradeName: 'gradeName',
+      shopName: 'shopName',
+      member: '10000',
+      sex: '男',
+      phone: '1564654545'
+    },
+    isSignInPopup: false, // 签到成功弹窗
+    memberDetailPopup: false, // 会员详情弹窗
+    shareData: {
+      title: '猜金价',
+      desc: "猜金价",
+      imageUrl: '',
+      path: '/pages/tabBar/merchant/merchant'
+    }
+  }
+
+  // 更新用户基本信息
+  // async smallProgramUserInfo () {
+  //   console.log('更新用户基本信息', this.userId)
+  //   let _self = this
+  //   let json = await api.smallProgramUserInfo({userId: _self.userId})
+  //   // _self.userInfo = json
+  //   // _self.shareData.title = '西金'
+  //   // _self.$apply()
+  // }
+
+  // 电子账单
+  async electronicBilling () {
+    let _self = this
+    let json = await api.electronicBilling({userId: _self.userId})
+    // if (json.dataList.length) {
+    //   this.isBill = 'Y'
+    // }
+    // _self.$apply()
+  }
+
+  methods = {
+    filterScore (parm) {
+      if (Number(parm) > 999) {
+        return '999+'
+      }
+      return parm
+    },
+
+    // 签到
+    _rportByWeChat () {
+      if (this.userInfo.sign != 'N') {
+        return
+      }
+      let options = {
+        memberId: wx.getStorageSync('memberId'),
+      }
+      requestData(rportByWeChat, options)
+        .then(res => {
+          this.userInfo.score = Number(this.userInfo.score) + Number(res.score)
+          this.userInfo.sign = 'Y'
+          this.setData({
+            score: res.score,
+            isSignInPopup: !this.isSignInPopup
+          })
+          setTimeout(() => {
+            this.setData({
+              isSignInPopup: !this.isSignInPopup,
+              userInfo: this.userInfo
+            })
+          }, 3000)
+        })
+      
+    },
+
+    onShareAppMessage: function (res) {
+      return this.data.shareData
+    },
+
+    // 分享
+    handleTapShareButton() {
+      if (!((typeof wx.canIUse === 'function') && wx.canIUse('button.open-type.share'))) {
+        wx.showModal({
+          title: '当前版本不支持转发按钮',
+          content: '请升级至最新版本微信客户端',
+          showCancel: false
+        })
+      }
+    },
+
+    setMember () {
+      this.setData({
+        memberDetailPopup: !this.data.memberDetailPopup
+      })
+    }
+  }
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad (options) {
+    let self = this
+    this.$parent.getUserInfo(function (userInfo) {
+      if (userInfo) {
+        self.userInfo = userInfo
+      }
+      self.$apply()
+    })
+    // this.electronicBilling()
+  }
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow () {
+    // this.userInfo = this.$parent.globalData.userInfo
+    this.electronicBilling()
+  }
+
+
+
+}
 </script>
+<style lang="less">
+.my-main{
+  background-color: #f4f4f4;
+}
+/* 内容 */
+
+.button-share {
+   /* display: none;  */
+  position: absolute!important; 
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.01;
+  border: 1rpx solid red;
+}
+.mr-10{
+  margin-right: 10rpx;
+}
+.opacity-08{
+  opacity: 0.8;
+}
+.mt-10{
+  margin-top: 12rpx;
+}
+</style>

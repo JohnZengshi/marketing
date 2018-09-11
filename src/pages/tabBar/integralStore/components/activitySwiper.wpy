@@ -1,0 +1,48 @@
+<template>
+  <view class="activity-swiper-box">
+    <swiper style="height: 206rpx;"
+        indicator-dots="true"
+        indicator-active-color="#2993f8"
+        autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+
+        <block wx:for="{{showList}}" wx:key="item">
+          <swiper-item>
+            <navigator class="swiper-item {{item}}" hover-class="none" url="../../integralStore/discountCoupon/discountCoupon?ticketId='ticketId'">
+              <image style="width: 100%;height:100%;"
+                mode="aspectFill" src="{{item.url}}"></image>
+            </navigator>
+          </swiper-item>
+        </block>
+
+    </swiper>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+import api from 'Api'
+//通过继承自wepy.page的类创建页面逻辑
+export default class parameterList extends wepy.component {
+  props = {
+    showList: {
+      type: Array,
+      default: []
+    }
+  }
+
+  data = {
+    autoplay: true,
+    interval: 4000,
+    duration: 500,
+  }
+}
+</script>
+<style lang="less">
+.activity-swiper-box{
+  height: 206rpx;
+  margin-bottom: 66rpx;
+  .swiper-item{
+    display: block;
+    height: 206rpx;
+  }
+}
+</style>

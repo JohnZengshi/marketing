@@ -1,0 +1,157 @@
+<template lang="wxml">
+  <view class="filter-menu-wrap">
+
+    <view class="filter-item" bindtap="openSOrt">
+        <text class="text-tit ml26" bindtap="openFilterPopup">{{currentFillter.orderByName}}</text>
+        <a class='xj-sort-icon'>
+          <image wx:if="{{currentFillter.orderBy == 1}}" class="xj-sort-bg-one" src="/images/synthesize-sort-normal.png"
+        mode="aspectFit"></image>
+        <image wx:else class="xj-sort-bg-one" src="/images/synthesize-sort-on.png"
+        mode="aspectFit"></image>
+        </a>
+    </view>  
+
+    <view class="filter-item" bindtap="setPriceSort">
+      <text class="text-tit">价格</text>
+      <a class='xj-sort-icon'>
+
+        <image wx:if="{{currentFillter.priceSortBy == 3}}" mode="aspectFit" class="xj-sort-bg-two" src="/images/price-sort-normal.png"></image>
+
+        <image wx:if="{{currentFillter.priceSortBy == 1}}" mode="aspectFit" class="xj-sort-bg-two" src="/images/price-sort-litre.png"></image>
+
+        <image wx:if="{{currentFillter.priceSortBy == 2}}" mode="aspectFit" class="xj-sort-bg-two" src="/images/price-sort-drop.png"></image>
+
+      </a>
+    </view>
+
+    <view class="filter-right">
+      <text class="text-tit mr20" style="color: #999;" bindtap="setGoldValue" wx:if="{{isGold == 1}}">金价</text>
+      <view class="filter-right-line mr20"></view>
+      <text class="text-tit mr20" bindtap='setClassPopup'>筛选</text>
+    </view>
+    <!-- 综合排序弹窗 -->
+    <filterPopup @uploadMenu.user="uploadMenu"></filterPopup>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import filterPopup from  './filterPopup';
+import classesFilter from  './classesFilter';
+import api from '@/api/api'
+export default class filterMenu extends wepy.component {
+    components = {
+      filterPopup: filterPopup,
+    };
+
+    data = {
+      isGold: '',
+      isfilterPopup: false,
+      currentFillter: {
+        orderByName: '综合排序',
+        priceSortBy: 3, // 价格排序
+      }
+    };
+
+    async goldPriceEnableInfo () {
+      let that = this;
+      const json = await api.goldPriceEnableInfo()
+      this.isGold = json.status
+      that.$apply()
+    };
+
+    methods = {
+      uploadMenu (parm) {
+        Object.assign(this.currentFillter, parm)
+        this.$emit('update', this.currentFillter)
+        // console.log('this.currentFillter', this.currentFillter)
+      },
+      openSOrt () {
+
+      },
+      openFilterPopup () {
+        this.$invoke('filterPopup', 'open');
+        // this.isfilterPopup = true
+      },
+      setPriceSort () {
+        var orderBy = this.currentFillter.priceSortBy
+        if (orderBy == '1') {
+          orderBy = '2'
+        } else if (orderBy == '2') {
+          orderBy = '3'
+        } else if (orderBy == '3') {
+          orderBy = '1'
+        }
+        this.currentFillter.priceSortBy = orderBy
+        this.$emit('update', this.currentFillter)
+        // this.seekMallsClassification()
+      },
+      setGoldValue () {
+        this.$emit('openGoleValue')
+      },
+      setClassPopup () {
+        this.$emit('openClassesFilter')
+      }
+    };
+
+    events = {};
+    //页面的生命周期函数
+    onLoad() {
+        this.goldPriceEnableInfo()
+    };
+}
+</script>
+
+<style lang="less">
+/* 筛选中部 */
+.filter-menu-wrap{
+  background-color: #fff;
+  /* height: 80rpx; */
+  /* padding: 10rpx 0; */
+}
+.filter-item{
+  display: inline-block;
+  vertical-align: top;
+}
+.xj-sort-icon{
+  display: inline-block;
+  width: 40rpx;
+  height: 80rpx;
+  line-height: 74rpx;
+  text-align: center;
+  margin-right: 60rpx;
+}
+.xj-sort-bg-one{
+  width: 14rpx;
+  height: 14rpx;
+  vertical-align: middle;
+}
+.xj-sort-bg-two{
+  width: 20rpx;
+  height: 20rpx;
+  vertical-align: middle;
+}
+.filter-right{
+  float: right;
+}
+.text-tit{
+  display: inline-block;
+  vertical-align: top;
+  font-size: 28rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  color: #666;
+}
+.filter-right-line{
+  border-left: 1px solid #ededed;
+  height: 50rpx;
+  display: inline-block;
+  margin-top: 15rpx;
+}
+.mr20{
+  margin-right: 20rpx;
+}
+.ml26{
+  margin-left: 26rpx;
+}
+</style>

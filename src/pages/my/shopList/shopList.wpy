@@ -1,0 +1,205 @@
+<template>
+  <view class="shop-list-main">
+    <block wx:for="{{showList}}" wx:key="{{item}}">
+      <view class="item">
+        <view class="logo-wrap">
+          <image class="pic-inner-wrap" mode="aspectFill" src="{{item.logo}}"></image>
+        </view>
+        <view class="right-wrap">
+
+          <view class="shop-name">{{item.shopName}}</view>
+
+          <view class="tit address-tit">
+            {{item.address}}
+            <image mode="aspectFill" src="/images/my/location.png"></image>
+          </view>
+
+          <view class="tit phone-tit">
+            {{item.phone}}
+            <image mode="aspectFill" src="/images/my/phone.png"></image>
+          </view>
+
+        </view>
+      </view>
+    </block>
+  </view>
+</template>
+<script>
+import api from 'Api'
+import wepy from 'wepy';
+//通过继承自wepy.page的类创建页面逻辑
+export default class shopList extends wepy.page {
+  data = {
+    showList: [
+      {
+        logo: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1758343206,1224786249&fm=58&bpow=1024&bpoh=1536',
+        shopName: 'shopName',
+        phone: '0775-88888888',
+        address: 'address',
+        longitude: 'longitude',
+        latitude: 22.530001,
+        id: 113.935364,
+        state: '店铺介绍'
+      },
+      {
+        logo: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1758343206,1224786249&fm=58&bpow=1024&bpoh=1536',
+        shopName: 'shopName',
+        phone: '0775-88888888',
+        address: 'address',
+        longitude: 'longitude',
+        latitude: 22.530001,
+        id: 113.935364,
+        state: '店铺介绍'
+      },
+      {
+        logo: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1758343206,1224786249&fm=58&bpow=1024&bpoh=1536',
+        shopName: 'shopName',
+        phone: '0775-88888888',
+        address: 'address',
+        longitude: 'longitude',
+        latitude: 22.530001,
+        id: 113.935364,
+        state: '店铺介绍'
+      },
+      {
+        logo: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1758343206,1224786249&fm=58&bpow=1024&bpoh=1536',
+        shopName: 'shopName',
+        phone: '0775-88888888',
+        address: 'address',
+        longitude: 'longitude',
+        latitude: 22.530001,
+        id: 113.935364,
+        state: '店铺介绍'
+      },
+      {
+        logo: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1758343206,1224786249&fm=58&bpow=1024&bpoh=1536',
+        shopName: 'shopName',
+        phone: '0775-88888888',
+        address: 'address',
+        longitude: 'longitude',
+        latitude: 22.530001,
+        id: 113.935364,
+        state: '店铺介绍'
+      },
+      {
+        logo: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1758343206,1224786249&fm=58&bpow=1024&bpoh=1536',
+        shopName: 'shopName',
+        phone: '0775-88888888',
+        address: 'address',
+        longitude: 'longitude',
+        latitude: 22.530001,
+        id: 113.935364,
+        state: '店铺介绍'
+      },
+      {
+        logo: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1758343206,1224786249&fm=58&bpow=1024&bpoh=1536',
+        shopName: 'shopName',
+        phone: '0775-88888888',
+        address: 'address',
+        longitude: 'longitude',
+        latitude: 22.530001,
+        id: 113.935364,
+        state: '店铺介绍'
+      },
+      {
+        logo: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1758343206,1224786249&fm=58&bpow=1024&bpoh=1536',
+        shopName: 'shopName',
+        phone: '0775-88888888',
+        address: 'address',
+        longitude: 'longitude',
+        latitude: 22.530001,
+        id: 113.935364,
+        state: '店铺介绍'
+      },
+      {
+        logo: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1758343206,1224786249&fm=58&bpow=1024&bpoh=1536',
+        shopName: 'shopName',
+        phone: '0775-88888888',
+        address: 'address',
+        longitude: 'longitude',
+        latitude: 22.530001,
+        id: 113.935364,
+        state: '店铺介绍'
+      },
+      {
+        logo: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1758343206,1224786249&fm=58&bpow=1024&bpoh=1536',
+        shopName: 'shopName',
+        phone: '0775-88888888',
+        address: 'address',
+        longitude: 'longitude',
+        latitude: 22.530001,
+        id: 113.935364,
+        state: '店铺介绍'
+      }
+    ]
+  }
+
+  async findShopListByProductId (options) {
+    let json = api.findShopListByProductId(options)
+    // this.showList = json.dataList
+  }
+
+  onLoad (options) {
+    this.findShopListByProductId({productIds: options.id})
+  }
+}
+</script>
+<style lang="less">
+.shop-list-main{
+  min-height: 100%;
+  background-color: #f6f6f6;
+  .item{
+    padding: 0 30rpx;
+    height: 194rpx;
+    display: flex;
+    background-color: #fff;
+    .logo-wrap{
+      display: inline-block;
+      vertical-align: top;
+      width: 150rpx;
+      height: 150rpx;
+      margin-top: 22rpx;
+      image{
+        width: 100%;
+        height: 100%;
+        border-radius: 10rpx;
+      }
+    }
+    .right-wrap{
+      display: inline-block;
+      vertical-align: top;
+      margin-top: 22rpx;
+      height: 172rpx;
+      padding-left: 30rpx;
+      flex: 1;
+      border-bottom: 1px solid #ededed;
+      .shop-name{
+        font-size: 30rpx;
+        color: #333;
+      }
+      .tit{
+        font-size: 24rpx;
+        image{
+          margin-left: 20rpx;
+        }
+      }
+      .address-tit{
+        color: #999;
+        margin-top: 10rpx;
+        image{
+          width: 24rpx;
+          height: 30rpx;
+        }
+      }
+      .phone-tit{
+        margin-top: 32rpx;
+        color: #fc8d4f;
+        image{
+          width: 24rpx;
+          height: 24rpx;
+        }
+      }
+    }
+  }
+}
+</style>

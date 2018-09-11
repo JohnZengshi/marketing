@@ -1,0 +1,43 @@
+<!--会员信息-->
+<template>
+  <!--用户名-->
+  <view class="user-name-main">
+    <view class="user-name">
+      <!-- <view class="navigator-text">姓名</view> -->
+      <view class="navigator-text-inner">
+        <input confirm-type="done" bindblur="updateUser" maxlength="6" placeholder="请输入用户名" value="{{userName}}" auto-focus/>
+      </view>
+      <!-- <view class="navigator-arrow"></view> -->
+    </view>
+  </view>
+</template>
+<script>
+import wepy from "wepy"
+import api from 'Api'
+export default class mUserName extends wepy.page {
+  data = {
+    userName: '' // 用户名
+  }
+
+  // 修改会员信息
+  async updateMember (parm) {
+    let options = {
+      memberId: wx.getStorageSync('memberId'),
+      shopId: wx.getStorageSync('shopId'),
+      userName: parm
+    }
+    let json = await api.updateMember(options)
+  }
+
+  methods = {
+    updateUser () {
+      this.userName = e.detail.value
+      this.updateMember(e.detail.value)
+    }
+  }
+
+  onLoad (options) {
+    this.userName = options.name
+  }
+}
+</script>

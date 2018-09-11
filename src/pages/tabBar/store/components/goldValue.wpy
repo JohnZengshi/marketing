@@ -1,0 +1,223 @@
+<!-- 金价 -->
+<template name="goldValue">
+  <view catchtap='close' class="gold-value-popup-main {{goldValuePopup ? 'gold-value-popup-main-on' : ''}}">
+    <view class="gold-value-inner {{goldValuePopup ? 'gold-slide-fade-leave-active' : 'gold-list-slide-leave-active'}}" catchtap='relieveClick'>
+
+      <view class="close-icon" bindtap="close">
+        <image class="close-icon-inner" src="/images/close-icon.png"></image>
+      </view>
+
+      <view class="gold-head">
+        <view class="gold-head-item" data-location="N" @tap="setGoldValueDetailCut">
+          <view class="gold-head-item_H">
+            <text class="gold-item-t {{goldValueDetailCut == 'N' ? 'gold-item-on' : ''}}">金价信息</text>
+            <view wx:if="{{goldValueDetailCut == 'N'}}" class="gold-on-icon"></view>
+          </view>
+        </view>
+        <view class="gold-head-item" data-location="Y" @tap="setGoldValueDetailCut">
+          <view class="gold-head-item_H">
+            <text class="gold-item-t {{goldValueDetailCut == 'Y' ? 'gold-item-on' : ''}}">折扣信息</text>
+            <view wx:if="{{goldValueDetailCut == 'Y'}}" class="gold-on-icon"></view>
+          </view>
+        </view>
+      </view>
+
+      <view class="gold-inner-head">
+        <text class="inner-head-item">名称</text>
+        <text wx:if="{{goldValueDetailCut == 'N'}}" class="inner-head-item">金价(元/g)</text>
+        <text wx:else class="inner-head-item">折扣</text>
+      </view>
+
+      <view class="gold-value-list-inner">
+        <scroll-view scroll-y style="height: 750rpx;box-sizing: border-box;" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
+
+          <block wx:if="{{goldValueDetailCut == 'N'}}" wx:for="{{goldValueList}}" wx:key="{{item}}">
+            <view class="gold-inner-wrap">
+              <text class="inner-scroll-item">{{item.name}}</text>
+              <text class="inner-scroll-item">{{item.price}}</text>
+            </view>
+          </block>
+
+          <block wx:if="{{goldValueDetailCut == 'Y'}}" wx:for="{{discountList}}" wx:key="{{item}}">
+            <view class="gold-inner-wrap">
+              <text class="inner-scroll-item">{{item.name}}</text>
+              <text class="inner-scroll-item">{{item.discount}}%</text>
+            </view>
+          </block>
+
+        </scroll-view>
+      </view>
+
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy';
+  import api from '@/api/api'
+
+  export default class goldValue extends wepy.component {
+    data = {
+      goldValuePopup: false,
+      goldValueList: [],
+      discountList: [],
+      goldValueDetailCut: 'N'
+    }
+
+    // 金价信息
+    async goldPriceInfo () {
+      let json = await api.goldPriceInfo()
+      this.goldValueList = json.dataList
+      this.$apply()
+    }
+
+    // 折扣信息
+    async jewelryPriceInfo () {
+      let json = await api.jewelryPriceInfo()
+      this.discountList = json.dataList
+      this.$apply()
+    }
+
+    methods = {
+      // 金价信息和折扣信息切换
+      setGoldValueDetailCut (e) {
+        this.goldValueDetailCut = e.currentTarget.dataset.location
+      },
+      // 设置金价详情弹窗
+      close () {
+        this.goldValuePopup = false
+      },
+      open () {
+        if (!this.goldValueList.length) {
+          this.goldPriceInfo()
+        }
+        if (!this.discountList.length) {
+          this.jewelryPriceInfo()
+        }
+        this.goldValuePopup = true
+      },
+    }
+  }
+</script>
+<style lang="less">
+.gold-value-popup-main{
+  background-color: rgba(0,0,0,0);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  visibility: hidden;
+  transition: all .5s ease;
+}
+.gold-value-popup-main-on{
+  background-color: rgba(0,0,0,.3);
+  visibility: visible;
+}
+.gold-value-inner{
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 900rpx;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: #fff;
+  border-radius: 26rpx 26rpx 0 0;
+}
+.close-icon{
+  position: absolute;
+  right: 20rpx;
+  top: 20rpx;
+  width: 40rpx;
+  height: 40rpx;
+}
+.close-icon-inner{
+  width: 40rpx;
+  height: 40rpx;
+}
+/* 头部 */
+.gold-head{
+  display: flex;
+  margin-top: 20rpx;
+}
+.gold-head-item{
+  position: ralative;
+  flex: 1;
+}
+.gold-on-icon{
+  position: absolute;
+  bottom: 0;
+  height: 6rpx;
+  width: 100%;
+  border-radius: 6rpx;
+  background-color: #2993f8;
+}
+.gold-item-t{
+  font-size: 32rpx;
+  color: #999;
+}
+.gold-item-on{
+  color: #2993f8;
+}
+.gold-head-item:first-child{
+  text-align: right;
+}
+.gold-head-item_H{
+  position: relative;
+  display: inline-block;
+  height: 60rpx;
+  line-height: 60rpx;
+  margin-right: 45rpx;
+}
+.gold-head-item_H:last-child{
+  margin-left: 45rpx;
+}
+
+.gold-inner-head{
+  padding: 0 26rpx;
+  display: flex;
+}
+.inner-head-item{
+  flex: 1;
+  display: inline-block;
+  text-align: center;
+  color: #999;
+  font-size: 28rpx;
+  padding: 20rpx 0;
+}
+
+.gold-value-list-inner{
+  flex: 1;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.gold-inner-wrap{
+  margin: 0 26rpx;
+  display: flex;
+}
+.gold-inner-wrap:nth-child(2n-1) {
+  background-color: #f4f4f4;
+}
+.inner-scroll-item{
+  flex: 1;
+  display: inline-block;
+  text-align: center;
+  color: #333;
+  font-size: 28rpx;
+  padding: 30rpx 0;
+}
+/* 外壳动画控制 */
+.gold-list-slide-leave-active {
+  opacity: 0.3;
+  transform: translateY(100%);
+  transition: all 0.4s ease;
+}
+.gold-slide-fade-leave-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.4s ease;
+}
+</style>
