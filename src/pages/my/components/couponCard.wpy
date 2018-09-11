@@ -1,10 +1,11 @@
 <template>
   <view class="couponContent">
     <view class="backPic" wx:if="{{useStatus == '1'}}">
-        <image wx:if="{{couponType == '1'}}" src="/images/mine/2优惠券@3x.png"></image>
+        <!-- <image wx:if="{{couponType == '1'}}" src="/images/mine/2优惠券@3x.png"></image>
         <image wx:elif="{{couponType == '2'}}" src="/images/mine/2.1优惠券@3x.png"></image>
         <image wx:elif="{{couponType == '3'}}" src="/images/mine/2.2优惠券@3x.png"></image>
-        <image wx:elif="{{couponType == '4'}}" src="/images/mine/2.3优惠券@3x.png"></image>
+        <image wx:elif="{{couponType == '4'}}" src="/images/mine/2.3优惠券@3x.png"></image> -->
+        <image src="{{couponCardData.style}}"></image>
     </view>
     <view class="backPic" wx:else="{{useStatus == '2' || useStatus == '3'}}">
         <image src="/images/mine/2.4优惠券－使用／过期@3x.png"></image>
@@ -12,35 +13,36 @@
     <view class="content flex flex-r flex-pack-justify flex-align-center">
         <view class="left flex flex-v flex-pack-center">
             <block>
-                <view class="couponType01 {{ useStatus == '1'?'gray':'' }}" wx:if="{{couponType == '1'}}">购物券</view>
-                <view class="couponType02 {{ useStatus == '1'?'gray':'' }}" wx:elif="{{couponType == '2'}}">购物券</view>
-                <view class="couponType03 {{ useStatus == '1'?'gray':'' }}" wx:elif="{{couponType == '3'}}">退货券</view>
-                <view class="couponType04 {{ useStatus == '1'?'gray':'' }}" wx:elif="{{couponType == '4'}}">售后券</view>
+                <!-- <view class="couponType01 {{ useStatus == '1'?'gray':'' }}" wx:if="{{couponType == '1'}}">购物券</view>
+                <view class="couponType02 {{ useStatus == '1'?'gray':'' }}" wx:elif="{{couponType == '2'}}">退货券</view>
+                <view class="couponType03 {{ useStatus == '1'?'gray':'' }}" wx:elif="{{couponType == '3'}}">售后券</view>
+                <view class="couponType04 {{ useStatus == '1'?'gray':'' }}" wx:elif="{{couponType == '4'}}">售后券</view> -->
+                <view class="{{ useStatus == '1'?'':'gray' }}">{{couponCardData.typeName}}</view>
             </block>
-            <view class="flex flex-r flex-align-center {{ useStatus == '1'?'gray':'' }}">
-                <text>{{couponCardData.head}}</text>
-                <view>限店铺使用</view>
+            <view class="flex flex-r flex-align-center {{ useStatus == '1'?'':'gray' }}">
+                <text>{{couponCardData.subTypeName}}</text>
+                <view>{{couponCardData.limitShopName}}</view>
             </view>
-            <view>{{couponCardData.couponDes}}</view>
-            <view>有效期:{{couponCardData.validityDate}}</view>
+            <view wx:if="{{couponCardData.limitProductName}}">{{couponCardData.limitProductName}}</view>
+            <view wx:if="{{couponCardData.validityDay && couponCardData.validityDay != -1}}">有效期:{{couponCardData.validityDay}}</view>
         </view>
-        <view  class="{{ useStatus == '1'?'gray':'' }} rigth flex flex-v flex-pack-center flex-align-center">
+        <view  class="{{ useStatus == '1'?'':'gray' }} rigth flex flex-v flex-pack-center flex-align-center">
             <block>
-                <view wx:if="{{couponType == '1'}}" class="couponVal couponVal01">
+                <view wx:if="{{couponCardData.couponValType == '0'}}" class="couponVal couponVal01">
                     <text>￥</text>
-                    <text>{{couponCardData.couponVal}}</text>
+                    <text>{{couponCardData.termMoney}}</text>
                 </view>
-                <view wx:elif="{{couponType == '2'}}" class="couponVal couponVal02">
-                    <text>{{couponCardData.couponVal}}</text>
+                <view wx:elif="{{couponCardData.couponValType == '1'}}" class="couponVal couponVal02">
+                    <text>{{couponCardData.deduction}}</text>
                     <text>折</text>
                 </view>
-                <view wx:elif="{{couponType == '3'}}" class="couponVal couponVal03">
+                <!-- <view wx:elif="{{couponType == '3'}}" class="couponVal couponVal03">
                     <text>￥</text>
                     <text>{{couponCardData.couponVal}}</text>
                 </view>
                 <view wx:elif="{{couponType == '4'}}" class="couponVal couponVal04">
                     <text>{{couponCardData.couponVal}}</text>
-                </view>
+                </view> -->
             </block>
             <view wx:if="{{couponCardData.explain}}" class="explain">{{couponCardData.explain}}</view>
             <view wx:if="{{couponCardData.tip}}" class="tip">{{couponCardData.tip}}</view>
@@ -119,7 +121,8 @@
                         margin-right: 4rpx;
                     }
                     >view{
-                        width: 90rpx;
+                        // width: 90rpx;
+                        padding: 0 5rpx 0 7rpx;
                         height: 28rpx;
                         font-size: 16rpx;
                         text-align: center;

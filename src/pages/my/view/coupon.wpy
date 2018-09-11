@@ -179,23 +179,74 @@
     };
     onLoad() {};
     async onShow() {
-      this.haveUsedData = await this.getTicketList(1);
-      this.unUsedData = await this.getTicketList(2);
-      this.expiredData = await this.getTicketList(3);
+      let haveUsedData = await this.getTicketList(1);
+      let unUsedData = await this.getTicketList(2);
+      let expiredData = await this.getTicketList(3);
+      this.haveUsedData =await this.resetCouponData(haveUsedData);
+      this.unUsedData =await this.resetCouponData(unUsedData);
+      this.expiredData =await this.resetCouponData(expiredData);
       this.$apply();
       console.log(this.coupon);
-    }
+    };
     // 获取优惠券列表
     /**
-     * @param  {[String]}    type   [优惠券类型]
+     * @param  {[String]}    type   [优惠券类型：1未使用，2已使用，3已过期]
+     * @param  {[String]}  orderId  [订单ID]
      * @return {[Array]}            [数组]
      */
-    async getTicketList(type="1") {
+    async getTicketList(type="1",orderId) {
       let {shopId,userId,memberId} = this.$parent.globalData;
       let option = {shopId,userId,memberId,type};
       let res = await getTicketList(option);
-      return res.data
-    }
+      return res.data.dataList;
+    };
+    // 优惠券数据过滤
+    /**
+     * @param  {[Array]}    data    [优惠券原数据]
+     * @return {[Array]}            [数组]
+     */
+    resetCouponData(data) {
+      data.map((val, index) => {
+
+
+        if(val.type == '1'){ //优惠券类型
+          val.typeName = '购物券';
+        }else if(val.type == '2'){
+          val.typeName = '退贷券';
+        }else if(val.type == '3'){
+          val.typeName = '售后券';
+        }
+
+        if(val.subType == '11'){ //优惠券具体类型购物券
+          val.subTypeName = '满减券';
+        }else if(val.subType == '12'){
+          val.subTypeName = '折扣券';
+        }else if(val.subType == '13'){
+          val.subTypeName = '免工费退贷券';
+        }else if(val.subType == '21'){
+          val.subTypeName = '免工费售后类';
+        }
+
+        if(val.limitShop == '0'){ //限定店铺
+          val.limitShopName = '不限定店铺';
+        }else if(val.limitShop == '1'){
+          val.limitShopName = '限定指定店铺';
+        }
+
+        if(val.limitProduct.length != 0){ //限定商品
+          val.limitProductName = `仅限${val.limitProduct.join("")}`;
+        }else{
+          val.limitProductName = "";
+        }
+
+        if(val.termMoney){ //优惠券面额
+          val.couponValType = "0"
+        }else if(val.deduction){
+          val.couponValType = "1"
+        }
+      });
+      return data
+    };
   }
 </script>
 <style lang="less" scoped>

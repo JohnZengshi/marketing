@@ -28,7 +28,7 @@
                   <repeat for="{{goodsList}}" key="index" index="index" item="item">
                     <view class="item flex flex-v flex-align-center">
                       <image></image>
-                      <text>{{item.name}}</text>
+                      <text>{{item.productName}}</text>
                       <text>{{item.score}}</text>
                     </view>
                   </repeat>
@@ -43,6 +43,7 @@
   import wepy from "wepy";
   import wepyCanlendar from '../components/dateTag';
   import Sticky from "@components/sticky";
+  import {getVisitLogList} from "@Api/mine/mineApi";
   // import Refresh from '@components/ScrollViewRefresh';
   export default class FootPrint extends wepy.page {
     config = {
@@ -55,43 +56,11 @@
       startDate: '2008-01-01',
       endDate: '2028-02-01',
       hasIconList: ['2018-09-01', '2018-09-06', '2018-09-09', '2018-09-10', '2018-09-15'],
-      goodsList: [{
-        name: "黄金999纯金项链哈哈哈哈哈哈哈",
-        score: "500分"
-      }, {
-        name: "黄金999纯金项链哈哈哈哈哈哈哈",
-        score: "500分"
-      }, {
-        name: "黄金999纯金项链哈哈哈哈哈哈哈",
-        score: "500分"
-      }, {
-        name: "黄金999纯金项链哈哈哈哈哈哈哈",
-        score: "500分"
-      }, {
-        name: "黄金999纯金项链哈哈哈哈哈哈哈",
-        score: "500分"
-      }, {
-        name: "黄金999纯金项链哈哈哈哈哈哈哈",
-        score: "500分"
-      }, {
-        name: "黄金999纯金项链哈哈哈哈哈哈哈",
-        score: "500分"
-      }, {
-        name: "黄金999纯金项链哈哈哈哈哈哈哈",
-        score: "500分"
-      }, {
-        name: "黄金999纯金项链哈哈哈哈哈哈哈",
-        score: "500分"
-      }, {
-        name: "黄金999纯金项链哈哈哈哈哈哈哈",
-        score: "500分"
-      }, {
-        name: "黄金999纯金项链哈哈哈哈哈哈哈",
-        score: "500分"
-      }, {
-        name: "黄金999纯金项链哈哈哈哈哈哈哈",
-        score: "500分"
-      }],
+      goodsList: [],
+      requestData:{ //请求的数据
+        beginTime: "",
+        endTime: "",
+      }
     };
     components = {
       wepyCanlendar,
@@ -101,6 +70,10 @@
     onLoad() {
       this.$broadcast("startRenderCalendar"); //通知日历组件可以开始渲染
     };
+    async onShow() {
+      this.goodsList =await this.getVisitLogList();
+      this.$apply();
+    }
     methods = {
       scroll(e) {
         let scrollTop = e.detail.scrollTop;
@@ -108,7 +81,7 @@
       }
     }
     events = { // 声明组件之间的事件处理函数
-      calChangeCurrentMonth: function (date, moduleId, e) {
+      "calChangeCurrentMonth": (date, moduleId, e)=> {
         //日历当前月份改变回调
         //单个用例只需用到date
         //多个用例是通过传回来的moduleId去判断是那个用例，从而操作不懂逻辑：
@@ -117,14 +90,13 @@
         // }else{
         // }
       },
-      calChangeSelectedDay: function (date, moduleId, e) {
-        //日历当前月份改变回调
-        //单个用例只需用到date
-        //多个用例是通过传回来的moduleId去判断是那个用例，从而操作不懂逻辑：
-        //if(moduleId=='xxxx'){
-        //     
-        // }else{
-        // }
+      "calChangeSelectedDay": (date, moduleId, e)=> {
+        console.log(date)
+        this.requestData.beginTime = val;
+        // (async()=>{
+        //   this.goodsList =await this.getVisitLogList();
+        //   this.$apply();
+        // })()
       },
       'refresh': (name,res) => {
           if (res === 'success') {
@@ -138,6 +110,22 @@
     async onPageScroll(e) {
       let scrollTop = e.scrollTop;
       this.$broadcast("PageScroll");
+    };
+
+    // 获取访问足迹
+    async getVisitLogList() {
+      let {
+        shopId,
+        userId,
+        memberId
+      } = this.$parent.globalData;
+      let {
+        beginTime,
+        endTime
+      } = this.requestData;
+      let res =await getVisitLogList({shopId,userId,memberId,beginTime,endTime})
+      return res;
+      console.log(res);
     }
   }
 </script>

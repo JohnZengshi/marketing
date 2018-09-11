@@ -6,14 +6,14 @@
           <view slot="refresh-content">
             <view class="intergralCount flex flex-r flex-pack-center">
               <view class="tip flex flex-r flex-align-center" @tap.stop="toDiscountExplain">
-                <text>当前最多抵扣52元</text>
+                <text>当前最多抵扣{{integral.deduction}}元</text>
                 <!-- <image src="/images/mine/1.3我的活动－返回@3x.png"></image> -->
                 <text>></text>
               </view>
               <view class="count flex flex-r flex-align-end">
                 <image src="/images/mine/4 我的积分－积分图标@3x.png"></image>
                 <view class="num flex flex-r flex-align-end">
-                  <text>520</text>
+                  <text>{{integral.score}}</text>
                   <text>分</text>
                 </view>
               </view>
@@ -50,7 +50,7 @@
                             </datePicker>
                         </view>
                         <view class="allPicker">
-                            <allPicker type="rang" :selectArray.sync="array" pickerText="全部">
+                            <allPicker type="rang" :selectArray.sync="typeArray" pickerText="全部">
                                 <view class="pickerContent flex flex-r flex-align-center" slot="allPicker">
                                   <view  class="picker">
                                     全部
@@ -62,30 +62,32 @@
                     </view>
                 </view>
             </Sticky>
-            <repeat for="{{intergarList}}" key="index" index="index" item="item">
-                <view class="listItem">
-                    <view slot="stickyContent" class="itemCount flex flex-r flex-align-center flex-pack-justify">
-                        <view class="flex flex-r flex-align-center">
-                            <text>{{item.date}}</text>
-                        </view>
-                        <view class="flex flex-r flex-align-center">
-                            <text wx:if="{{item.has}}">获取：{{item.has}}</text>
-                            <text wx:if="{{item.use}}">使用：{{item.use}}</text>
-                        </view>
-                    </view>
-                    <repeat for="{{item.list}}" key="idx" index="idx" item="i">
-                        <view class="item flex flex-r flex-align-center flex-pack-justify">
-                            <view class="left flex flex-v">
-                                <text>{{i.useType}}</text>
-                                <text>{{i.date}}</text>
-                            </view>
-                                <view class="right">
-                                <text>{{i.num}}</text>
-                            </view>
-                        </view>
-                    </repeat>
-                </view>
-            </repeat>
+            <block wx:if="{{intergarList.length != 0}}">
+              <repeat for="{{intergarList}}" key="index" index="index" item="item">
+                  <view class="listItem">
+                      <view slot="stickyContent" class="itemCount flex flex-r flex-align-center flex-pack-justify">
+                          <view class="flex flex-r flex-align-center">
+                              <text>{{item.yearMonth}}</text>
+                          </view>
+                          <view class="flex flex-r flex-align-center">
+                              <text wx:if="{{item.addScore != '0'}}">获取：{{item.addScore}}</text>
+                              <text wx:if="{{item.useScore != '0'}}">使用：{{item.useScore}}</text>
+                          </view>
+                      </view>
+                      <repeat for="{{item.groupList}}" key="idx" index="idx" item="i">
+                          <view class="item flex flex-r flex-align-center flex-pack-justify">
+                              <view class="left flex flex-v">
+                                  <text>{{i.typeDesc}}</text>
+                                  <text>{{i.createTime}}</text>
+                              </view>
+                                  <view class="right">
+                                  <text>{{i.score}}</text>
+                              </view>
+                          </view>
+                      </repeat>
+                  </view>
+              </repeat>
+            </block>
             </view>
           </view>
         <!-- </Refresh> -->
@@ -99,6 +101,7 @@
   //   import Refresh from '@components/ScrollViewRefresh';
   import picker from "@components/picker";
   import Sticky from "@components/sticky";
+  import {getIntegralList,getIntegral} from "@Api/mine/mineApi";
   export default class myIntergral extends wepy.page {
     config = {
       navigationBarTitleText: "我的积分",
@@ -106,71 +109,15 @@
       backgroundTextStyle: "light"
     };
     data = {
-      array: ['美国', '中国', '巴西', '日本'],
+      typeArray: ['全部', '增加', '消耗'],
       scrollTop: 0,
-      intergarList: [{
-        date: "2018-09-10",
-        has: "83",
-        use: "200",
-        list: [{
-          useType: "签到",
-          date: "06-11",
-          num: "+2"
-        }, {
-          useType: "兑换优惠券",
-          date: "06-23",
-          num: "+50"
-        }, {
-          useType: "兑换优惠券",
-          date: "06-11",
-          num: "+2"
-        }, {
-          useType: "使用优惠券",
-          date: "02-15",
-          num: "-200"
-        }]
-      }, {
-        date: "2018-10-10",
-        has: "80",
-        use: "",
-        list: [{
-          useType: "签到",
-          date: "02-11",
-          num: "+8"
-        }, {
-          useType: "签到",
-          date: "06-23",
-          num: "+50"
-        }, {
-          useType: "兑换优惠券",
-          date: "09-11",
-          num: "+84"
-        }, {
-          useType: "签到",
-          date: "02-11",
-          num: "+8"
-        }, {
-          useType: "签到",
-          date: "06-23",
-          num: "+50"
-        }, {
-          useType: "兑换优惠券",
-          date: "09-11",
-          num: "+84"
-        }, {
-          useType: "签到",
-          date: "02-11",
-          num: "+8"
-        }, {
-          useType: "签到",
-          date: "06-23",
-          num: "+50"
-        }, {
-          useType: "兑换优惠券",
-          date: "09-11",
-          num: "+84"
-        }]
-      }]
+      integral:null,
+      intergarList: [],
+      requestData:{ //请求的数据
+        type:"0",
+        beginTime: "",
+        endTime:""
+      }
     };
     components = {
         Sticky,
@@ -203,8 +150,68 @@
             this.$invoke(name, 'reset')
           }, 3000)
         }
+      },
+      'bindPickerChange': (val)=>{
+        console.log(val);
+        this.requestData.type = (parseInt(val)+1).toString();
+        (async()=>{
+          this.intergarList =await this.getIntegralList();
+          this.$apply();
+        })()
+      },
+      'bindDateChange': (val)=>{
+        console.log(val);
+        // this.requestData.endTime = val;
+        (async()=>{
+          this.intergarList =await this.getIntegralList();
+          this.$apply();
+        })()
       }
     };
+    async onShow() {
+      this.integral =await this.getIntegral();
+      this.intergarList =await this.getIntegralList();
+      this.$apply();
+      console.log(this.intergarList);
+
+    };
+    // 获取积分日志
+    async getIntegralList(){
+      let {
+        shopId,
+        userId,
+        memberId
+      } = this.$parent.globalData;
+      let {
+        type,
+        beginTime,
+        endTime
+      } = this.requestData;
+      let res = await getIntegralList({
+        shopId,
+        userId,
+        memberId,
+        type,
+        beginTime,
+        endTime
+      });
+      return res.data;
+    };
+
+    // 获取积分信息
+    async getIntegral(){
+      let {
+        shopId,
+        userId,
+        memberId
+      } = this.$parent.globalData;
+      let res = await getIntegral({
+        shopId,
+        userId,
+        memberId
+      });
+      return res.data;
+    }
   }
 </script>
 <style lang="less" scoped>

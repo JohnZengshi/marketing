@@ -9,12 +9,12 @@
               <image src="/images/mine/4 我的积分－积分图标@3x.png"></image>
               <view class="num flex flex-r flex-align-end">
                 <text>剩余</text>
-                <text>520</text>
+                <text>{{integral.score}}</text>
                 <text>分</text>
               </view>
             </view>
             <view class="tip flex flex-r flex-align-center">
-              <text>消耗总积分：320分</text>
+              <text>消耗总积分：{{integralUseAllNum}}分</text>
               <!-- <image src="/images/mine/1.3我的活动－返回@3x.png"></image> -->
               <!-- <text>></text> -->
             </view>
@@ -34,7 +34,7 @@
                       </datePicker>
                   </view>
                   <view class="allPicker">
-                      <allPicker type="rang" :selectArray.sync="array" pickerText="全部">
+                      <allPicker type="rang" :selectArray.sync="typeArray" pickerText="全部">
                           <view class="pickerContent flex flex-r flex-align-center" slot="allPicker">
                             <view  class="picker">
                               全部
@@ -47,32 +47,33 @@
             </view>
           </Sticky>
           <view class="intergralList">
+            <view class="noData" wx:if="{{intergarList.length == 0}}">暂无数据</view>
             <repeat for="{{intergarList}}" key="index" index="index" item="item">
               <view class="listItem">
                 <view slot="stickyContent" class="itemCount flex flex-r flex-align-center flex-pack-justify">
                   <view class="flex flex-r flex-align-center">
-                    <text>{{item.date}}</text>
+                    <text>{{item.yearMonth}}</text>
                   </view>
                   <view class="flex flex-r flex-align-center">
-                    <text wx:if="{{item.has}}">获取：{{item.has}}</text>
-                    <text wx:if="{{item.use}}">使用：{{item.use}}</text>
+                    <text wx:if="{{item.addScore}}">获取：{{item.addScore}}</text>
+                    <text wx:if="{{item.useScore}}">使用：{{item.useScore}}</text>
                   </view>
                 </view>
-                <repeat for="{{item.list}}" key="idx" index="idx" item="i">
+                <repeat for="{{item.groupList}}" key="idx" index="idx" item="i">
                   <view class="item flex flex-r flex-align-center flex-pack-justify">
                     <view class="left flex flex-r">
-                      <image></image>
+                      <image src="{{item.logoUrl}}"></image>
                       <view class="flex flex-v">
                           <text>{{i.title}}</text>
                           <block>
-                            <text wx:if="{{i.useType == 'coupon'}}" class="coupon">优惠券</text>
-                            <text wx:elif="{{i.useType == 'goods'}}" class="goods">商品</text>
+                            <text wx:if="{{i.type == '1'}}" class="goods">商品</text>
+                            <text wx:elif="{{i.type == '2'}}" class="coupon">优惠券</text>
                           </block>
-                          <text>{{i.date}}</text>
+                          <text>{{i.yearMonth}}</text>
                       </view>
                     </view>
                     <view class="right">
-                      <text>{{i.num}}</text>
+                      <text>{{i.score}}</text>
                     </view>
                   </view>
                 </repeat>
@@ -89,6 +90,7 @@
   import wepy from "wepy";
   import picker from "@components/picker";
   import Sticky from "@components/sticky";
+  import {getIntegral,getIntegralUseList,getIntegralUseAllNum} from "@Api/mine/mineApi";
   export default class ExchangeRecord extends wepy.page {
     config = {
       navigationBarTitleText: "兑换记录",
@@ -96,82 +98,18 @@
       backgroundTextStyle: "light"
     };
     data = {
-      array: ['美国', '中国', '巴西', '日本'],
+      typeArray: ['全部','商品', '卡券'],
       scrollTop: 0,
-      intergarList: [{
-        date: "2018-09-10",
-        use: "200",
-        list: [{
-          title: "手镯",
-          useType: "goods",
-          date: "06-11",
-          num: "+2"
-        }, {
-          title: "兑换优惠券",
-          useType: "coupon",
-          date: "06-23",
-          num: "+50"
-        }, {
-          title: "兑换优惠券",
-          useType: "coupon",
-          date: "06-11",
-          num: "+2"
-        }, {
-          title: "兑换优惠券",
-          useType: "coupon",
-          date: "02-15",
-          num: "-200"
-        }]
-      }, {
-        date: "2018-10-10",
-        use: "200",
-        list: [{
-          title: "兑换优惠券",
-          useType: "coupon",
-          date: "02-11",
-          num: "+8"
-        }, {
-          title: "兑换优惠券",
-          useType: "coupon",
-          date: "06-23",
-          num: "+50"
-        }, {
-          title: "兑换优惠券",
-          useType: "coupon",
-          date: "09-11",
-          num: "+84"
-        }, {
-          title: "兑换优惠券",
-          useType: "coupon",
-          date: "02-11",
-          num: "+8"
-        }, {
-          title: "兑换优惠券",
-          useType: "coupon",
-          date: "06-23",
-          num: "+50"
-        }, {
-          title: "兑换优惠券",
-          useType: "coupon",
-          date: "09-11",
-          num: "+84"
-        }, {
-          title: "手镯",
-          useType: "goods",
-          date: "02-11",
-          num: "+8"
-        }, {
-          title: "手镯",
-          useType: "goods",
-          date: "06-23",
-          num: "+50"
-        }, {
-          title: "兑换优惠券",
-          useType: "coupon",
-          date: "09-11",
-          num: "+84"
-        }]
-      }]
+      intergarList: [],
+      requestData:{ //请求的数据
+        type: "",
+        beginTime: "",
+        endTime: ""
+      },
+      integral:{
+        score: "0"
+      },
+      integralUseAllNum:"0"
     };
     components = {
       Sticky,
@@ -194,8 +132,86 @@
             this.$invoke(name, 'reset')
           }, 3000)
         }
+      },
+      'bindPickerChange': (val)=>{
+        console.log(val);
+        if(val == '0'){
+          this.requestData.type = "";
+        }else{
+          this.requestData.type = (parseInt(val)).toString();
+        }
+        (async()=>{
+          this.intergarList =await this.getIntegralUseList();
+          this.$apply();
+        })()
+      },
+      'bindDateChange': (val)=>{
+        console.log(val);
+        // this.requestData.endTime = val;
+        (async()=>{
+          this.intergarList =await this.getIntegralUseList();
+          this.$apply();
+        })()
       }
     };
+    async onShow() {
+      console.log(this.$parent.globalData)
+      this.integral =await this.getIntegral();
+      this.integralUseAllNum = (await this.getIntegralUseAllNum()).score;
+      this.intergarList =await this.getIntegralUseList();
+      this.$apply();
+    }
+    // 获取积分信息
+    async getIntegral(){
+      let {
+        shopId,
+        userId,
+        memberId
+      } = this.$parent.globalData;
+      let res = await getIntegral({
+        shopId,
+        userId,
+        memberId
+      });
+      return res.data;
+    }
+    // 获取兑换记录信息
+    async getIntegralUseList(){
+      let {
+        shopId,
+        userId,
+        memberId
+      } = this.$parent.globalData;
+      let {
+        type,
+        beginTime,
+        endTime
+      } = this.requestData;
+      let res = await getIntegralUseList({
+        shopId,
+        userId,
+        memberId,
+        type,
+        beginTime,
+        endTime
+      });
+      return res.data;
+    }
+    // 获取兑换消耗总积分
+    async getIntegralUseAllNum(){
+      let {
+        shopId,
+        userId,
+        memberId
+      } = this.$parent.globalData;
+      let res =await getIntegralUseAllNum({
+        shopId,
+        userId,
+        memberId
+      });
+      console.log(res)
+      return res.data;
+    }
   }
 </script>
 <style lang="less" scoped>
@@ -413,6 +429,16 @@
             }
           }
         }
+      }
+
+      .noData{
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 24rpx;
+        line-height: 48rpx;
+        color: #ccc;
       }
     }
   }

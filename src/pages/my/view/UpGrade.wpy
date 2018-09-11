@@ -6,22 +6,22 @@
         <view class="grade flex flex-r flex-pack-justify flex-align-center">
           <view>
             <!-- <image ></image> -->
-            <text>白金会员</text>
+            <text wx:if="{{gradeData.nowGradeName}}">{{gradeData.nowGradeName}}</text>
           </view>
           <view @tap.stop="toGradeRule">等级规则</view>
         </view>
         <view class="gradeScore flex flex-r flex-align-center">
           <view class="progressBar">
-            <view class="bar"></view>
-            <view class="tag">
+            <view class="bar" style="width:{{barWidth}}rpx"></view>
+            <view class="tag" style="left:{{barWidth-27}}rpx">
               <view class="arrow"></view>
-              500
+              {{gradeData.nowScore}}
             </view>
           </view>
-          <text>铂金(500)</text>
+          <text>{{gradeData.nextGradeName}}({{gradeData.nextGradeScore}})</text>
         </view>
         <view class="tip">
-          在获取500积分课升级为铂金会员
+          在获取{{gradeData.nextGradeScore}}积分课升级为铂金会员
         </view>
       </view>
     </view>
@@ -120,6 +120,7 @@
   import {
     _getDomRect
   } from "@utils/getDom";
+  import {getGrade} from "@Api/mine/mineApi";
   export default class UpGrade extends wepy.page {
     config = {
       navigationBarTitleText: "升等级",
@@ -129,6 +130,12 @@
     components = {
     };
     data = {
+      gradeData: {
+        nextGradeName: "0",
+        nextGradeScore: "0",
+        nowGradeName: null,
+        nowScore: "0",
+      },
       makeIntergralList: [{
         type: "0",
         name: "珠宝砍价活动",
@@ -158,7 +165,33 @@
         })
       }
     };
+    computed = {
+      barWidth (){
+        let allScore = parseInt(this.gradeData.nowScore) + parseInt(this.gradeData.nextGradeScore);
+        let currentScore = parseInt(this.gradeData.nowScore);
+        let percent = currentScore/allScore;
+        if(percent){
+          return 428*percent;
+        }else{
+          return 0;
+        }
+      }
+    };
     onLoad() {};
+    async onShow() {
+      this.gradeData =await this.getGrade();
+      this.$apply();
+    };
+    // 获取等级信息
+    async getGrade() {
+      let {
+        shopId,
+        userId,
+        memberId
+      } = this.$parent.globalData;
+      let res =await getGrade({shopId,userId,memberId});
+      return res.data;
+    }
   }
 </script>
 <style lang="less" scoped>
@@ -223,17 +256,18 @@
 
           .bar {
             height: 100%;
-            width: 100rpx;
+            width: 0rpx;
             position: absolute;
             border-radius: 7rpx;
             left: 0;
             background-color: rgb(101, 81, 76);
+            transition: all 1s;
           }
 
           .tag {
             position: absolute;
             top: -47rpx;
-            left: 70rpx;
+            left: 0rpx;
             width: 54rpx;
             height: 34rpx;
             font-size: 17rpx;
@@ -242,6 +276,7 @@
             background-color: rgb(101, 81, 76);
             border-radius: 5rpx;
             color: #fff;
+            transition: all 1s;
 
             .arrow {
               display: block;
