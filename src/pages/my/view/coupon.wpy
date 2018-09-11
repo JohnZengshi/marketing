@@ -241,7 +241,7 @@
 
         if(val.termMoney){ //优惠券面额
           val.couponValType = "0"
-        }else if(val.deduction){
+        }else if(val.deduction){ //折扣
           val.couponValType = "1"
         }
       });

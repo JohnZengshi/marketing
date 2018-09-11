@@ -53,7 +53,7 @@
                             <allPicker type="rang" :selectArray.sync="typeArray" pickerText="全部">
                                 <view class="pickerContent flex flex-r flex-align-center" slot="allPicker">
                                   <view  class="picker">
-                                    全部
+                                    {{currentType}}
                                   </view>
                                   <image src="/images/mine/下拉@3x.png"></image>
                                 </view>
@@ -110,6 +110,7 @@
     };
     data = {
       typeArray: ['全部', '增加', '消耗'],
+      currentType: "全部",
       scrollTop: 0,
       integral:null,
       intergarList: [],
@@ -153,6 +154,7 @@
       },
       'bindPickerChange': (val)=>{
         console.log(val);
+        this.currentType = this.typeArray[parseInt(val)];
         this.requestData.type = (parseInt(val)+1).toString();
         (async()=>{
           this.intergarList =await this.getIntegralList();
