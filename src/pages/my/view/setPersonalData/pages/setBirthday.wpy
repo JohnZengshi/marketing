@@ -74,7 +74,7 @@
         console.log(val);
         if(val.dateType == '公历'){
             let dateArr = val.dateStr.split('-');
-            this.calendarYear = `${dateArr[0]}月${dateArr[1]}日`;
+            this.calendarYear = `${dateArr[0]}年${dateArr[1]}月${dateArr[2]}日`;
             this.$apply();
             this.infoModify("4",this.calendarYear)
         }else if(val.dateType == '农历'){

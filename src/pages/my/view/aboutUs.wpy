@@ -1,6 +1,6 @@
 <template>
   <view class="AboutUs">
-    <image src="/images/mine/6关于我们－背景@3x.png" mode="scaleToFill" lazy-load="false"></image>
+    <image src="/images/mine/AboutUs_back.png" mode="scaleToFill" lazy-load="false"></image>
     <view class="content">
       <carouselSwiper wx:if="{{aboutUsData.picResList.length != 0}}" :picResList.async ="{{aboutUsData.picResList}}"></carouselSwiper>
       <view class="flex flex-v flex-align-center">
@@ -18,14 +18,14 @@
           <text>店铺电话</text>
           <view class="flex flex-r flex-align-center">
             <text>{{aboutUsData.phone}}</text>
-            <image src="/images/mine/6.1关于我们－电话@3x.png"></image>
+            <image src="/images/mine/AboutUs_phone.png"></image>
           </view>
         </view>
         <view class="lable flex flex-r flex-pack-center flex-align-start">
           <text>店铺地址</text>
           <view class="flex flex-r flex-align-center">
             <text>{{aboutUsData.address}}</text>
-            <image src="/images/mine/6.2关于我们－位置@3x.png"></image>
+            <image src="/images/mine/AboutUs_adress.png"></image>
           </view>
         </view>
       </view>

@@ -2,7 +2,7 @@
   <view class="wepy-calendar">
     <view class="wepy-calendar-top flex flex-r flex-align-center flex-pack-center">
       <view wx:if="{{prevNextShow}}" class="wepy-calendar-prev flex flex-r flex-align-center" @tap.stop="handleCalendar('prev')">
-        <image src="/images/mine/8 足迹－日历－左边@3x.png" />
+        <image src="/images/mine/Date_left.png" />
       </view>
       <picker 
         style="transform: translateX(-{{wepyCalendarDateLeft - 26}}px)" 
@@ -18,8 +18,8 @@
         </view>
       </picker>
       <view wx:if="{{prevNextShow}}" class="wepy-calendar-next flex flex-r flex-align-center" @tap.stop="handleCalendar('next')">
-        <image wx:if="{{!canNotNext}}" src="/images/mine/8.1足迹－日历－右边@3x.png" />
-        <image wx:elif="{{canNotNext}}" src="/images/mine/8.2足迹－日历－不可点@3x.png"/>
+        <image wx:if="{{!canNotNext}}" src="/images/mine/Date_right.png" />
+        <image wx:elif="{{canNotNext}}" src="/images/mine/Date_on.png"/>
       </view>
     </view>
     <view class="wepy-calendar-days" style="height: {{wepyCalendarDaysHeight}}rpx;">
@@ -49,8 +49,8 @@
       </view>
     </view>
     <view class="drowmUp" @tap.stop="clickDrowmBtn">
-      <image wx:if="{{isDrowmUp}}" src="/images/mine/8.3足迹－下拉@3x.png"></image>
-      <image wx:elif="{{!isDrowmUp}}" src="/images/mine/8.4足迹－上拉@3x.png"></image>
+      <image wx:if="{{isDrowmUp}}" src="/images/mine/pull-down.png"></image>
+      <image wx:elif="{{!isDrowmUp}}" src="/images/mine/pull-up.png"></image>
     </view>    
   </view>
 </template>

@@ -14,7 +14,12 @@
             <block wx:elif="{{item.type == 'text'}}">
               <text>{{item.value}}</text>
             </block>
-            <image class="back" src="/images/mine/1.3我的活动－返回@3x.png"></image>
+            <block wx:elif="{{item.type == 'date'}}">
+              <PickerPlus :initDate.sync="initDate" :dateType.sync='1'>
+                <text class="pickerContent" slot="content">{{item.value}}</text>
+              </PickerPlus>
+            </block>
+            <image class="back" src="/images/mine/mineActive_Back.png"></image>
           </view>
         </view>
       </view>
@@ -26,6 +31,7 @@
   import wepy from "wepy";
   import wepyCropper from 'wepy-cropper';
   import api from 'Api';
+  import datepickerPlus from "@components/datepickerPlus"
   export default class presonalData extends wepy.page {
     config = {
       navigationBarTitleText: "个人资料",
@@ -49,7 +55,8 @@
       modifyList:{
         type:"",
         data:""
-      }
+      },
+      initDate: `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`
     };
     computed = {
       presonalDataConfig() {
@@ -57,7 +64,7 @@
           return [{
             text: "头像",
             type: "pic",
-            value: this.UserInfo.qcSrc,
+            value: this.UserInfo.faceSrc,
             required: true,
             operation: "changeHeadPortrait"
           }, {
@@ -74,7 +81,7 @@
             operation: "setGender"
           }, {
             text: "生日",
-            type: "text",
+            type: "date",
             value: this.UserInfo.birthday?this.UserInfo.birthday:this.UserInfo.maleBirthday,
             required: true,
             operation: "setBirthday"
@@ -117,7 +124,8 @@
       }
     };
     components = {
-      wepyCropper
+      wepyCropper,
+      PickerPlus:datepickerPlus
     };
     methods = {
       operationLine(item, index) {
@@ -126,6 +134,8 @@
         let operation = item.operation;
         if (operation == 'changeHeadPortrait') { //换头像
           // this.setTouXaing();
+        }else if(operation == 'setBirthday'){
+          return;
         }else {  //跳转设置页面
           this.toSetPersonalData(operation,item.value);
         }
@@ -138,6 +148,19 @@
         this.clipParams.src = path;
         // this.presonalDataConfig[this.currentOperation].value = this.clipParams.src;
         this.infoModify("1",path);
+        this.$apply();
+      },
+      'submit' :(val)=>{
+        if(new Date(val.dateStr).getTime()){
+          console.log("公历");
+          // let dateArr = val.dateStr.split('-');
+          // let calendarYear = `${dateArr[0]}年${dateArr[1]}月${dateArr[2]}日`;
+          this.infoModify("4",val.dateStr)
+        }else{
+          console.log("农历");
+          this.infoModify("5",val.dateStr)
+        }
+        this.UserInfo.birthday = val.dateStr;
         this.$apply();
       }
     };
@@ -179,10 +202,10 @@
     };
     // 修改个人资料
     async infoModify(type,data) {
-      let res =await api.infoModify({modifyList:{
+      let res =await api.infoModify({modifyList:[{
         type,
         data
-      }});
+      }]});
       console.log(res);
     }
   }
