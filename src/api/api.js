@@ -1,7 +1,7 @@
 import {wxRequest} from '@/utils/request'
 // const host = 'https://program.yunzhubao.com/yunzhubao/'
-var host = 'https://uat.yunzhubao.com/'
-// var host = 'http://192.168.100.116:8080/yunzhubao/'
+// var host = 'https://uat.yunzhubao.com/'
+var host = 'http://192.168.100.116:8080/yunzhubao/'
 
 // 商城店铺信息
 const mallsShopInfo = (params) => wxRequest(params, `${host}v1/weChat/mallsShopInfo`)
@@ -26,11 +26,11 @@ const register = (params) => wxRequest(params, `${host}v1/sem/user/register`)
 // 绑定小程序商店列表
 const smallProgramShopList = (params) => wxRequest(params, `${host}v1/weChat/smallProgramShopList`)
 // 用户信息
-const smallProgramUserInfo = (params) => wxRequest(params, `${host}v1/weChat/smallProgramUserInfo`)
+// const smallProgramUserInfo = (params) => wxRequest(params, `${host}v1/weChat/smallProgramUserInfo`)
 // 验证手机号是否已注册会员
-const smallProgramMemberExists = (params) => wxRequest(params, `${host}v1/weChat/smallProgramMemberExists`)
+const smallProgramMemberExists = (params) => wxRequest(params, `${host}v1/sem/user/checkUserPhoneExist`)
 // 解密手机号码
-const getEncrypteInfo = (params) => wxRequest(params, `${host}v1/wx/getEncrypteInfo`)
+const getEncrypteInfo = (params) => wxRequest(params, `${host}v1/sem/user/getWxDecryptedInfo`)
 // 修改会员信息
 const updateMember = (params) => wxRequest(params, `${host}v1/groupTemplate/updateMember`)
 // 金价开启信息
@@ -63,10 +63,13 @@ const getIntegralList = (params) => wxRequest(params, `${host}v1/sem/user/integr
 // 优惠券列表
 const getTicketList = (params) => wxRequest(params, `${host}v1/sem/user/ticketList`)
 // 会员信息
-const getUserInfo = (params) => wxRequest(params, `${host}v1/sem/user/info`)
+const xjUserInfo = (params) => wxRequest(params, `${host}v1/sem/user/info`)
 // 活动列表
 const getActivityList = (params) => wxRequest(params, `${host}v1/sem/user/activityList`)
-
+// 店铺列表
+const shopList = (params) => wxRequest(params, `${host}v1/sem/shop/shopList`)
+// 测试
+const openIdtext = (params) => wxRequest({}, params, 'GET')
 
 export default {
     mallsShopInfo,
@@ -80,7 +83,7 @@ export default {
     jewelryPriceInfo,
     register,
     smallProgramShopList,
-    smallProgramUserInfo,
+    // smallProgramUserInfo,
     smallProgramMemberExists,
     getEncrypteInfo,
     updateMember,
@@ -91,6 +94,8 @@ export default {
     ticketDetail,
     productDetail,
     findShopListByProductId,
+    shopList,
+    openIdtext,
 
     getGrade,
     getVisitLogList,
@@ -99,6 +104,6 @@ export default {
     getIntegral,
     getIntegralList,
     getTicketList,
-    getUserInfo,
+    xjUserInfo,
     getActivityList
 }

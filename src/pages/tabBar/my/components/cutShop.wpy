@@ -1,0 +1,299 @@
+<template>
+  <popupBottom :headName.sync="headName" @close.user="close">
+    <view class="cut-shop-main">
+      <scroll-view scroll-y style="height: 700rpx;" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
+        <radio-group class="radio-group" bindchange="radioChange">
+          <block wx:for="{{shopDataList}}" wx:key="{{item.value}}">
+            <view class="item-wrap">
+              <view class="group-name">
+                {{item.groupName}}
+
+                <view class="r-wrap" wx:if="{{item.gradeName}}">
+                  <view class="r-t r-t-o">
+                    {{item.gradeName}}
+                  </view>
+                  <view class="r-t r-t-t">
+                    {{item.integral}}
+                  </view>
+                </view>
+              </view>
+              <block wx:for="{{item.shopList}}" wx:for-item="itemT" wx:key="{{itemT}}">
+                <view class="radio-item">
+                  <label class="radio">
+                    <radio value="{{itemT.id}}" checked="{{shopId == itemT.id}}"/>
+                    <text class="right-t"> {{itemT.fullName}}</text>
+                  </label>
+                  <view class="r-wrap" wx:if="{{itemT.gradeName}}">
+                    <view class="r-t r-t-o">
+                      {{itemT.gradeName}}
+                    </view>
+                    <view class="r-t r-t-t">
+                      {{itemT.integral}}
+                    </view>
+                  </view>
+                </view>
+              </block>
+            </view>
+          </block>
+        </radio-group> 
+      </scroll-view>
+    </view>
+  </popupBottom>
+</template>
+<script>
+import wepy from 'wepy';
+import popupBottom from 'common/popupBottom';
+import api from 'Api'
+export default class mCutShop extends wepy.component {
+  components = {
+    popupBottom: popupBottom
+  }
+  props = {
+    userInfo: {
+      type: Object,
+      default: {}
+    }
+  }
+  data = {
+    shopId: '',
+    headName: '切换店铺',
+    shopDataList: [
+      {
+        groupName: '776',
+        integral: '776',
+        gradeName: '776',
+        shopList: [
+          {
+            integral: '996996',
+            gradeName: '',
+            fullName: '996996',
+            address: '996996',
+            longitude: '996996',
+            latitude: '996996',
+            id: 'id',
+            logo: '996996',
+            shopinfo: '996996',
+          },
+          {
+            integral: '996996',
+            gradeName: '',
+            fullName: '996996',
+            address: '996996',
+            longitude: '996996',
+            latitude: '996996',
+            id: 'id666',
+            logo: '996996',
+            shopinfo: '996996',
+          }
+        ]
+      },
+      {
+        groupName: '776',
+        integral: '776',
+        gradeName: '776',
+        shopList: [
+          {
+            integral: '996996',
+            gradeName: '',
+            fullName: '996996',
+            address: '996996',
+            longitude: '996996',
+            latitude: '996996',
+            id: 'id777',
+            logo: '996996',
+            shopinfo: '996996',
+          },
+          {
+            integral: '996996',
+            gradeName: '',
+            fullName: '996996',
+            address: '996996',
+            longitude: '996996',
+            latitude: '996996',
+            id: 'id888',
+            logo: '996996',
+            shopinfo: '996996',
+          }
+        ]
+      },
+      {
+        groupName: '776',
+        integral: '776',
+        gradeName: '776',
+        shopList: [
+          {
+            integral: '996996',
+            gradeName: '',
+            fullName: '996996',
+            address: '996996',
+            longitude: '996996',
+            latitude: '996996',
+            id: 'id332',
+            logo: '996996',
+            shopinfo: '996996',
+          },
+          {
+            integral: '996996',
+            gradeName: '',
+            fullName: '996996',
+            address: '996996',
+            longitude: '996996',
+            latitude: '996996',
+            id: 'id456',
+            logo: '996996',
+            shopinfo: '996996',
+          }
+        ]
+      },
+      {
+        groupName: '776',
+        integral: '776',
+        gradeName: '776',
+        shopList: [
+          {
+            integral: '996996',
+            gradeName: '',
+            fullName: '996996',
+            address: '996996',
+            longitude: '996996',
+            latitude: '996996',
+            id: 'id002',
+            logo: '996996',
+            shopinfo: '996996',
+          },
+          {
+            integral: '996996',
+            gradeName: '',
+            fullName: '996996',
+            address: '996996',
+            longitude: '996996',
+            latitude: '996996',
+            id: 'id753',
+            logo: '996996',
+            shopinfo: '996996',
+          }
+        ]
+      },
+      {
+        groupName: '776',
+        integral: '776',
+        gradeName: '776',
+        shopList: [
+          {
+            integral: '996996',
+            gradeName: '',
+            fullName: '996996',
+            address: '996996',
+            longitude: '996996',
+            latitude: '996996',
+            id: 'id845',
+            logo: '996996',
+            shopinfo: '996996',
+          },
+          {
+            integral: '996996',
+            gradeName: '',
+            fullName: '996996',
+            address: '996996',
+            longitude: '996996',
+            latitude: '996996',
+            id: 'id336',
+            logo: '996996',
+            shopinfo: '996996',
+          }
+        ]
+      },
+      {
+        groupName: '776',
+        integral: '776',
+        gradeName: '776',
+        shopList: [
+          {
+            integral: '996996',
+            gradeName: '',
+            fullName: '996996',
+            address: '996996',
+            longitude: '996996',
+            latitude: '996996',
+            id: '996996',
+            logo: '996996',
+            shopinfo: '996996',
+          },
+          {
+            integral: '996996',
+            gradeName: '',
+            fullName: '996996',
+            address: '996996',
+            longitude: '996996',
+            latitude: '996996',
+            id: '996996',
+            logo: '996996',
+            shopinfo: '996996',
+          }
+        ]
+      }
+    ]
+  }
+  methods = {
+    open () {
+      this.$invoke('popupBottom', 'open')
+    },
+    close () {
+      this.$emit('close')
+    },
+    // 选择店铺
+    radioChange (e) {
+      console.log('选择店铺', e)
+      this.userInfo.gender = e.detail.value
+      this.$emit('updateData')
+    },
+  }
+}
+
+</script>
+<style lang="less">
+.cut-shop-main {
+  flex: 1;
+  padding: 0 26rpx;
+  .item-wrap{
+    .r-wrap{
+      float: right;
+      display: inline-block;
+      vertical-align: bottom;
+      .r-t{
+        display: inline-block;
+        height: 32rpx;
+        line-height: 32rpx;
+        padding: 0 10rpx;
+        font-size: 22rpx;
+        border-radius: 5rpx;
+        border: 1rpx solid #ffb389;
+      }
+      .r-t-o{
+        background-color: #ffdfd9;
+      }
+      .r-t-t{
+        margin-left: 16rpx;
+        background-color: #ffeadf;
+      }
+    }
+    .group-name{
+      height: 32rpx;
+      line-height: 32rpx;
+      margin-bottom: 20rpx;
+    }
+    .radio-item{
+      height: 60rpx;
+      margin-bottom: 30rpx;
+      padding-left: 6rpx;
+      .right-t{
+        display: inline-block;
+        vertical-align: top;
+        margin-left: 20rpx;
+        line-height: 60rpx;
+      }
+    }
+  }
+}
+
+</style>

@@ -1,7 +1,7 @@
 <template>
   <view class="product-list-main">
 
-    <image wx:if="{{isHasProduct}}" class="no-product-data" src="/images/no-product-data.png"></image>
+    <image wx:if="{{isHasProduct}}" class="no-product-data" src="http://jzm-1252389350.cosgz.myqcloud.com/iconHeaded/no-product-data1536731185542.png"></image>
 
     <scroll-view wx:else class="border-box" scroll-y>
         <view class="scroll-view-item">

@@ -1,25 +1,17 @@
-<<<<<<< HEAD
 import wepy from 'wepy';
-const wxRequest = async (options, url) => {
+const wxRequest = async (options, url, methodType = 'POST') => {
     wx.showLoading({title: '加载中'})
     let baseData = Object.assign({}, {
-      // shopId: wx.getStorageSync('shopId'),
-      // userId: wx.getStorageSync('userId'),
-      // memberId: wx.getStorageSync('memberId')
+      shopId: wx.getStorageSync('shopId'),
+      userId: wx.getStorageSync('userId'),
+      memberId: wx.getStorageSync('memberId'),
       latitude: wx.getStorageSync('latitude'),
       longitude: wx.getStorageSync('longitude'),
-      shopId: '0427664a21464e2ca52f84e755f9e3d6',
-      userId: '00256e1bd5774da7943b439c3369971b',
-      memberId: '03ed51007bbc4549af0b748866a317dd'
-    }, options)
+    }, options ? options : {})
     
-    console.log('shopId', wx.getStorageSync('shopId'))
-    console.log('userId', wx.getStorageSync('userId'))
-    console.log('memberId', wx.getStorageSync('memberId'))
-    console.log('baseData', baseData)
     let res = await wepy.request({
         url: url,
-        method: 'POST',
+        method: methodType,
         data: {
           data: baseData,
           unit: {
@@ -47,6 +39,7 @@ const wxRequest = async (options, url) => {
           duration: 2000
         })
     }
+    wx.hideLoading()
 };
 
 module.exports = {

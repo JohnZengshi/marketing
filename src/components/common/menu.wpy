@@ -65,21 +65,18 @@ export default class menu extends wepy.component {
   }
 
   async smallProgramMemberExists (options) {
-    wx.navigateTo({
-        url: '../../my/signIn/signIn'
-    })
     let json = await api.smallProgramMemberExists(options)
     wx.setStorageSync('userId', json.userId)
     // 未绑定且有手机号码
-    // if (json.status == 2 && options.phone) {
-    //   wx.navigateTo({
-    //     url: '/pages/my/signIn/signIn'
-    //   })
-    // } else if (json.status == 1) {
-    //   wx.navigateTo({
-    //     url: '/pages/tabBar/my/my'
-    //   })
-    // }
+    if (json.checkStatus == 2 && options.phone) {
+      wx.navigateTo({
+        url: '../../my/signIn/signIn'
+      })
+    } else if (json.checkStatus == 1) {
+      wx.navigateTo({
+        url: '/pages/tabBar/my/my'
+      })
+    }
   }
 
   async getEncrypteInfo (options) {

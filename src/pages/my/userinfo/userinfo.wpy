@@ -46,8 +46,8 @@ export default class mUserinfo extends wepy.component {
   }
 
   // 更新用户基本信息
-  async smallProgramUserInfo {
-    let json = await api.smallProgramUserInfo({userId: wx.getStorageSync('userId')})
+  async getUserInfo {
+    let json = await api.getUserInfo({userId: wx.getStorageSync('userId')})
     json.birthday = utils.extractXjTime(json.birthday)
     json.registeredTime = utils.extractXjTime(json.registeredTime)
     this.userInfo = json
@@ -58,7 +58,7 @@ export default class mUserinfo extends wepy.component {
  * 生命周期函数--监听页面显示
  */
   onShow: function () {
-    this.smallProgramUserInfo()
+    this.getUserInfo()
   },
 
   // 更新用户基本信息
@@ -70,7 +70,7 @@ export default class mUserinfo extends wepy.component {
   //   let options = {
   //     userId: wx.getStorageSync('userId')
   //   }
-  //   requestData(smallProgramUserInfo, options)
+  //   requestData(getUserInfo, options)
   //     .then(res => {
   //       let datas = res
   //       datas.birthday = util.extractXjTime(datas.birthday)

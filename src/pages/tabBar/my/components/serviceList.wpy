@@ -131,7 +131,6 @@ export default class myHeader extends wepy.component {
       default: {}
     }
   }
-
   // data = {
   //   showList: [
   //     {
@@ -150,13 +149,14 @@ export default class myHeader extends wepy.component {
 <style lang="less">
 .my-service-list-box {
   position: relative;
-  margin: 20rpx 14rpx 0 14rpx;
+  margin: 0 14rpx 0 14rpx;
   background-color: #fff;
   border-radius: 10rpx;
   overflow: hidden;
   .header-tit{
     color: #000;
     font-size: 28rpx;
+    font-weight: bold;
     margin: 30rpx 0 0 30rpx;
   }
   .service-list-item{

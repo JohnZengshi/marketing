@@ -1,6 +1,6 @@
 <template>
   <view class="bill-main {{isBill == 'Y' ? 'main-color' : ''}}">
-    <image wx:if="{{isHasProduct}}" class="no-product-data" src="/images/mine/no-bill-data.png"></image>
+    <image wx:if="{{isHasProduct}}" class="no-product-data" src="http://jzm-1252389350.cosgz.myqcloud.com/iconHeaded/no-bill-data1536731283409.png"></image>
     <block wx:for="{{billList}}" wx:key="{{item}}">
       <view class="bill-item">
 

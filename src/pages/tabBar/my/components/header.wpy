@@ -1,17 +1,18 @@
 <template>
-  <view class="my-header-box">
-    <view class="sign-in {{userInfo.sign == 'Y' ? 'opacity-08' : ''}}" bindtap='_rportByWeChat'>
-      <a class='sign-in-sort-icon mr-10' wx:if="{{userInfo.sign == 'N'}}">
-        <image wx:if="currentFillter.orderBy" class="sign-in-sort-bg-one" src="/images/sign-in-head-icon.png"></image>
-      </a>
-      <text class="text-tit mt-10">{{userInfo.sign == 'N' ? '签到' : '已签到'}}</text>
-    </view>
+  <view class="my-header-box grad-tb">
 
-    <view class="set-btn-list" bindtap='_rportByWeChat'>
-
+    <view class="set-list-wrap" bindtap='_rportByWeChat'>
+      <!-- 设置 -->
       <a class='img-box'>
         <image wx:if="currentFillter.orderBy" class="sign-in-sort-bg-one" src="/images/set-fff@3x.png"></image>
       </a>
+      <!-- 签到 -->
+      <view class="sign-in-box {{userInfo.sign == 'Y' ? 'opacity-08' : ''}}" bindtap='_rportByWeChat'>
+        <a class='sign-in-sort-icon mr-10'>
+          <image wx:if="currentFillter.orderBy" class="sign-in-sort-bg-one" src="/images/my/金币-3@2x.png"></image>
+        </a>
+        <text class="text-tit">{{userInfo.sign == 'N' ? '签到' : '已签到'}}</text>
+      </view>
 
     </view>
 
@@ -32,7 +33,7 @@
       </view>
     </view>
     <!-- 店铺 -->
-    <view class="shop-location" bindtap='_rportByWeChat'>
+    <view class="shop-location" @tap='openShop'>
       <a class='shop-location-icon mr-10'>
         <image wx:if="currentFillter.orderBy" src="/images/location@3x.png"></image>
       </a>
@@ -56,6 +57,13 @@ export default class myHeader extends wepy.component {
   datas = {
   }
 
+  methods = {
+    openShop () {
+      console.log('执行')
+      this.$emit('openShop')
+    }
+  }
+
   onLoad() {
       // let self = this
       // this.$parent.getUserInfo(function (userInfo) {
@@ -72,56 +80,56 @@ export default class myHeader extends wepy.component {
 <style lang="less">
 .my-header-box {
   position: relative;
-  height: 350rpx;
+  // height: 350rpx;
+  height: 222rpx;
   width: 100%;
   overflow: hidden;
  // background-color: #FB6A4C;
- background-color: #2993f8;
+ // background-color: #2993f8;
   .sign-in-sort-bg-one{
     width: 29rpx;
     height: 32rpx;
     vertical-align: top;
   }
-  .sign-in{
-    position: absolute;
-    right: 20rpx;
-    top: 20rpx;
-    border: 1rpx solid #fff;
-    padding: 0 10rpx;
-    height: 56rpx;
-    border-radius: 10rpx;
-    .sign-in-sort-icon{
-      display: inline-block;
-      width: 29rpx;
-      height: 32rpx;
-      text-align: left;
-      margin-right: 10rpx;
-      margin-top: 10rpx;
-    }
-    .text-tit {
-      display: inline-block;
-      vertical-align: top;
-      font-size: 28rpx;
-      line-height: 28rpx;
-      color: #fff;
-    }
-  }
 
-  .set-btn-list{
+  .set-list-wrap{
     position: absolute;
-    right: 20rpx;
-    top: 120rpx;
+    right: 0;
+    top: 40rpx;
     height: 38rpx;
-    border-radius: 10rpx;
     .img-box{
       display: inline-block;
       width: 38rpx;
       height: 38rpx;
-      margin-left: 40rpx;
+      margin-right: 20rpx;
       >image{
         vertical-align: top;
         width: 100%;
         height: 100%;
+      }
+    }
+    .sign-in-box{
+      display: inline-block;
+      vertical-align: top;
+      height: 38rpx;
+      padding: 0 20rpx;
+      background-color: #ae4c35;
+      border-radius: 20rpx 0 0 20rpx;
+      .sign-in-sort-icon{
+        display: inline-block;
+        width: 29rpx;
+        height: 32rpx;
+        text-align: left;
+        margin-right: 10rpx;
+        margin-top: 5rpx;
+      }
+      .text-tit {
+        display: inline-block;
+        vertical-align: top;
+        font-size: 28rpx;
+        height: 38rpx;
+        line-height: 38rpx;
+        color: #fff;
       }
     }
   }
@@ -132,8 +140,9 @@ export default class myHeader extends wepy.component {
     bottom: 46rpx;
     padding: 0 10rpx;
     height: 50rpx;
-    border-radius: 20rpx;
-    background-color: #fb5a36;
+    border-radius: 4rpx;
+    border: 1rpx solid #fff;
+    // background-color: #fb5a36;
     .shop-location-icon{
       display: inline-block;
       width: 29rpx;
@@ -177,7 +186,7 @@ export default class myHeader extends wepy.component {
     // margin: 34rpx auto 0 auto;
     overflow: hidden;
     border: 4rpx solid #fff;
-    margin: 85rpx 0 0 30rpx;
+    margin: 30rpx 0 0 30rpx;
     .head-portrait-img {
       width: 100%;
       height: 100%;
@@ -186,7 +195,7 @@ export default class myHeader extends wepy.component {
 
   .filter-item {
     display: inline-block;
-    margin: 85rpx 0 0 20rpx;
+    margin: 30rpx 0 0 20rpx;
     text-align: left;
     .user-name {
       text-align: left;
@@ -203,10 +212,10 @@ export default class myHeader extends wepy.component {
         width: 40rpx;
         text-align: center;
         margin-right: 60rpx;
-        padding-top: 10rpx;
+        // padding-top: 10rpx;
         .xj-sort-bg-one{
-          width: 28rpx;
-          height: 28rpx;
+          width: 36rpx;
+          height: 36rpx;
           vertical-align: top;
         }
       }

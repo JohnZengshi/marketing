@@ -35,14 +35,14 @@ export default class activitySwiper extends wepy.page {
       {
         activityName: 'activityName',
         activityId: 'activityId',
-        logoSrc: 'http://jzm-1252389350.cosgz.myqcloud.com/iconHeaded/%25QH74RAN7GT%5D%24%5DK%7DJ5RCVXM1535783933372.png',
+        logoSrc: 'http://jzm-1252389350.cosgz.myqcloud.com/iconHeaded/banner1%402x.png',
         beginTime: 'beginTime',
         endTime: 'endTime',
       },
       {
         activityName: 'activityName',
         activityId: 'activityId',
-        logoSrc: 'http://jzm-1252389350.cosgz.myqcloud.com/iconHeaded/%25QH74RAN7GT%5D%24%5DK%7DJ5RCVXM1535783933372.png',
+        logoSrc: 'http://jzm-1252389350.cosgz.myqcloud.com/iconHeaded/banner2%402x.png',
         beginTime: 'beginTime',
         endTime: 'endTime',
       }

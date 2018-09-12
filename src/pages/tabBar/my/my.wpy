@@ -1,8 +1,13 @@
 <template>
-  <view class="my-main">
+  <view class="my-main {{popupBug ? 'popup-bug' : ''}}">
 
     <!-- 头像信息 -->
-    <myHeader :userInfo.sync="userInfo"></myHeader>
+    <myHeader
+      :userInfo.sync="userInfo"
+      @openShop.user="openShop"
+      @close.user="closeShop"
+      @updateData.user='updateData'
+    ></myHeader>
     
     <!-- 数据集合 -->
     <numBox :userInfo.sync="userInfo"></numBox>
@@ -15,6 +20,9 @@
 
     <!-- 商家服务 -->
     <serviceList></serviceList>
+
+    <!-- 切换店铺 -->
+    <cutShop></cutShop>
 
     <!-- 底部导航 -->
     <menu :menu.sync="currentMenu" :userId.sync="userId"></menu>
@@ -30,6 +38,7 @@ import numBox from './components/numBox';
 import applyList from './components/applyList';
 import activitySwiper from './components/activitySwiper';
 import serviceList from './components/serviceList';
+import cutShop from './components/cutShop';
 
 //通过继承自wepy.page的类创建页面逻辑
 export default class my extends wepy.page {
@@ -45,7 +54,8 @@ export default class my extends wepy.page {
     numBox: numBox,
     applyList: applyList,
     activitySwiper: activitySwiper,
-    serviceList: serviceList
+    serviceList: serviceList,
+    cutShop: cutShop,
   }
   /**
    * 页面的初始数据
@@ -53,6 +63,7 @@ export default class my extends wepy.page {
   data = {
     currentMenu: 'C',
     userId: wx.getStorageSync('userId'),
+    popupBug: false,
     isBill: 'N',
     score: '2', // 签到成功加的分值
     userInfo: {
@@ -60,7 +71,7 @@ export default class my extends wepy.page {
       integralNum: '1000',
       balance: 'balance',
       qcSrc: 'http://jzm-1252389350.cosgz.myqcloud.com/iconHeaded/%25QH74RAN7GT%5D%24%5DK%7DJ5RCVXM1535783933372.png',
-      nickName: 'nickName',
+      nickName: '小华',
       faceSrc: 'http://jzm-1252389350.cosgz.myqcloud.com/iconHeaded/%25QH74RAN7GT%5D%24%5DK%7DJ5RCVXM1535783933372.png',
       gradeName: 'gradeName',
       shopName: 'shopName',
@@ -79,10 +90,10 @@ export default class my extends wepy.page {
   }
 
   // 更新用户基本信息
-  // async smallProgramUserInfo () {
+  // async xjUserInfo () {
   //   console.log('更新用户基本信息', this.userId)
   //   let _self = this
-  //   let json = await api.smallProgramUserInfo({userId: _self.userId})
+  //   let json = await api.xjUserInfo({userId: _self.userId})
   //   // _self.userInfo = json
   //   // _self.shareData.title = '西金'
   //   // _self.$apply()
@@ -92,13 +103,34 @@ export default class my extends wepy.page {
   async electronicBilling () {
     let _self = this
     let json = await api.electronicBilling({userId: _self.userId})
-    // if (json.dataList.length) {
-    //   this.isBill = 'Y'
-    // }
-    // _self.$apply()
+    if (json.dataList.length) {
+      this.isBill = 'Y'
+    }
+    _self.$apply()
+  }
+
+  async xjUserInfo () {
+    let self = this
+    let json = await api.xjUserInfo()
+    self.userInfo = json
+    self.$apply()
   }
 
   methods = {
+    openShop () {
+      this.$invoke('cutShop', 'open')
+      this.popupBug = true
+    },
+
+    closeShop () {
+      this.popupBug = false
+    },
+
+    // 切换店铺后更新用户信息
+    updateData () {
+      this.xjUserInfo()
+    },
+
     filterScore (parm) {
       if (Number(parm) > 999) {
         return '999+'
@@ -157,13 +189,14 @@ export default class my extends wepy.page {
    * 生命周期函数--监听页面加载
    */
   onLoad (options) {
-    let self = this
-    this.$parent.getUserInfo(function (userInfo) {
-      if (userInfo) {
-        self.userInfo = userInfo
-      }
-      self.$apply()
-    })
+    // this.xjUserInfo()
+    // let self = this
+    // this.$parent.xjUserInfo(function (userInfo) {
+    //   if (userInfo) {
+    //     self.userInfo = userInfo
+    //   }
+    //   self.$apply()
+    // })
     // this.electronicBilling()
   }
 
@@ -172,7 +205,8 @@ export default class my extends wepy.page {
    */
   onShow () {
     // this.userInfo = this.$parent.globalData.userInfo
-    this.electronicBilling()
+    this.xjUserInfo()
+    // this.electronicBilling()
   }
 
 

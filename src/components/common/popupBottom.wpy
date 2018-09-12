@@ -27,6 +27,7 @@ export default class cpopupBottom extends wepy.component {
   }
 
   data = {
+    // isShow: false
     isShow: false
   }
 

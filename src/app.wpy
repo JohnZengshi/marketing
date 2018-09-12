@@ -24,16 +24,16 @@ setStore(store)
 export default class extends wepy.app {
   config = {
     pages: [
-      'pages/tabBar/store/store',
-      'pages/tabBar/integralStore/integralStore',
       'pages/tabBar/my/my',
+      'pages/tabBar/store/store',
+      'pages/my/signIn/signIn',
+      'pages/tabBar/integralStore/integralStore',
       'pages/store/video/video',
       'pages/store/commodityInformation/commodityInformation',
       'pages/integralStore/discountCoupon/discountCoupon',
       'pages/integralStore/integralDetails/integralDetails',
       'pages/integralStore/discountResult/discountResult',
       'pages/my/shopList/shopList',
-      'pages/my/signIn/signIn',
       'pages/my/birthday/birthday',
       'pages/my/activity/activity',
       'pages/my/record/record',
@@ -121,21 +121,26 @@ export default class extends wepy.app {
           let options = {
             code: res.code
           }
-          _self.smallProgramUserInfo(options)
+          // var l = "https://api.weixin.qq.com/sns/jscode2session?appid=wxdaec656a7d436633&secret=b78229f2ed29479e0b046799a5ead66e&js_code=" + res.code + "&grant_type=authorization_code"
+          // this.textInfo(l)
+          _self.xjUserInfo(options)
         }
       })
     } else {
-      let options = {
-        userId: wx.getStorageSync('userId')
-      }
-      _self.smallProgramUserInfo(options)
+      _self.xjUserInfo()
     }
     
   }
 
+  async textInfo (options) {
+    let json = await api.openIdtext(options)
+    console.log(json)
+  }
+
   // 验证是否已经注册
-  async smallProgramUserInfo (options) {
-    let json = await api.smallProgramUserInfo(options)
+  async xjUserInfo (options) {
+    console.log('验证--=', options)
+    let json = await api.xjUserInfo(options)
     this.globalData.userInfo = json
     wx.setStorageSync('userId', json.userId)
     wx.setStorageSync('memberId', json.memberId)

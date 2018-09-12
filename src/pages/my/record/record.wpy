@@ -269,7 +269,7 @@
 
       <view class="my-integral-body">
 
-        <image wx:if="{{isHasProduct}}" class="no-product-data" src="/images/no-product-data.png"></image>
+        <image wx:if="{{isHasProduct}}" class="no-product-data" src="http://jzm-1252389350.cosgz.myqcloud.com/iconHeaded/no-product-data1536731185542.png"></image>
         <block wx:for="{{showList}}" wx:for-item="item" wx:key="{{index}}">
           <view class="list-h">
             <text>{{item.yearMoon}}</text>
@@ -335,9 +335,9 @@ import utils from '@/utils/util'
       };
 
       // 更新用户基本信息
-      async smallProgramUserInfo () {
+      async getUserInfo () {
         let _self = this
-        let json = await api.smallProgramUserInfo({userId: this.userId})
+        let json = await api.getUserInfo({userId: this.userId})
         // _self.userInfo = json
         // _self.shareData.title = '西金'
         // _self.$apply()
