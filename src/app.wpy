@@ -39,13 +39,16 @@ export default class extends wepy.app {
       'pages/my/record/record',
       'pages/my/view/mineActivity',
       'pages/my/view/bargainSucceed',
+      'pages/my/view/personalData',
       'pages/common/map/showMap',
-
       'pages/my/view/myIntegral',
       'pages/my/view/UpGrade',
       'pages/my/view/footprint',
       'pages/my/view/electricBill',
       'pages/my/view/afterSaleCriterion',
+      'pages/my/view/maintenanceGuide',
+      'pages/my/view/FAQ',
+      'pages/my/view/ENofJewellery',
       'pages/my/view/aboutUs',
       'pages/my/view/discountExplain',
       'pages/my/view/gradeRule',
@@ -55,6 +58,10 @@ export default class extends wepy.app {
       'pages/my/view/setPersonalData/pages/setBirthday',      
       'pages/my/view/setPersonalData/pages/setGender',      
       'pages/my/view/setPersonalData/pages/setName',
+      'pages/my/view/setPersonalData/pages/setMemorialDay',
+      'pages/my/view/setPersonalData/pages/setDetailAddress',
+      'pages/my/view/setPersonalData/pages/setEmail',
+      'pages/my/view/setPersonalData/pages/setWechatNumber',
       'pages/discountCoupon/discountCoupon',
       'pages/shopList/shopList',
       'pages/integralStore/view/exchangeRecord',
@@ -103,9 +110,9 @@ export default class extends wepy.app {
   onLaunch() {
     console.log('latitude', wx.getStorageSync('latitude'))
     console.log('longitude', wx.getStorageSync('longitude'))
-    // wx.setStorageSync('shopId', '0427664a21464e2ca52f84e755f9e3d6')
-    // wx.setStorageSync('userId', '00256e1bd5774da7943b439c3369971b')
-    // wx.setStorageSync('memberId', '03ed51007bbc4549af0b748866a317dd')
+    wx.setStorageSync('shopId', '0427664a21464e2ca52f84e755f9e3d6')
+    wx.setStorageSync('userId', '00256e1bd5774da7943b439c3369971b')
+    wx.setStorageSync('memberId', '02200481d99d4d28bdd7a3189977f0f2')
     this.getLocation()
     // 更新用户基本信息
     this.updateUserInfo()
