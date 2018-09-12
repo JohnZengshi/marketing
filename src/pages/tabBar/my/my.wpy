@@ -138,8 +138,12 @@ export default class my extends wepy.page {
     let self = this
     let json = await api.xjUserInfo(options)
     if (json) {
+      wx.setStorageSync('shopId', json.shopId)
+      wx.setStorageSync('userId', json.userId)
+      wx.setStorageSync('memberId', json.memberId)
       self.userInfo = json
       self.userId = json.userId
+      self.getServerList();
       self.$apply()
     }
   }
@@ -259,7 +263,7 @@ export default class my extends wepy.page {
   /**
    * 生命周期函数--监听页面显示
    */
-  async onShow () {
+  onShow () {
     let self = this
     if (!wx.getStorageSync('userId')) {
       wx.login({
@@ -273,17 +277,14 @@ export default class my extends wepy.page {
     } else {
       self.xjUserInfo()
     }
-    // this.xjUserInfo()
-    // this.electronicBilling()
-    this.serverList =await this.getServerList();
-    this.serverList = this.resetPath(this.serverList);
-    this.$apply();
   }
 
   // 获取商家服务列表
   async getServerList() {
-    let res =await api.getServerList();
-    return res.dataList
+    let self = this
+    let res = await api.getServerList();
+    self.serverList = self.resetPath(res.dataList)
+    self.$apply();
   }
   
 
