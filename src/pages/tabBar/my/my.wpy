@@ -39,7 +39,7 @@
         <view class="btn" @tap="hidePop">知道了</view>
       </view>
     </popup>
-    
+
     <button wx:if="{{!userId}}" class="get-phone-number" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber"></button>
 
     <signInPopup :score.sync="score" :isSignInPopup.sync="isSignInPopup"></signInPopup>
@@ -99,7 +99,8 @@ export default class my extends wepy.page {
       shopName: '',
       member: '',
       sex: '',
-      phone: ''
+      phone: '',
+      userId: ''
     },
     isSignInPopup: false, // 签到成功弹窗
     memberDetailPopup: false, // 会员详情弹窗
@@ -137,6 +138,7 @@ export default class my extends wepy.page {
     let self = this
     let json = await api.xjUserInfo()
     self.userInfo = json
+    self.userId = json.userId
     self.$apply()
   }
 
@@ -233,7 +235,8 @@ export default class my extends wepy.page {
     },
 
     getPhoneNumber(e) {
-      this.$invoke('getPhoneNumber', e)
+      this.$invoke('menu', 'getPhoneNumber', e)
+      // this.$parent.getPhoneNumber(e)
     }
   }
   /**
@@ -255,8 +258,20 @@ export default class my extends wepy.page {
    * 生命周期函数--监听页面显示
    */
   async onShow () {
-    // this.userInfo = this.$parent.globalData.userInfo
-    this.xjUserInfo()
+    let self = this
+    if (!wx.getStorageSync('userId')) {
+      wx.login({
+        success: res => {
+          let options = {
+            code: res.code
+          }
+          self.xjUserInfo(options)
+        }
+      })
+    } else {
+      self.xjUserInfo()
+    }
+    // this.xjUserInfo()
     // this.electronicBilling()
     this.serverList =await this.getServerList();
     this.serverList = this.resetPath(this.serverList);
