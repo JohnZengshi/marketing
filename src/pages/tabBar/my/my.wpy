@@ -134,12 +134,14 @@ export default class my extends wepy.page {
   }
 
   // 用户信息
-  async xjUserInfo () {
+  async xjUserInfo (options) {
     let self = this
-    let json = await api.xjUserInfo()
-    self.userInfo = json
-    self.userId = json.userId
-    self.$apply()
+    let json = await api.xjUserInfo(options)
+    if (json) {
+      self.userInfo = json
+      self.userId = json.userId
+      self.$apply()
+    }
   }
 
   async _rportByWeChat (options) {
