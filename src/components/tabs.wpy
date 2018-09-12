@@ -52,6 +52,7 @@
     };
     watch = {
         currentIndex(val) { //监听当前index
+            console.log(val)
             this.sliderLineMove(val);
         }
     };

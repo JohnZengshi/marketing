@@ -5,6 +5,7 @@
 </template>
 <script>
   import wepy from "wepy";
+  import api from "Api";
   import ExplainTemplate from "../components/explainTemplate";
   export default class GradeRule extends wepy.page {
     config = {
@@ -14,58 +15,68 @@
     };
     data = {
       explainList: [{
-        titleName: "会员等级解释",
+        titleName: "会员介绍",
         list: [{
           listName: "",
           wordList: [{
-            word: "售后无明显质量问题，概不退货货售后无明显质量问题售后无明显质量问题，概不退货",
+            word: "在店铺小程序或公众号注册即为店铺会员,以及在实体店铺购买商品时，也可以成为会员",
           }, {
-            word: "售后无明显质量问题，概不退货货售后无明显质量问题",
+            word: "店铺根据会员消费或者其他途径获得积分，来提升会员的等级，会员等级越高，会员在消费时享受的优惠特权越丰富",
           }]
         }]
       }, {
-        titleName: "升等级说明",
+        titleName: "会员级别",
         list: [{
           listName: "",
           wordList: [{
-            word: "售后无明显质量问题，概不退货货售后无明显质量问题售后无明显质量问题，概不退货货售后",
+            word: "本店铺会员划分三个等级：普卡会员，银卡会员，金卡会员。",
           }, {
-            word: "售后无明显质量问题，概不退货货售后无明显质量问题",
+            word: "本店铺会员等级根据会员总积分获得对应的会员等级。",
           }]
         }]
       }, {
-        titleName: "会员等级",
+        titleName: "会员升级",
         list: [{
           listName: "",
           wordList: [{
-            word: "普通会员",
+            word: "普卡会员：会员积分需达到500分，即为普卡会员，在店铺购买商品时享受普卡会员惠享",
           }, {
-            word: "铂金会员",
+            word: "银卡会员：会员积分需达到5000分，即可为银卡会员，在店铺购买商品时享受银卡会员惠享",
           }, {
-            word: "黄金会员",
-          }, {
-            word: "砖石会员",
+            word: "金卡会员：会员积分需达到10000分，即可为金卡会员，在店铺购买商品时享受金卡会员惠享",
           }]
         }]
       }, {
-        titleName: "惠享说明",
+        titleName: "会员惠享",
         list: [{
-          listName: "",
+          listName: "普卡会员",
           wordList: [{
-            word: "普通会员",
-          }, {
-            word: "铂金会员",
-          }, {
-            word: "黄金会员",
-          }, {
-            word: "砖石会员",
+            word: "在店铺购买素金类或珠宝类商品时，享受普卡等级的优惠",
           }]
-        }]
+        }, {
+          listName: "银卡会员",
+          wordList: [{
+            word: "在店铺购买素金类或珠宝类商品时，享受银卡等级的优惠",
+          }]
+        }, {
+          listName: "金卡会员",
+          wordList: [{
+            word: "在店铺购买素金类或珠宝类商品时，享受金卡等级的优惠",
+          }]
+        },]
       }]
     };
     components = {
       ExplainTemplate,
     };
+    async onShow() {
+      this.getGradeExplain();
+    }
+    // 获取等级说明
+    async getGradeExplain() {
+      let res = api.getGradeExplain();
+      console.log(res)
+    }
   }
 </script>
 <style lang="less" scoped>

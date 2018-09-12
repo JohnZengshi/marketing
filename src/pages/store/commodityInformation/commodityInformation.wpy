@@ -53,7 +53,7 @@
   import headIntroduce from './components/headIntroduce';
   import parameterList from './components/parameterList';
   import specification from './components/specification';
-  import api from '@/api/api'
+  import api from 'Api'
   //通过继承自wepy.page的类创建页面逻辑
   export default class commodityInformation extends wepy.page {
     components = {

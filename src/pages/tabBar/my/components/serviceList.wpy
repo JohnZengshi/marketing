@@ -4,7 +4,7 @@
     <view class="header-tit">商家服务</view>
 
     <view class="service-list-item">
-      <navigator class="my-body-item br-e5" hover-class="none" url="/pages/my/record/record">
+      <navigator class="my-body-item br-e5" hover-class="none" @tap="construction">
 
         <view class="icon-wrap">
           <image src="/images/my/service-1.png"></image>
@@ -13,7 +13,7 @@
 
       </navigator>
 
-      <navigator class="my-body-item br-e5" hover-class="none" url="../../my/pages/bill/bill?isBill={{isBill}}">
+      <navigator class="my-body-item br-e5" hover-class="none" url="/pages/my/view/maintenanceGuide">
 
         <view class="icon-wrap">
           <image src="/images/my/service-2.png"></image>
@@ -23,7 +23,7 @@
 
       </navigator>
 
-      <navigator class="my-body-item br-e5" hover-class="none" url="../../my/pages/bill/bill?isBill={{isBill}}">
+      <navigator class="my-body-item br-e5" hover-class="none" url="/pages/my/view/FAQ">
 
         <view class="icon-wrap">
           <image src="/images/my/service-3.png"></image>
@@ -33,7 +33,7 @@
 
       </navigator>
 
-      <navigator class="my-body-item br-e5" hover-class="none" url="../../my/pages/bill/bill?isBill={{isBill}}">
+      <navigator class="my-body-item br-e5" hover-class="none"  @tap="construction">
 
         <view class="icon-wrap">
           <image src="/images/my/service-4.png"></image>
@@ -54,7 +54,7 @@
 
       </navigator>
 
-      <navigator class="my-body-item br-e5" hover-class="none" url="../../my/pages/bill/bill?isBill={{isBill}}">
+      <navigator class="my-body-item br-e5" hover-class="none" url="/pages/my/view/ENofJewellery">
 
         <view class="icon-wrap">
           <image src="/images/my/service-6.png"></image>
@@ -64,7 +64,7 @@
 
       </navigator>
 
-      <navigator class="my-body-item br-e5" hover-class="none" url="../../my/pages/bill/bill?isBill={{isBill}}">
+      <navigator class="my-body-item br-e5" hover-class="none" @tap="construction">
 
         <view class="icon-wrap">
           <image src="/images/my/service-7.png"></image>
@@ -87,7 +87,7 @@
 
     <view class="service-list-item">
 
-      <navigator class="my-body-item br-e5" hover-class="none" url="../../my/pages/userinfo/userinfo">
+      <navigator class="my-body-item br-e5" hover-class="none" url="../../my/pages/userinfo/userinfo" @tap="construction">
 
         <view class="icon-wrap">
           <image src="/images/my/service-9.png"></image>
@@ -96,7 +96,7 @@
 
       </navigator>
 
-      <navigator class="my-body-item br-e5" hover-class="none" url="../../my/pages/userinfo/userinfo">
+      <navigator class="my-body-item br-e5" hover-class="none" url="../../my/pages/userinfo/userinfo" @tap="construction">
 
         <view class="icon-wrap">
           <image src="/images/my/service-10.png"></image>
@@ -105,7 +105,7 @@
 
       </navigator>
 
-      <navigator class="my-body-item br-e5" hover-class="none" url="../../my/pages/userinfo/userinfo">
+      <navigator class="my-body-item br-e5" hover-class="none" url="/pages/my/shopList/shopList">
 
         <view class="icon-wrap">
           <image src="/images/my/service-11.png"></image>
@@ -132,6 +132,11 @@ export default class myHeader extends wepy.component {
     }
   }
 
+  methods = {
+    construction(){
+      this.$emit("openPopup")
+    }
+  }
   // data = {
   //   showList: [
   //     {

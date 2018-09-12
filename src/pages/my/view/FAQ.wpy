@@ -1,5 +1,5 @@
 <template>
-    <view class="AfterSaleCriterion flex flex-v flex-align-center">
+    <view class="FAQ flex flex-v flex-align-center">
         <image></image>
         <text>店铺销售后，可以根据准则来进行店铺销售，店铺销售后，可以根据准则来进行店铺销售。店铺店铺</text>
         <view class="goodsList clearfix">
@@ -15,9 +15,9 @@
 <script>
   import wepy from "wepy";
   import api from "Api";
-  export default class AfterSaleCriterion extends wepy.page {
+  export default class FAQ extends wepy.page {
     config = {
-      navigationBarTitleText: "售后准则",
+      navigationBarTitleText: "常见问题",
       navigationBarTextStyle: "black",
       backgroundTextStyle: "light"
     };
@@ -41,13 +41,13 @@
     }
     // 获取售后准则数据
     async getServerRule(){
-        let res =await api.getServerRule({dataType:"3"});
+        let res =await api.getServerRule({dataType:"4"});
         console.log(res);
     }
   }
 </script>
 <style lang="less" scoped>
-    .AfterSaleCriterion{
+    .FAQ{
         >image{
             margin-top: 26rpx;
             border-radius: 16rpx;

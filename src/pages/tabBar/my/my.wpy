@@ -1,27 +1,4 @@
 <template>
-  <view>
-    <!-- 我的界面
-    <view>{{UserInfo.balance}}</view>
-    <button bindtap="toMineActivty">我的活动</button>
-    <button bindtap="toCoupon">优惠券</button>
-    <button bindtap="toPersonalData">个人资料</button>
-    <button bindtap="toMineIntergral">我的积分</button>
-    <button bindtap="toUpGrade">升等级</button>
-    <button bindtap="toFootPrint">足迹</button>
-    <button bindtap="toElectricBill">电子账单</button>
-    <button bindtap="toAfterSaleCriterion">售后准则</button>
-    <button bindtap="toAboutUs">关于我们</button>
-    <button @tap="openPopup">功能建设中</button>
-    <popup 
-      :isShow.sync="isShow" 
-      popUpType="center"
-      @hide.user="hidePop">
-      <view class="underConstruction flex flex-v flex-align-center">
-        <text>敬请期待</text>
-        <text>为了给你带来更好的体验，我们正在努力测试当中，敬请期待...</text>
-        <view class="btn" @tap="hidePop">知道了</view>
-      </view>
-      </popup> -->
   <view class="my-main">
 
     <!-- 头像信息 -->
@@ -41,85 +18,22 @@
 
     <!-- 底部导航 -->
     <menu :menu.sync="currentMenu" :userId.sync="userId"></menu>
+
+    <popup 
+      :isShow.sync="isShow" 
+      popUpType="center"
+      @hide.user="hidePop">
+      <view class="underConstruction flex flex-v flex-align-center">
+        <text>敬请期待</text>
+        <text>为了给你带来更好的体验，我们正在努力测试当中，敬请期待...</text>
+        <view class="btn" @tap="hidePop">知道了</view>
+      </view>
+    </popup>
   </view>
 </template>
 
 <script>
 import wepy from 'wepy';
-// import popup from '@components/popup';
-// import {getUserInfo,register} from "@Api/mine/mineApi";
-//   //通过继承自wepy.page的类创建页面逻辑
-//   export default class Index extends wepy.page {
-//       //可用于页面模板绑定的数据
-//       data = {
-//           list: [
-//             {
-//               hao: '123'
-//             }
-//           ],
-//           motto: 'Hello World',
-//           UserInfo: {},
-//           isShow:false,
-//       };
-//       components = {
-//         popup,
-//       };
-//       //事件处理函数(集中保存在methods对象中)
-//       methods = {
-//         openPopup() { //弹窗显示
-//           this.isShow = true;
-//           this.$apply();
-//         },
-//         hidePop() { //弹窗隐藏
-//           this.isShow = false;
-//           this.$apply();
-//         },
-//         bindViewTap() {
-//           console.log('button clicked');
-//         },
-//         toMineActivty() {
-//           wx.navigateTo({
-//             url: '/pages/my/view/mineActivity',
-//           })
-//         },
-//         toCoupon() {
-//           wx.navigateTo({
-//             url: '/pages/my/view/coupon',
-//           })
-//         },
-//         toPersonalData() {
-//           wx.navigateTo({
-//             url: '/pages/my/view/personalData',
-//           })
-//         },
-//         toMineIntergral() {
-//           wx.navigateTo({
-//             url: '/pages/my/view/myIntegral',
-//           })
-//         },
-//         toUpGrade() {
-//           wx.navigateTo({
-//             url: '/pages/my/view/UpGrade',
-//           })
-//         },
-//         toFootPrint() {
-//           wx.navigateTo({
-//             url: '/pages/my/view/footprint',
-//           })
-//         },
-//         toElectricBill() {
-//           wx.navigateTo({
-//             url: '/pages/my/view/electricBill',
-//           })
-//         },
-//         toAfterSaleCriterion() {
-//           wx.navigateTo({
-//             url: '/pages/my/view/afterSaleCriterion',
-//           })
-//         },
-//         toAboutUs() {
-//           wx.navigateTo({
-//             url: '/pages/my/view/aboutUs',
 import api from 'Api'
 import menu from 'common/menu';
 import myHeader from './components/header';
@@ -127,7 +41,7 @@ import numBox from './components/numBox';
 import applyList from './components/applyList';
 import activitySwiper from './components/activitySwiper';
 import serviceList from './components/serviceList';
-
+import popup from '@components/popup';
 //通过继承自wepy.page的类创建页面逻辑
 export default class my extends wepy.page {
   config = {
@@ -142,7 +56,8 @@ export default class my extends wepy.page {
     numBox: numBox,
     applyList: applyList,
     activitySwiper: activitySwiper,
-    serviceList: serviceList
+    serviceList: serviceList,
+    popup
   }
   /**
    * 页面的初始数据
@@ -172,7 +87,8 @@ export default class my extends wepy.page {
       desc: "猜金价",
       imageUrl: '',
       path: '/pages/tabBar/merchant/merchant'
-    }
+    },
+    isShow:false,
   }
 
   // 更新用户基本信息
@@ -196,7 +112,11 @@ export default class my extends wepy.page {
   }
 
   methods = {
-    filterScore (parm) {
+    hidePop() { //弹窗隐藏
+      this.isShow = false;
+      this.$apply();
+    },
+    filterScore(parm) {
       if (Number(parm) > 999) {
         return '999+'
       }
@@ -204,7 +124,7 @@ export default class my extends wepy.page {
     },
 
     // 签到
-    _rportByWeChat () {
+    _rportByWeChat() {
       if (this.userInfo.sign != 'N') {
         return
       }
@@ -226,7 +146,7 @@ export default class my extends wepy.page {
             })
           }, 3000)
         })
-      
+
     },
 
     onShareAppMessage: function (res) {
@@ -244,56 +164,20 @@ export default class my extends wepy.page {
       }
     },
 
-    setMember () {
+    setMember() {
       this.setData({
         memberDetailPopup: !this.data.memberDetailPopup
       })
     }
   }
-// </script>
-// <style lang="less" scoped>
-//   .underConstruction{
-//       width: 519rpx;
-//       height: 542rpx;
-//       background-color:#FFF;
-//       border-radius: 17rpx;
-//       >text{
-//         &:first-of-type{
-//           margin-top: 76rpx;
-//           font-size: 34rpx;
-//           color: #333333;
-//           font-weight: bold;
-//           line-height: 34rpx;
-//         }
-//         &:last-of-type{
-//           margin-top: 76rpx;
-//           width: 442rpx;
-//           font-size: 26rpx;
-//           color: #999999;
-//           line-height: 47rpx;
-//         }
-//       }
-//       >view{
-//         margin-top: 117rpx;
-//         width: 400rpx;
-//         height: 76rpx;
-//         border-radius: 76rpx;
-//         font-size: 34rpx;
-//         line-height: 76rpx;
-//         font-weight: bold;
-//         text-align: center;
-//         color: #fff;
-//         background: -webkit-linear-gradient(left, #FC894F, #FB6F4D);
-//         /* Safari 5.1 - 6.0 */
-//         background: -o-linear-gradient(right, #FC894F, #FB6F4D);
-//         /* Opera 11.1 - 12.0 */
-//         background: -moz-linear-gradient(right, #FC894F, #FB6F4D);
-//         /* Firefox 3.6 - 15 */
-//         background: linear-gradient(to right, #FC894F, #FB6F4D);
-//         /* 标准的语法 */
-//       }
-//   }
-// </style>
+
+
+  events = {
+    'openPopup'(){
+        this.isShow = true;
+        this.$apply();
+    }
+  }
   /**
    * 生命周期函数--监听页面加载
    */
@@ -313,7 +197,7 @@ export default class my extends wepy.page {
    */
   onShow () {
     // this.userInfo = this.$parent.globalData.userInfo
-    this.electronicBilling()
+    // this.electronicBilling()
   }
 
 
@@ -344,4 +228,49 @@ export default class my extends wepy.page {
 .mt-10{
   margin-top: 12rpx;
 }
+
+.underConstruction {
+    width: 519rpx;
+    height: 542rpx;
+    background-color: #FFF;
+    border-radius: 17rpx;
+
+    >text {
+      &:first-of-type {
+        margin-top: 76rpx;
+        font-size: 34rpx;
+        color: #333333;
+        font-weight: bold;
+        line-height: 34rpx;
+      }
+
+      &:last-of-type {
+        margin-top: 76rpx;
+        width: 442rpx;
+        font-size: 26rpx;
+        color: #999999;
+        line-height: 47rpx;
+      }
+    }
+
+    >view {
+      margin-top: 117rpx;
+      width: 400rpx;
+      height: 76rpx;
+      border-radius: 76rpx;
+      font-size: 34rpx;
+      line-height: 76rpx;
+      font-weight: bold;
+      text-align: center;
+      color: #fff;
+      background: -webkit-linear-gradient(left, #FC894F, #FB6F4D);
+      /* Safari 5.1 - 6.0 */
+      background: -o-linear-gradient(right, #FC894F, #FB6F4D);
+      /* Opera 11.1 - 12.0 */
+      background: -moz-linear-gradient(right, #FC894F, #FB6F4D);
+      /* Firefox 3.6 - 15 */
+      background: linear-gradient(to right, #FC894F, #FB6F4D);
+      /* 标准的语法 */
+    }
+  }
 </style>

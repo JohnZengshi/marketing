@@ -25,7 +25,7 @@
 <script>
   import wepy from "wepy";
   import wepyCropper from 'wepy-cropper';
-  import api from 'Api'
+  import api from 'Api';
   export default class presonalData extends wepy.page {
     config = {
       navigationBarTitleText: "个人资料",
@@ -45,7 +45,11 @@
         sizeType: ["compressed"], //数组,选填 ['original', 'compressed'], 默认original
         visable: false
       },
-      currentOperation: "0"
+      currentOperation: "0",
+      modifyList:{
+        type:"",
+        data:""
+      }
     };
     computed = {
       presonalDataConfig() {
@@ -79,32 +83,34 @@
             type: "text",
             value: "",
             required: false,
-            operation: "qushezhi"
+            operation: "setMemorialDay"
           }, {
             text: "微信号",
             type: "text",
             value: "",
             required: false,
-            operation: "qushezhi"
+            operation: "setWechatNumber"
           }, {
             text: "邮箱",
             type: "text",
             value: "",
             required: false,
-            operation: "qushezhi"
-          }, {
-            text: "地址",
-            type: "text",
-            value: "",
-            required: false,
-            operation: "setAddress"
-          }, {
-            text: "详细地址",
-            type: "text",
-            value: "",
-            required: false,
-            operation: "qushezhi"
-          }]
+            operation: "setEmail"
+          }, 
+          // {
+          //   text: "地址",
+          //   type: "text",
+          //   value: "",
+          //   required: false,
+          //   operation: "setAddress"
+          // }, {
+          //   text: "详细地址",
+          //   type: "text",
+          //   value: "",
+          //   required: false,
+          //   operation: "setDetailAddress"
+          // }
+          ]
         }else{
           return [];
         }
@@ -115,12 +121,12 @@
     };
     methods = {
       operationLine(item, index) {
-        console.log(index);
         this.currentOperation = index;
         let operation = item.operation;
+        console.log(operation);
         if (operation == 'changeHeadPortrait') { //换头像
           this.setTouXaing();
-        } else {  //跳转设置页面
+        }else {  //跳转设置页面
           this.toSetPersonalData(operation);
         }
       }
@@ -130,7 +136,8 @@
       wepyCropperFinsh(path) {
         console.log(path);
         this.clipParams.src = path;
-        this.presonalDataConfig[this.currentOperation].value = this.clipParams.src;
+        // this.presonalDataConfig[this.currentOperation].value = this.clipParams.src;
+        this.infoModify("1",path);
         this.$apply();
       }
     };
@@ -138,30 +145,17 @@
     async onShow() {
       this.UserInfo =await this.getUserInfo();
       this.$apply();
-    }
+    };
     // 获取用户的信息
     async getUserInfo() {
-      let {shopId,userId,memberId} = this.$parent.globalData;
-      let res = await api.getUserInfo({shopId,userId,memberId});
+      let res = await api.getUserInfo();
       return res
     };
     // 跳转到设置页面
     toSetPersonalData(operation) {
-      console.log(operation)
-      let urlStr;
-      if (operation == 'setName') { //设置姓名
-        urlStr = 'setName';
-      } else if (operation == 'setGender') { //设置性别
-        urlStr = 'setGender'
-      } else if (operation == 'setBirthday') { //设置生日
-        urlStr = 'setBirthday'
-      } else if (operation == 'setAddress') { //设置地址
-        urlStr = 'setAddress'
-      } else {
-        return;
-      }
+      // console.log(operation)
       wx.navigateTo({
-        url: '/pages/my/view/setPersonalData/pages/' + urlStr
+        url: '/pages/my/view/setPersonalData/pages/' + operation
       })
     };
     // 设置剪切头像
@@ -179,9 +173,18 @@
       chooseImage.then((path) => {
         this.clipParams.src = path;
         this.clipParams.visable = true;
+        
         this.$apply();
       })
     };
+    // 修改个人资料
+    async infoModify(type,data) {
+      let res =await api.infoModify({modifyList:{
+        type,
+        data
+      }});
+      console.log(res);
+    }
   }
 </script>
 <style lang="less" scoped>

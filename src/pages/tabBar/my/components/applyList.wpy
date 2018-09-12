@@ -1,6 +1,6 @@
 <template>
   <view class='my-apply-list-box'>
-    <navigator class="my-body-item br-e5" hover-class="none" url="/pages/my/view/mineActivity">
+    <navigator class="my-body-item br-e5" hover-class="none" @tap="construction">
 
       <view class="icon-wrap">
         <image src="/images/my-activity@3x.png"></image>
@@ -29,7 +29,7 @@
 
     </navigator>
 
-    <navigator class="my-body-item br-e5" hover-class="none" url="../../my/pages/bill/bill?isBill={{isBill}}">
+    <navigator class="my-body-item br-e5" hover-class="none" @tap="construction">
 
       <view class="icon-wrap">
         <image src="/images/my-collect@3x.png"></image>
@@ -39,7 +39,7 @@
 
     </navigator>
 
-    <navigator class="my-body-item br-e5" hover-class="none" url="/pages/my/view/electricBill">
+    <navigator class="my-body-item br-e5" hover-class="none" @tap="construction">
 
       <view class="icon-wrap">
         <image src="/images/my-track@3x.png"></image>
@@ -66,6 +66,11 @@ export default class myHeader extends wepy.component {
     userInfo: {
       type: Object,
       default: {}
+    }
+  };
+  methods = {
+    construction(){
+      this.$emit("openPopup")
     }
   }
 }

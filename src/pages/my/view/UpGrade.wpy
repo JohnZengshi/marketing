@@ -97,16 +97,16 @@
               <image wx:elif="{{item.type == '1'}}" src="/images/mine/7.6砸金蛋@3x.png"></image>
 
               <view class="title flex flex-v">
-                <text>{{item.name}}</text>
+                <text>{{item.taskName}}</text>
                 <view class="detial flex flex-r">
                   <image src="/images/mine/7.0升等级－积分图标@3x.png"></image>
-                  <text>{{item.des}}</text>
+                  <text>{{item.awardString}}</text>
                 </view>
               </view>
             </view>
             <view class="right">
-              <view wx:if="{{item.hasMake}}" class="btn {{item.hasMake?'gary':''}}">已赚{{item.des}}</view>
-              <view wx:elif="{{!item.hasMake}}" class="btn {{item.hasMake?'gary':''}}">取赚积分</view>
+              <view wx:if="{{item.status == '1'}}" class="btn {{item.status == '1'?'gary':''}}">已赚{{item.awarScore}}</view>
+              <view wx:elif="{{!item.status == '2'}}" class="btn {{item.status == '1'?'gary':''}}">取赚积分</view>
             </view>
           </view>
         </repeat>
@@ -180,17 +180,19 @@
     onLoad() {};
     async onShow() {
       this.gradeData =await this.getGrade();
+      this.getIntegralTaskList();
       this.$apply();
     };
     // 获取等级信息
     async getGrade() {
-      let {
-        shopId,
-        userId,
-        memberId
-      } = this.$parent.globalData;
-      let res =await api.getGrade({shopId,userId,memberId});
+      let res =await api.getGrade();
+      console.log(res)
       return res;
+    }
+    // 获取积分任务列表
+    async getIntegralTaskList(){
+      let res = api.getIntegralTaskList();
+      console.log(res);
     }
   }
 </script>

@@ -1,6 +1,6 @@
-<<<<<<< HEAD
 import wepy from 'wepy';
 const wxRequest = async (options, url) => {
+    console.log(options)
     wx.showLoading({title: '加载中'})
     let baseData = Object.assign({}, {
       // shopId: wx.getStorageSync('shopId'),
@@ -10,8 +10,8 @@ const wxRequest = async (options, url) => {
       longitude: wx.getStorageSync('longitude'),
       shopId: '0427664a21464e2ca52f84e755f9e3d6',
       userId: '00256e1bd5774da7943b439c3369971b',
-      memberId: '03ed51007bbc4549af0b748866a317dd'
-    }, options)
+      memberId: '02200481d99d4d28bdd7a3189977f0f2'
+    }, options ? options : {})
     
     console.log('shopId', wx.getStorageSync('shopId'))
     console.log('userId', wx.getStorageSync('userId'))
@@ -26,7 +26,7 @@ const wxRequest = async (options, url) => {
             "channel": 3,
             "OS": "web",
             "ip": "string",
-            "userId": wx.getStorageSync('userId')
+            "userId": '00256e1bd5774da7943b439c3369971b',
           }
         },
         header: { 'content-type': 'application/json' }, // 默认值

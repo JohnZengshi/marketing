@@ -1,5 +1,5 @@
 <template>
-    <view class="AfterSaleCriterion flex flex-v flex-align-center">
+    <view class="ENofJewellery flex flex-v flex-align-center">
         <image></image>
         <text>店铺销售后，可以根据准则来进行店铺销售，店铺销售后，可以根据准则来进行店铺销售。店铺店铺</text>
         <view class="goodsList clearfix">
@@ -15,9 +15,9 @@
 <script>
   import wepy from "wepy";
   import api from "Api";
-  export default class AfterSaleCriterion extends wepy.page {
+  export default class ENofJewellery extends wepy.page {
     config = {
-      navigationBarTitleText: "售后准则",
+      navigationBarTitleText: "珠宝百科",
       navigationBarTextStyle: "black",
       backgroundTextStyle: "light"
     };
@@ -41,13 +41,13 @@
     }
     // 获取售后准则数据
     async getServerRule(){
-        let res =await api.getServerRule({dataType:"3"});
+        let res =await api.getServerRule({dataType:"5"});
         console.log(res);
     }
   }
 </script>
 <style lang="less" scoped>
-    .AfterSaleCriterion{
+    .ENofJewellery{
         >image{
             margin-top: 26rpx;
             border-radius: 16rpx;

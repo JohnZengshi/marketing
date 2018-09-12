@@ -26,13 +26,13 @@
                 </view>
                 <image src="/images/mine/4.1 我的积分－赚积分@3x.png"></image>
               </view>
-              <view class="intergarlStore flex flex-r flex-align-center flex-pack-justify">
+              <navigator class="intergarlStore flex flex-r flex-align-center flex-pack-justify" url='/pages/tabBar/integralStore/integralStore'>
                 <view class="left flex flex-v">
                   <text>积分商城</text>
                   <text>等你换礼品啦！</text>
                 </view>
                 <image src="/images/mine/4.2我的积分－积分商城@3x.png"></image>
-              </view>
+              </navigator>
             </view>
             <view class="intergralList">
             <Sticky>
@@ -40,7 +40,7 @@
                     <text>积分记录</text>
                     <view class="picker flex flex-r flex-align-center">
                         <view class="datePicker">
-                            <datePicker type="date" pickerText="日期">
+                            <datePicker type="date" pickerText="日期" fields="month">
                                 <view class="pickerContent flex flex-r flex-align-center" slot="datePicker">
                                   <view  class="picker">
                                     日期
@@ -78,7 +78,7 @@
                           <view class="item flex flex-r flex-align-center flex-pack-justify">
                               <view class="left flex flex-v">
                                   <text>{{i.typeDesc}}</text>
-                                  <text>{{i.createTime}}</text>
+                                  <text>{{i.timeStr}}</text>
                               </view>
                                   <view class="right">
                                   <text>{{i.score}}</text>
@@ -109,7 +109,7 @@
       backgroundTextStyle: "light"
     };
     data = {
-      typeArray: ['全部', '增加', '消耗'],
+      typeArray: ['全部', '获取', '消耗'],
       currentType: "全部",
       scrollTop: 0,
       integral:null,
@@ -163,7 +163,7 @@
       },
       'bindDateChange': (val)=>{
         console.log(val);
-        // this.requestData.endTime = val;
+        this.requestData.beginTime = val;
         (async()=>{
           this.intergarList =await this.getIntegralList();
           this.$apply();
@@ -174,46 +174,46 @@
       this.integral =await this.getIntegral();
       this.intergarList =await this.getIntegralList();
       this.$apply();
-      console.log(this.intergarList);
 
     };
     // 获取积分日志
     async getIntegralList(){
-      let {
-        shopId,
-        userId,
-        memberId
-      } = this.$parent.globalData;
+      // let {
+      //   shopId,
+      //   userId,
+      //   memberId
+      // } = this.$parent.globalData;
       let {
         type,
         beginTime,
         endTime
       } = this.requestData;
       let res = await api.getIntegralList({
-        shopId,
-        userId,
-        memberId,
         type,
         beginTime,
         endTime
       });
-      return res.data;
+      res = this.filterTime(res);
+      return res;
     };
 
     // 获取积分信息
     async getIntegral(){
-      let {
-        shopId,
-        userId,
-        memberId
-      } = this.$parent.globalData;
-      let res = await api.getIntegral({
-        shopId,
-        userId,
-        memberId
-      });
-      return res.data;
+      let res = await api.getIntegral();
+      return res;
+    };
+    // 过滤时间
+    filterTime(data) {
+      data.map((val)=>{
+        val.groupList.map((v)=>{
+          let time = new Date(v.createTime);
+          let timeStr = `${time.getFullYear()}-${time.getMonth()+1}-${time.getDate()}`
+          v.timeStr = timeStr;
+        })
+      })
+      return data
     }
+
   }
 </script>
 <style lang="less" scoped>

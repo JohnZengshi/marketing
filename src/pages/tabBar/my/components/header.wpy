@@ -7,13 +7,13 @@
       <text class="text-tit mt-10">{{userInfo.sign == 'N' ? '签到' : '已签到'}}</text>
     </view>
 
-    <view class="set-btn-list" bindtap='_rportByWeChat'>
+    <navigator class="set-btn-list" bindtap='_rportByWeChat' url="/pages/my/view/personalData">
 
       <a class='img-box'>
         <image wx:if="currentFillter.orderBy" class="sign-in-sort-bg-one" src="/images/set-fff@3x.png"></image>
       </a>
 
-    </view>
+    </navigator>
 
     <view class="head-portrait">
       <image class="head-portrait-img" mode="aspectFill" src="{{userInfo.faceSrc}}"></image>

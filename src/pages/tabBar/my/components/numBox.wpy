@@ -1,21 +1,21 @@
 <template>
   <view class="my-num-box">
-    <navigator class="item" hover-class="none" url="/pages/my/record/record">
+    <navigator class="item" hover-class="none" url="/pages/my/view/myIntegral">
       <text>{{userInfo.integralNum}}</text>
       <text>积分</text>
     </navigator>
 
-    <view class="item">
+    <navigator class="item" url="/pages/my/view/coupon">
       <text>{{userInfo.integralNum}}</text>
       <text>优惠券</text>
-    </view>
+    </navigator>
 
-    <view class="item">
+    <view class="item" @tap="construction">
       <text>{{userInfo.integralNum}}</text>
       <text>钱包</text>
     </view>
 
-    <view class="right-item">
+    <view class="right-item" @tap="construction">
       <view class="img-box">
         <image class="sign-in-sort-bg-one" src="/images/my-wallet@3x.png"></image>
       </view>
@@ -31,6 +31,12 @@ export default class numBox extends wepy.component {
     userInfo: {
       type: Object,
       default: {}
+    }
+  }
+
+  methods = {
+    construction(){
+      this.$emit("openPopup")
     }
   }
 }
