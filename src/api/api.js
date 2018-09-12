@@ -90,6 +90,12 @@ const getMemberSalesList  = (params) => wxRequest(params, `${host}v1/member/memb
 // 会员资料修改
 const infoModify = (params) => wxRequest(params, `${host}v1/sem/user/infoModify`)
 
+// 商家服务列表
+const getServerList = (params) => wxRequest(params, `${host}v1/sem/shop/serverList`)
+// 3.9 服务相关准则
+// const getServerRule = (params) => wxRequest(params, `${host}v1/sem/shop/serverRule`)
+// 3.10 服务相关准则明细
+const getServerRuleDetail = (params) => wxRequest(params, `${host}v1/sem/shop/serverRuleDetail`)
 export default {
     mallsShopInfo,
     showProductClassesList,
@@ -132,5 +138,8 @@ export default {
     getServerRule,
     getIntegralTaskList,
     getMemberSalesList,
-    infoModify
+    infoModify,
+    getServerList,
+    getServerRule,
+    getServerRuleDetail
 }

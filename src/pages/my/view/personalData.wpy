@@ -75,25 +75,25 @@
           }, {
             text: "生日",
             type: "text",
-            value: "2018-02-03",
+            value: this.UserInfo.birthday?this.UserInfo.birthday:this.UserInfo.maleBirthday,
             required: true,
             operation: "setBirthday"
           }, {
             text: "纪念日",
             type: "text",
-            value: "",
+            value: this.UserInfo.memorial?this.UserInfo.memorial:"",
             required: false,
             operation: "setMemorialDay"
           }, {
             text: "微信号",
             type: "text",
-            value: "",
+            value: this.UserInfo.weixin?this.UserInfo.weixin:"",
             required: false,
             operation: "setWechatNumber"
           }, {
             text: "邮箱",
             type: "text",
-            value: "",
+            value: this.UserInfo.email?this.UserInfo.email:"",
             required: false,
             operation: "setEmail"
           }, 
@@ -122,12 +122,12 @@
     methods = {
       operationLine(item, index) {
         this.currentOperation = index;
+        console.log(item)
         let operation = item.operation;
-        console.log(operation);
         if (operation == 'changeHeadPortrait') { //换头像
-          this.setTouXaing();
+          // this.setTouXaing();
         }else {  //跳转设置页面
-          this.toSetPersonalData(operation);
+          this.toSetPersonalData(operation,item.value);
         }
       }
     };
@@ -152,10 +152,10 @@
       return res
     };
     // 跳转到设置页面
-    toSetPersonalData(operation) {
+    toSetPersonalData(operation,data) {
       // console.log(operation)
       wx.navigateTo({
-        url: '/pages/my/view/setPersonalData/pages/' + operation
+        url: `/pages/my/view/setPersonalData/pages/${operation}?data=${data}`
       })
     };
     // 设置剪切头像

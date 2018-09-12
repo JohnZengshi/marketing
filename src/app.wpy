@@ -54,6 +54,7 @@ export default class extends wepy.app {
       'pages/my/view/gradeRule',
       'pages/my/view/coupon',
       'pages/my/view/BonusPointsForConsumption',
+      'pages/my/view/criterionDetail',
       'pages/my/view/setPersonalData/pages/setAddress',
       'pages/my/view/setPersonalData/pages/setBirthday',      
       'pages/my/view/setPersonalData/pages/setGender',      

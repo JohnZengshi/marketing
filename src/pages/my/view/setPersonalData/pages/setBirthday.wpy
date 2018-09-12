@@ -30,6 +30,7 @@
 </template>
 <script>
   import wepy from "wepy";
+  import api from "Api";
   import picker from "@components/picker";
   import datepickerPlus from "@components/datepickerPlus"
   export default class setBirthday extends wepy.page {
@@ -40,8 +41,8 @@
     }
     data = {
       currentSelect: "公历",
-      calendarYear:`${new Date().getMonth() + 1}月${new Date().getDate()}日`,
-      lunarCalendar:``,
+      calendarYear:`选择公历`,
+      lunarCalendar:`选择农历`,
       initDate: `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`
     };
     components = {
@@ -51,18 +52,23 @@
     };
     methods = {
       changeSelect(val) {
-        this.currentSelect = val
+        this.currentSelect = val;
+        if(this.calendarYear != "选择公历" && val == '公历'){
+          this.infoModify("4",this.calendarYear)
+        }else if(this.lunarCalendar != "选择农历" && val == '农历'){
+          this.infoModify("5",this.lunarCalendar)
+        }
       }
     };
     computed = {};
     events = {
       "bindDateChange" :(val)=>{
-        console.log(val);
+        // console.log(val);    
         // this.currentDate = val;
       },
       'currentDate': (calendarYear,lunarCalendar)=>{
-        this.lunarCalendar = lunarCalendar;
-        this.$apply();
+        // this.lunarCalendar = lunarCalendar;
+        // this.$apply();
       },
       'submit' :(val)=>{
         console.log(val);
@@ -70,13 +76,34 @@
             let dateArr = val.dateStr.split('-');
             this.calendarYear = `${dateArr[0]}月${dateArr[1]}日`;
             this.$apply();
+            this.infoModify("4",this.calendarYear)
         }else if(val.dateType == '农历'){
             this.lunarCalendar = val.dateStr;
+            this.infoModify("5",this.lunarCalendar)
             this.$apply();
         }
       }
     };
-    onLoad() {
+    onLoad(options) {
+      console.log(options.data)
+      if(/[0-9]/.test(options.data)){
+        console.log("公历");
+        this.calendarYear = options.data;
+        this.currentSelect = "公历";
+      }else{
+        console.log("农历");
+        this.lunarCalendar = options.data;
+        this.currentSelect = "农历";
+      }
+      this.$apply();
+    };
+    // 修改个人资料
+    async infoModify(type,data) {
+      let res =await api.infoModify({modifyList:[{
+        type,
+        data
+      }]});
+      return res;
     }
   }
 </script>
@@ -142,6 +169,9 @@
       }
       
       .pickerContent{
+        display: inline-block;
+        height: 100%;
+        width: 154rpx;
         font-size: 28rpx;
         color: #666666;
       }

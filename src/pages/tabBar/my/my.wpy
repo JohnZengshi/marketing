@@ -17,7 +17,7 @@
     <activitySwiper></activitySwiper>
 
     <!-- 商家服务 -->
-    <serviceList></serviceList>
+    <serviceList :serverList.sync="serverList"></serviceList>
 
     <!-- 切换店铺 -->
     <cutShop
@@ -101,7 +101,8 @@ export default class my extends wepy.page {
       desc: "猜金价",
       imageUrl: '',
       path: '/pages/tabBar/merchant/merchant'
-    }
+    },
+    serverList:[]
   }
 
   // 更新用户基本信息
@@ -242,13 +243,65 @@ export default class my extends wepy.page {
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow () {
+  async onShow () {
     // this.userInfo = this.$parent.globalData.userInfo
     this.xjUserInfo()
     // this.electronicBilling()
+    this.serverList =await this.getServerList();
+    this.serverList = this.resetPath(this.serverList);
+    this.$apply();
   }
 
+  // 获取商家服务列表
+  async getServerList() {
+    let res =await api.getServerList();
+    return res.dataList
+  }
+  
 
+  // 配置服务列表路径
+  resetPath(array) {
+    array.map((val) => {
+      switch (val.type) {
+        case "1":
+          val.path = ""
+          break;
+        case "2":
+          val.path = "/pages/my/view/maintenanceGuide"
+          break;
+        case "3":
+          val.path = "/pages/my/view/afterSaleCriterion"
+          break;
+        case "4":
+          val.path = "/pages/my/view/FAQ"
+          break;
+        case "5":
+          val.path = "/pages/my/view/ENofJewellery"
+          break;
+        case "6":
+          val.path = ""
+          break;
+        case "7":
+          val.path = "/pages/my/view/aboutUs"
+          break;
+        case "8":
+          val.path = ""
+          break;
+        case "9":
+          val.path = ""
+          break;
+        case "10":
+          val.path = ""
+          break;
+        case "11":
+          val.path = "/pages/my/shopList/shopList"
+          break;
+        default:
+          break;
+      }
+    });
+    return array;
+  }
 
 }
 </script>

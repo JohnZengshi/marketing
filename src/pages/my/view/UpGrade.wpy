@@ -21,7 +21,7 @@
           <text>{{gradeData.nextGradeName}}({{gradeData.nextGradeScore}})</text>
         </view>
         <view class="tip">
-          在获取{{gradeData.nextGradeScore}}积分课升级为铂金会员
+          在获取{{gradeData.nextGradeScore}}积分可升级为{{gradeData.nextGradeName}}
         </view>
       </view>
     </view>
@@ -29,7 +29,7 @@
 
     <view class="memberExclusive">
       <view class="titleLine">
-        <view class="title">白金惠享</view>
+        <view class="title">{{gradeData.nextGradeName}}惠享</view>
         <view class="line"></view>
       </view>
       <view class="content flex flex-r">
@@ -65,7 +65,7 @@
               <text>店铺消费</text>
               <view class="detial flex flex-r">
                 <image src="/images/mine/7.0升等级－积分图标@3x.png"></image>
-                <text>100元=10分</text>
+                <text style="color:#B3B3B3">消费可赚积分</text>
               </view>
             </view>
           </view>
@@ -90,7 +90,7 @@
             <view class="btn" @tap.stop="toPersonalData">去完善</view>
           </view>
         </view>
-        <repeat for="{{makeIntergralList}}" key="index" index="index" item="item">
+        <!-- <repeat for="{{makeIntergralList}}" key="index" index="index" item="item">
           <view class="item flex flex-r flex-pack-justify flex-align-center">
             <view class="left flex flex-r">
               <image wx:if="{{item.type == '0'}}" src="/images/mine/7.8砍价@3x.png"></image>
@@ -109,7 +109,7 @@
               <view wx:elif="{{!item.status == '2'}}" class="btn {{item.status == '1'?'gary':''}}">取赚积分</view>
             </view>
           </view>
-        </repeat>
+        </repeat> -->
       </view>
     </view>
 
@@ -131,9 +131,9 @@
     };
     data = {
       gradeData: {
-        nextGradeName: "0",
+        nextGradeName: "",
         nextGradeScore: "0",
-        nowGradeName: null,
+        nowGradeName: "",
         nowScore: "0",
       },
       makeIntergralList: [{
@@ -160,6 +160,7 @@
         })
       },
       toBonusPointsForConsumption() {
+        return;
         wx.navigateTo({
           url: '/pages/my/view/BonusPointsForConsumption',
         })

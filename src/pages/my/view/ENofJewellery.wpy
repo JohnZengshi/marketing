@@ -1,20 +1,12 @@
 <template>
-    <view class="ENofJewellery flex flex-v flex-align-center">
-        <image></image>
-        <text>店铺销售后，可以根据准则来进行店铺销售，店铺销售后，可以根据准则来进行店铺销售。店铺店铺</text>
-        <view class="goodsList clearfix">
-            <repeat for="{{goodsList}}" key="index" index="index" item="item">
-                <view class="item flex flex-v flex-align-center">
-                    <image></image>
-                    <text>{{item.name}}</text>
-                </view>
-            </repeat>
-        </view>
-    </view>
+  <view class="ENofJewellery">
+    <criterion :serverRule.sync="serverRule"></criterion>
+  </view>
 </template>
 <script>
   import wepy from "wepy";
   import api from "Api";
+  import criterion from "../components/criterion";
   export default class ENofJewellery extends wepy.page {
     config = {
       navigationBarTitleText: "珠宝百科",
@@ -22,69 +14,23 @@
       backgroundTextStyle: "light"
     };
     data = {
-        goodsList:[{
-            name: "黄金"
-        }, {
-            name: "黄金"
-        }, {
-            name: "黄金"
-        }, {
-            name: "黄金"
-        }, {
-            name: "黄金"
-        }, {
-            name: "黄金"
-        }]
+      serverRule:{}
+    };
+    components = {
+        criterion,
     };
     async onShow() {
-        this.getServerRule();
+      this.serverRule = await this.getServerRule();
+      this.$apply();
     }
     // 获取售后准则数据
-    async getServerRule(){
-        let res =await api.getServerRule({dataType:"5"});
-        console.log(res);
+    async getServerRule() {
+      let res = await api.getServerRule({
+        dataType: "5"
+      });
+      return res;
     }
   }
 </script>
 <style lang="less" scoped>
-    .ENofJewellery{
-        >image{
-            margin-top: 26rpx;
-            border-radius: 16rpx;
-            width: 698rpx;
-            height: 268rpx;
-            background-color: antiquewhite;
-        }
-        >text{
-            margin-top: 16rpx;
-            font-size: 23rpx;
-            color: #6E6E6E;
-            line-height: 36rpx;
-            padding: 0 39rpx;
-        }
-        >.goodsList{
-            width: 646rpx;
-            margin-top: 35rpx;
-            .item{
-                float: left;
-                margin-right: 55rpx;
-                margin-bottom: 43rpx;
-                >image{
-                    width: 117rpx;
-                    height: 117rpx;
-                    border-radius: 50%;
-                    border: 1rpx #FFEBD8 solid;
-                }
-                >text{
-                    font-size: 26rpx;
-                    color: #333333;
-                    line-height: 26rpx;
-                    margin-top: 24rpx;
-                }
-                &:nth-of-type(4n){
-                    margin-right: 0;
-                }
-            }  
-        }
-    }
 </style>

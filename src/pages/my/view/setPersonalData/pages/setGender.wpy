@@ -49,6 +49,10 @@
         }
       }
     };
+    onLoad(options) {
+      this.currentSelect = options.data;
+      this.$apply();
+    };
     async infoModify(type,data) {
       let res =await api.infoModify({modifyList:[{
         type,
