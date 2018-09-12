@@ -1,0 +1,99 @@
+<template name="memberDetail">
+  <view @tap="close" class="member-detail-popup-main {{memberDetailPopup ? 'member-detail-popup-main-on' : ''}}">
+    <view class="member-detail-inner">
+
+      <view class="h-t">{{userInfo.member}}</view>
+
+      <view class="member-detail-head-bg">
+        <image mode="aspectFill" style="width:100%;height:100%;" src="{{userInfo.oneCode}}"></image>
+      </view>
+
+      <view class="member-detail-bar-code">
+        <image mode="aspectFill" style="width:100%;height:100%;" src="{{userInfo.qcSrc}}"></image>
+      </view>
+
+      <text class="member-detail-bar-code-tit">将您的身份二维码展示给店员</text>
+
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+export default class mMemberDetail extends wepy.component {
+  props = {
+    memberDetailPopup:{
+      type: Boolean,
+      default: false
+    },
+    userInfo:{
+      type: Object,
+      default: {}
+    }
+  }
+  methods = {
+    close () {
+      this.$emit('close')
+    }
+  }
+}
+</script>
+<style lang="less">
+.member-detail-popup-main{
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0,0,0,.6);
+  overflow: hidden;
+  z-index: 900;
+  opacity: 0;
+  transition: all .3s;
+  transform: scale(1.3,1.3);
+  visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  .member-detail-inner{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 680rpx;
+    height: 854rpx;
+    margin: auto;
+    overflow: hidden;
+    background-color: #fff;
+    border-radius: 10rpx;
+  }
+  .h-t{
+    font-size: 24rpx;
+    color: #333;
+    text-align: center;
+    margin: 38rpx 30rpx 30rpx 30rpx;
+  }
+  .member-detail-head-bg{
+    margin: 0 30rpx;
+    height: 144rpx;
+  }
+  .member-detail-bar-code{
+    height: 400rpx;
+    width: 400rpx;
+    margin: 46rpx auto 46rpx auto;
+  }
+  .member-detail-bar-code-tit{
+    display: block;
+    height: 116rpx;
+    line-height: 116rpx;
+    text-align: center;
+    font-size: 32rpx;
+    color: #333;
+    background-color: #f6f7f8;
+  }
+}
+.member-detail-popup-main-on{
+  transform: scale(1, 1);
+  opacity: 1;
+  visibility: visible;
+}
+</style>

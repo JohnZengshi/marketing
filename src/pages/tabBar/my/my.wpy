@@ -5,6 +5,7 @@
     <myHeader
       :userInfo.sync="userInfo"
       @openShop.user="openShop"
+      @setMember.user="setMember"
       @rportByWeChat.user="rportByWeChat"
     ></myHeader>
     
@@ -44,6 +45,8 @@
 
     <signInPopup :score.sync="score" :isSignInPopup.sync="isSignInPopup"></signInPopup>
 
+    <memberDetail :userInfo.sync="userInfo" :memberDetailPopup.sync="memberDetailPopup" @close.user="closeMemberDetail"></memberDetail>
+
   </view>
 </template>
 
@@ -58,6 +61,7 @@ import activitySwiper from './components/activitySwiper';
 import serviceList from './components/serviceList';
 import cutShop from './components/cutShop';
 import signInPopup from './components/signInPopup';
+import memberDetail from './components/memberDetail';
 import popup from '@components/popup';
 //通过继承自wepy.page的类创建页面逻辑
 export default class my extends wepy.page {
@@ -76,6 +80,7 @@ export default class my extends wepy.page {
     serviceList: serviceList,
     cutShop: cutShop,
     signInPopup: signInPopup,
+    memberDetail: memberDetail,
     popup
   }
   /**
@@ -192,6 +197,10 @@ export default class my extends wepy.page {
       console.log('执行')
     },
 
+    closeMemberDetail () {
+      this.memberDetailPopup = false
+    },
+
     // 切换店铺后更新用户信息
     updateData () {
       console.log('切换店铺后更新用户信息')
@@ -235,9 +244,7 @@ export default class my extends wepy.page {
     },
 
     setMember () {
-      this.setData({
-        memberDetailPopup: !this.data.memberDetailPopup
-      })
+      this.memberDetailPopup = true
     },
 
     getPhoneNumber(e) {

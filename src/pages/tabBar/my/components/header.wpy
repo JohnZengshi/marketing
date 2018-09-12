@@ -7,12 +7,12 @@
         <image wx:if="currentFillter.orderBy" class="sign-in-sort-bg-one" src="/images/set-fff@3x.png"></image>
       </navigator>
       <!-- 签到 -->
-      <view class="sign-in-box {{userInfo.sign == 'Y' ? 'opacity-08' : ''}}" bindtap='_rportByWeChat'>
+<!--       <view class="sign-in-box {{userInfo.sign == 'Y' ? 'opacity-08' : ''}}" bindtap='_rportByWeChat'>
         <a class='sign-in-sort-icon mr-10'>
           <image wx:if="currentFillter.orderBy" class="sign-in-sort-bg-one" src="/images/my/gold.png"></image>
         </a>
         <text class="text-tit">{{userInfo.sign == 'N' ? '签到' : '已签到'}}</text>
-      </view>
+      </view> -->
 
     </view>
 
@@ -59,11 +59,13 @@ export default class myHeader extends wepy.component {
 
   methods = {
     openShop () {
-      console.log('执行')
       this.$emit('openShop')
     },
     _rportByWeChat () {
       this.$emit('rportByWeChat')
+    },
+    setMember () {
+      this.$emit('setMember')
     }
   }
 

@@ -7,9 +7,9 @@
         </view>
         <view class="right-wrap">
 
-          <view class="shop-name">{{item.shopName}}</view>
+          <view class="shop-name">{{item.fullName}}</view>
 
-          <view class="tit address-tit">
+          <view class="tit address-tit" wx:if="{{item.longitude}}">
             {{item.address}}
             <image mode="aspectFill" src="/images/my/location.png"></image>
           </view>
@@ -134,13 +134,22 @@ export default class shopList extends wepy.page {
     ]
   }
 
-  async findShopListByProductId (options) {
-    let json = api.findShopListByProductId(options)
+  async shopList (options) {
+    let json = await api.shopList(options)
+    let datas = []
+    console.log('JSION', json)
+    for (let i of json.dataList) {
+      console.log(i, 'i')
+      datas.push(...i.shopList)
+    }
+    this.showList = datas
+    this.$apply()
     // this.showList = json.dataList
   }
 
   onLoad (options) {
-    this.findShopListByProductId({productIds: options.id})
+    // this.shopList({productIds: options.id})
+    this.shopList()
   }
 }
 </script>
