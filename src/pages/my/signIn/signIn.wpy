@@ -107,11 +107,11 @@ export default class mSignIn extends wepy.page {
         success: res => {
           let options = {
             code: res.code,
-            // name: this.userInfo.nickName,
-            name: 'xh',
+            name: this.userInfo.nickName,
+            // name: 'xh',
             avatarUrl: this.userInfo.avatarUrl,
-            // phone: wx.getStorageSync('phone'),
-            phone: 18877210456,
+            phone: wx.getStorageSync('phone'),
+            // phone: 18877210456,
             birthday: this.userInfo.birthday == '请点击选择日期' ? '' : this.userInfo.birthday.replace(/-/g, '') + '000000',
             sex: this.userInfo.gender
           }
