@@ -7,11 +7,11 @@
             <view class="intergralCount flex flex-r flex-pack-center">
               <view class="tip flex flex-r flex-align-center" @tap.stop="toDiscountExplain">
                 <text>当前最多抵扣{{integral.deduction}}元</text>
-                <!-- <image src="/images/mine/1.3我的活动－返回@3x.png"></image> -->
+                <!-- <image src="/images/mine/mineActive_Back.png"></image> -->
                 <text>></text>
               </view>
               <view class="count flex flex-r flex-align-end">
-                <image src="/images/mine/4 我的积分－积分图标@3x.png"></image>
+                <image src="/images/mine/exchangeRecordIcon.png"></image>
                 <view class="num flex flex-r flex-align-end">
                   <text>{{integral.score}}</text>
                   <text>分</text>
@@ -24,14 +24,14 @@
                   <text>赚积分</text>
                   <text>一起赚积分咯！</text>
                 </view>
-                <image src="/images/mine/4.1 我的积分－赚积分@3x.png"></image>
+                <image src="/images/mine/makeIntergral.png"></image>
               </view>
               <navigator class="intergarlStore flex flex-r flex-align-center flex-pack-justify" url='/pages/tabBar/integralStore/integralStore'>
                 <view class="left flex flex-v">
                   <text>积分商城</text>
                   <text>等你换礼品啦！</text>
                 </view>
-                <image src="/images/mine/4.2我的积分－积分商城@3x.png"></image>
+                <image src="/images/mine/intergarlStore.png"></image>
               </navigator>
             </view>
             <view class="intergralList">
