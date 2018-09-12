@@ -3,9 +3,9 @@
 
     <view class="set-list-wrap">
       <!-- 设置 -->
-      <a class='img-box'>
+      <navigator class='img-box' url="/pages/my/view/personalData">
         <image wx:if="currentFillter.orderBy" class="sign-in-sort-bg-one" src="/images/set-fff@3x.png"></image>
-      </a>
+      </navigator>
       <!-- 签到 -->
       <view class="sign-in-box {{userInfo.sign == 'Y' ? 'opacity-08' : ''}}" bindtap='_rportByWeChat'>
         <a class='sign-in-sort-icon mr-10'>

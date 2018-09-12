@@ -148,7 +148,7 @@
     };
     // 获取用户的信息
     async getUserInfo() {
-      let res = await api.getUserInfo();
+      let res = await api.xjUserInfo();
       return res
     };
     // 跳转到设置页面

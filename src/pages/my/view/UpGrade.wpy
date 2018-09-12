@@ -181,7 +181,7 @@
     onLoad() {};
     async onShow() {
       this.gradeData =await this.getGrade();
-      this.getIntegralTaskList();
+      // this.getIntegralTaskList();
       this.$apply();
     };
     // 获取等级信息
@@ -190,11 +190,11 @@
       console.log(res)
       return res;
     }
-    // 获取积分任务列表
-    async getIntegralTaskList(){
-      let res = api.getIntegralTaskList();
-      console.log(res);
-    }
+    // // 获取积分任务列表
+    // async getIntegralTaskList(){
+    //   let res = api.getIntegralTaskList();
+    //   console.log(res);
+    // }
   }
 </script>
 <style lang="less" scoped>
