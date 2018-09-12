@@ -131,9 +131,9 @@
     };
     data = {
       gradeData: {
-        nextGradeName: "0",
+        nextGradeName: "",
         nextGradeScore: "0",
-        nowGradeName: null,
+        nowGradeName: "",
         nowScore: "0",
       },
       makeIntergralList: [{
