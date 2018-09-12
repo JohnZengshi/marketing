@@ -1,0 +1,221 @@
+<template>
+  <view wx:if="{{isSignInPopup}}" class="sign-in-popup-popup-main {{isSignInPopup ? 'sign-in-popup-popup-main-on' : ''}}">
+    <view class="sign-in-popup-inner">
+      <view class="sign-in-popup-head-bg">
+        <image mode="aspectFill" style="width:100%;height:100%;" src="/images/sign-in-success-popup.png"></image>
+        <view class="success-add-num">
+          <text class="s-add-symbol">+</text>
+          <text class='s-add-nums'>{{score}}</text>
+          <text class='s-add-t'>积分</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+export default class mSignInPopup extends wepy.component {
+  props = {
+    isSignInPopup: {
+      type: Boolean,
+      default: false
+    },
+    score: {
+      type: String,
+      default: 0
+    }
+  }
+}
+
+</script>
+<style lang="less">
+.sign-in-popup-popup-main {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, .6);
+  overflow: hidden;
+  z-index: 900;
+  animation: bgfirst 3s;
+  display: flex;
+  flex-direction: column;
+}
+
+.sign-in-popup-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  overflow: hidden;
+}
+
+.sign-in-popup-head-bg {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  animation: myfirst 3s;
+}
+
+.sign-in-popup-bar-code {
+  height: 150rpx;
+  width: 550rpx;
+  margin: 66rpx auto 16rpx auto;
+}
+
+.sign-in-popup-bar-code-tit {
+  display: block;
+  text-align: center;
+  font-size: 26rpx;
+  color: #333;
+}
+
+.success-add-num {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  margin: auto;
+  height: 96rpx;
+  width: 200rpx;
+  text-align: center;
+}
+
+.success-add-num text {
+  font-weight: bold;
+  color: #ff2a04;
+}
+
+.s-add-symbol {
+  animation: symbolMyfirst 3s;
+  font-size: 32rpx;
+}
+
+.s-add-nums {
+  animation: numsMyfirst 3s;
+  font-size: 96rpx;
+}
+
+.s-add-t {
+  animation: tMyfirst 3s;
+  font-size: 22rpx;
+}
+
+@keyframes symbolMyfirst {
+  0% {
+    font-size: 32rpx;
+  }
+  25% {
+    font-size: 32rpx;
+  }
+  50% {
+    font-size: 32rpx;
+  }
+  95% {
+    font-size: 12rpx;
+  }
+  100% {
+    font-size: 12rpx;
+  }
+}
+
+@keyframes numsMyfirst {
+  0% {
+    font-size: 96rpx;
+  }
+  25% {
+    font-size: 96rpx;
+  }
+  50% {
+    font-size: 96rpx;
+  }
+  95% {
+    font-size: 28rpx;
+  }
+  100% {
+    font-size: 28rpx;
+  }
+}
+
+@keyframes tMyfirst {
+  0% {
+    font-size: 22rpx;
+  }
+  25% {
+    font-size: 22rpx;
+  }
+  50% {
+    font-size: 22rpx;
+  }
+  95% {
+    font-size: 10rpx;
+  }
+  100% {
+    font-size: 10rpx;
+  }
+}
+
+@keyframes myfirst {
+  0% {
+    width: 100%;
+    height: 100%;
+    opacity: 0.1;
+    transform: rotate(0);
+    top: 0;
+    left: 0;
+  }
+  25% {
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    transform: rotate(0);
+    top: 0;
+    left: 0;
+  }
+  50% {
+    width: 100%;
+    height: 100%;
+    transform: rotate(0);
+    top: 0;
+    left: 0;
+  }
+  95% {
+    width: 30%;
+    height: 30%;
+    transform: rotate(-30deg);
+    opacity: 1;
+    top: 18%;
+    left: 3%;
+  }
+  100% {
+    width: 30%;
+    height: 30%;
+    opacity: 0;
+    top: 18%;
+    transform: rotate(-30deg);
+    left: 3%;
+  }
+}
+
+@keyframes bgfirst {
+  0% {
+    background-color: rgba(0, 0, 0, .6);
+  }
+  25% {
+    background-color: rgba(0, 0, 0, .6);
+  }
+  50% {
+    background-color: rgba(0, 0, 0, .6);
+  }
+  95% {
+    background-color: transparent
+  }
+  100% {
+    background-color: transparent
+  }
+}
+
+</style>

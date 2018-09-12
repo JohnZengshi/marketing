@@ -5,6 +5,7 @@
     <myHeader
       :userInfo.sync="userInfo"
       @openShop.user="openShop"
+      @rportByWeChat.user="rportByWeChat"
     ></myHeader>
     
     <!-- 数据集合 -->
@@ -38,7 +39,10 @@
         <view class="btn" @tap="hidePop">知道了</view>
       </view>
     </popup>
-    <button wx:if="userId" class="get-phone-number" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber"></button> 
+<!--     <button wx:if="{{!userId}}" class="get-phone-number" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber"></button> -->
+
+    <signInPopup :score.sync="score" :isSignInPopup.sync="isSignInPopup"></signInPopup>
+
   </view>
 </template>
 
@@ -52,6 +56,7 @@ import applyList from './components/applyList';
 import activitySwiper from './components/activitySwiper';
 import serviceList from './components/serviceList';
 import cutShop from './components/cutShop';
+import signInPopup from './components/signInPopup';
 import popup from '@components/popup';
 //通过继承自wepy.page的类创建页面逻辑
 export default class my extends wepy.page {
@@ -69,6 +74,7 @@ export default class my extends wepy.page {
     activitySwiper: activitySwiper,
     serviceList: serviceList,
     cutShop: cutShop,
+    signInPopup: signInPopup,
     popup
   }
   /**
@@ -125,10 +131,26 @@ export default class my extends wepy.page {
     _self.$apply()
   }
 
+  // 用户信息
   async xjUserInfo () {
     let self = this
     let json = await api.xjUserInfo()
     self.userInfo = json
+    self.$apply()
+  }
+
+  async _rportByWeChat (options) {
+    let self = this
+    let json = api.rportByWeChat(options)
+    self.userInfo.score = Number(self.userInfo.score) + Number(res.score)
+    self.userInfo.sign = 'Y'
+    self.score = res.score
+    self.isSignInPopup = !self.isSignInPopup
+    setTimeout(() => {
+      self.isSignInPopup = !self.isSignInPopup
+      self.userInfo = self.userInfo
+      self.$apply()
+    }, 3000)
     self.$apply()
   }
 
@@ -175,29 +197,17 @@ export default class my extends wepy.page {
     },
 
     // 签到
-    _rportByWeChat () {
-      if (this.userInfo.sign != 'N') {
+    rportByWeChat () {
+      if (self.userInfo.sign != 'N') {
         return
       }
-      let options = {
-        memberId: wx.getStorageSync('memberId'),
-      }
-      requestData(rportByWeChat, options)
-        .then(res => {
-          this.userInfo.score = Number(this.userInfo.score) + Number(res.score)
-          this.userInfo.sign = 'Y'
-          this.setData({
-            score: res.score,
-            isSignInPopup: !this.isSignInPopup
-          })
-          setTimeout(() => {
-            this.setData({
-              isSignInPopup: !this.isSignInPopup,
-              userInfo: this.userInfo
-            })
-          }, 3000)
-        })
-      
+      let self = this
+      self.isSignInPopup = true
+      setTimeout(() => {
+        self.isSignInPopup = !self.isSignInPopup
+        self.$apply()
+      }, 3000)
+      // this._rportByWeChat()
     },
 
     onShareAppMessage: function (res) {

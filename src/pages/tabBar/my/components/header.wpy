@@ -1,7 +1,7 @@
 <template>
   <view class="my-header-box grad-tb">
 
-    <view class="set-list-wrap" bindtap='_rportByWeChat'>
+    <view class="set-list-wrap">
       <!-- 设置 -->
       <a class='img-box'>
         <image wx:if="currentFillter.orderBy" class="sign-in-sort-bg-one" src="/images/set-fff@3x.png"></image>
@@ -61,6 +61,9 @@ export default class myHeader extends wepy.component {
     openShop () {
       console.log('执行')
       this.$emit('openShop')
+    },
+    _rportByWeChat () {
+      this.$emit('rportByWeChat')
     }
   }
 

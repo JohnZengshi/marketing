@@ -114,7 +114,7 @@ export default class extends wepy.app {
     // wx.setStorageSync('memberId', '02200481d99d4d28bdd7a3189977f0f2')
     this.getLocation()
     // 更新用户基本信息
-    this.updateUserInfo()
+    // this.updateUserInfo()
     // this.wxGetterUserData()
   }
 

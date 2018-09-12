@@ -57,66 +57,7 @@ export default class mCutShop extends wepy.component {
   data = {
     shopId: '',
     headName: '切换店铺',
-    shopDataList: [
-      {
-        groupName: '776',
-        integral: '776',
-        gradeName: '776',
-        shopList: [
-          {
-            integral: '996996',
-            gradeName: '',
-            fullName: '996996',
-            address: '996996',
-            longitude: '996996',
-            latitude: '996996',
-            id: 'id',
-            logo: '996996',
-            shopinfo: '996996',
-          },
-          {
-            integral: '996996',
-            gradeName: '',
-            fullName: '996996',
-            address: '996996',
-            longitude: '996996',
-            latitude: '996996',
-            id: 'id666',
-            logo: '996996',
-            shopinfo: '996996',
-          }
-        ]
-      },
-      {
-        groupName: '776',
-        integral: '776',
-        gradeName: '776',
-        shopList: [
-          {
-            integral: '996996',
-            gradeName: '',
-            fullName: '996996',
-            address: '996996',
-            longitude: '996996',
-            latitude: '996996',
-            id: 'id777',
-            logo: '996996',
-            shopinfo: '996996',
-          },
-          {
-            integral: '996996',
-            gradeName: '',
-            fullName: '996996',
-            address: '996996',
-            longitude: '996996',
-            latitude: '996996',
-            id: 'id888',
-            logo: '996996',
-            shopinfo: '996996',
-          }
-        ]
-      }
-    ]
+    shopDataList: []
   }
   async shopList () {
     let json = await api.shopList()
