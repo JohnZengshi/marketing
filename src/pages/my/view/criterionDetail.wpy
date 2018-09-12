@@ -1,0 +1,70 @@
+<template>
+  <view class="criterionDetail">
+    <view class="title">{{title}}</view>
+    <ExplainTemplate :explainList.sync="explainList"></ExplainTemplate>
+  </view>
+</template>
+<script>
+  import wepy from "wepy";
+  import api from "Api";
+  import explainTemplate from "../components/explainTemplate";
+  export default class criterionDetail extends wepy.page {
+    config = {
+      navigationBarTitleText: "准则明细",
+      navigationBarTextStyle: "black",
+      backgroundTextStyle: "light"
+    };
+    data = {
+      explainList: [],
+      title:""
+    };
+    components = {
+      ExplainTemplate: explainTemplate
+    };
+    async onLoad(options) {
+      this.title = options.classTypeName;
+      this.explainList = await this.getServerRuleDetail(options.id);
+      this.explainList = this.resetData(this.explainList)
+      this.$apply();
+    };
+    // 获取准则明细
+    async getServerRuleDetail(id) {
+      let res = await api.getServerRuleDetail({
+        id
+      });
+      return res
+    }
+    // 格式化
+    resetData(data) {
+      let newArr = []
+      data.map((val) => {
+        let templateItem = {
+          titleName: "",
+          list: [{
+            listName: "",
+            wordList: [{
+              word: "",
+            }]
+          }]
+        };
+        templateItem.titleName = val.content;
+        templateItem.list[0].wordList[0].word = val.title;
+        newArr.push(templateItem);
+      })
+      return newArr;
+      console.log(newArr);
+    }
+  }
+</script>
+<style lang="less" scoped>
+.criterionDetail{
+    .title{
+        font-size: 35rpx;
+        color: #363636;
+        font-weight: bold;
+        line-height: 35rpx;
+        margin: 40rpx 0 40rpx 40rpx;
+    }
+}
+
+</style>

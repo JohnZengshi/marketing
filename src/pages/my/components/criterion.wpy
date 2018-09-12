@@ -1,0 +1,86 @@
+<template>
+  <view class="criterion flex flex-v flex-align-center">
+    <block wx:if="{{serverRule.detailLogo}}">
+      <image src="{{serverRule.detailLogo}}"></image>
+    </block>
+    <block wx:else>
+      <image wx:if="{{serverRule.type == '2'}}" src="/images/mine/9.2保养指南@3x.png"></image>
+      <image wx:elif="{{serverRule.type == '3'}}" src="/images/mine/9 售后准则@3x.png"></image>
+      <image wx:elif="{{serverRule.type == '4'}}" src="/images/mine/9.1常见问题@3x.png"></image>
+      <image wx:elif="{{serverRule.type == '5'}}" src="/images/mine/9.3珠宝百科@3x.png"></image>
+    </block>
+    <text>{{serverRule.state}}</text>
+    <view class="goodsList clearfix">
+      <repeat for="{{serverRule.dataList}}" key="index" index="index" item="item">
+        <navigator class="item flex flex-v flex-align-center" url="/pages/my/view/criterionDetail?id={{item.id}}&classTypeName={{item.classTypeName}}">
+          <image src="{{item.classTypeLogo}}"></image>
+          <text>{{item.classTypeName}}</text>
+        </navigator>
+      </repeat>
+    </view>
+  </view>
+</template>
+<script>
+  import wepy from "wepy";
+  import api from "Api";
+  export default class criterion extends wepy.component {
+    props = {
+      serverRule: {
+        type: Object
+      }
+    };
+    methods = {
+      itemclick(id) {
+
+      }
+    };
+  }
+</script>
+<style lang="less" scoped>
+  .criterion {
+    >image {
+      margin-top: 26rpx;
+      border-radius: 16rpx;
+      width: 698rpx;
+      height: 268rpx;
+      // background-color: antiquewhite;
+    }
+
+    >text {
+      margin-top: 16rpx;
+      font-size: 23rpx;
+      color: #6E6E6E;
+      line-height: 36rpx;
+      padding: 0 39rpx;
+    }
+
+    >.goodsList {
+      width: 646rpx;
+      margin-top: 35rpx;
+
+      .item {
+        float: left;
+        margin-right: 55rpx;
+        margin-bottom: 43rpx;
+
+        >image {
+          width: 117rpx;
+          height: 117rpx;
+          border-radius: 50%;
+          border: 1rpx #FFEBD8 solid;
+        }
+
+        >text {
+          font-size: 26rpx;
+          color: #333333;
+          line-height: 26rpx;
+          margin-top: 24rpx;
+        }
+
+        &:nth-of-type(4n) {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+</style>

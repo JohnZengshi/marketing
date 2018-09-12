@@ -10,6 +10,7 @@
 </template>
 <script>
   import wepy from "wepy";
+  import api from "Api";
   export default class setEmail extends wepy.page {
     config = {
       navigationBarTitleText: "设置邮箱",
@@ -19,6 +20,10 @@
     data = {
       inputVal: ""
     };
+    onLoad(options) {
+      this.inputVal = options.data;
+      this.$apply();
+    };
     methods = {
       inputIng (event){
         this.inputVal = event.detail.value;
@@ -26,9 +31,25 @@
       resetInput() {
         this.inputVal = ""
       },
-      setEmail() {
-        console.log("设置邮箱")
+      async setEmail(val) {
+        console.log("设置邮箱");
+        let res =await this.infoModify("8",val.detail.value);
+        if (res) {
+          wx.showToast({
+            title: '修改成功',
+            icon: 'none',
+            duration: 2000
+          })
+        }
       }
+    };
+    // 修改个人资料
+    async infoModify(type,data) {
+      let res =await api.infoModify({modifyList:[{
+        type,
+        data
+      }]});
+      return res;
     }
   }
 </script>

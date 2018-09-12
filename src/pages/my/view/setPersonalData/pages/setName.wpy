@@ -20,6 +20,10 @@
     data = {
       inputVal: ""
     };
+    onLoad(options) {
+      this.inputVal = options.data;
+      this.$apply();
+    };
     methods = {
       inputIng (event){
         this.inputVal = event.detail.value;
@@ -39,6 +43,7 @@
         }
       }
     };
+    // 修改个人资料
     async infoModify(type,data) {
       let res =await api.infoModify({modifyList:[{
         type,

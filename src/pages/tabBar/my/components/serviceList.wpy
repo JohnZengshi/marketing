@@ -1,9 +1,30 @@
 <template>
-  <view class='my-service-list-box'>
+  <view class='my-service-list-box clearfix'>
 
     <view class="header-tit">商家服务</view>
 
-    <view class="service-list-item">
+    <block wx:for="{{serverList}}" wx:key="index" wx:item="item">
+        <view class="service-list-item">
+          <!-- @tap="construction" -->
+            <navigator class="my-body-item br-e5" hover-class="none" url="{{item.path}}" @tap="construction({{item.path}})">
+              <view class="icon-wrap">
+                <image src="/images/my/service-{{item.type}}.png"></image>
+              </view>
+              <text wx:if="{{item.type == '1'}}" class="icon-tit">私人顾问</text>
+              <text wx:if="{{item.type == '2'}}" class="icon-tit">保养指南</text>
+              <text wx:if="{{item.type == '3'}}" class="icon-tit">售后准则</text>
+              <text wx:if="{{item.type == '4'}}" class="icon-tit">常见问题</text>
+              <text wx:if="{{item.type == '5'}}" class="icon-tit">珠宝百科</text>
+              <text wx:if="{{item.type == '6'}}" class="icon-tit">在线客服</text>
+              <text wx:if="{{item.type == '7'}}" class="icon-tit">关于我们</text>
+              <text wx:if="{{item.type == '8'}}" class="icon-tit">预约上门</text>
+              <text wx:if="{{item.type == '9'}}" class="icon-tit">产品验证</text>
+              <text wx:if="{{item.type == '10'}}" class="icon-tit">今日金价</text>
+              <text wx:if="{{item.type == '11'}}" class="icon-tit">门店地址</text>
+            </navigator>
+        </view>
+    </block>
+    <!-- <view class="service-list-item">
       <navigator class="my-body-item br-e5" hover-class="none" @tap="construction">
 
         <view class="icon-wrap">
@@ -87,7 +108,7 @@
 
     <view class="service-list-item">
 
-      <navigator class="my-body-item br-e5" hover-class="none" url="../../my/pages/userinfo/userinfo" @tap="construction">
+      <navigator class="my-body-item br-e5" hover-class="none"  @tap="construction">
 
         <view class="icon-wrap">
           <image src="/images/my/service-9.png"></image>
@@ -96,7 +117,7 @@
 
       </navigator>
 
-      <navigator class="my-body-item br-e5" hover-class="none" url="../../my/pages/userinfo/userinfo" @tap="construction">
+      <navigator class="my-body-item br-e5" hover-class="none"  @tap="construction">
 
         <view class="icon-wrap">
           <image src="/images/my/service-10.png"></image>
@@ -118,7 +139,7 @@
 
       </view>
 
-    </view>
+    </view> -->
 
   </view>
 </template>
@@ -129,14 +150,23 @@ export default class myHeader extends wepy.component {
     userInfo: {
       type: Object,
       default: {}
+    },
+    serverList: {
+      type: Array,
+      default: []
     }
   }
 
   methods = {
-    construction(){
-      this.$emit("openPopup")
+    construction(path){
+      console.log(path)
+      if(path.length == 0){
+        this.$emit("openPopup")
+      }
     }
   }
+
+  
   // data = {
   //   showList: [
   //     {
@@ -149,6 +179,7 @@ export default class myHeader extends wepy.component {
   //     }
   //   ]
   // }
+
 }
 
 </script>
@@ -165,7 +196,9 @@ export default class myHeader extends wepy.component {
     margin: 30rpx 0 0 30rpx;
   }
   .service-list-item{
-    margin: 0 14rpx 0 14rpx;
+    float: left;
+    width: 25%;
+    // margin: 0 14rpx 0 14rpx;
     height: 166rpx;
     display: flex;
     margin-top: 34rpx;

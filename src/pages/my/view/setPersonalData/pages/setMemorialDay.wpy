@@ -14,6 +14,7 @@
 <script>
   import wepy from "wepy";
   import picker from "@components/picker";
+  import api from "Api";
   export default class setMemorialDay extends wepy.page {
     config = {
       navigationBarTitleText: "设置纪念日",
@@ -26,6 +27,10 @@
     components = {
       datePicker: picker,
     };
+    onLoad(options) {
+      this.inputVal = options.data;
+      this.$apply();
+    };
     methods = {
       inputIng(event) {
         this.inputVal = event.detail.value;
@@ -37,7 +42,25 @@
     events = {
       'bindDateChange': (val) => {
         this.inputVal = val;
+        console.log(val)
+        ;(async()=>{
+          let res =await this.infoModify("6",val);
+          if (res) {
+            wx.showToast({
+              title: '修改成功',
+              icon: 'none',
+              duration: 2000
+            })
+          }
+        })()
       }
+    };
+    async infoModify(type,data) {
+      let res =await api.infoModify({modifyList:[{
+        type,
+        data
+      }]});
+      return res;
     }
   }
 </script>
