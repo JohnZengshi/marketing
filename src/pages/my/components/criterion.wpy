@@ -1,14 +1,14 @@
 <template>
   <view class="criterion flex flex-v flex-align-center">
-    <block wx:if="{{serverRule.detailLogo}}">
+    <!-- <block wx:if="{{serverRule.detailLogo}}">
       <image src="{{serverRule.detailLogo}}"></image>
-    </block>
-    <block wx:else>
+    </block> -->
+    <!-- <block wx:else> -->
       <image wx:if="{{serverRule.type == '2'}}" src="/images/mine/9.2保养指南@3x.png"></image>
       <image wx:elif="{{serverRule.type == '3'}}" src="/images/mine/9 售后准则@3x.png"></image>
       <image wx:elif="{{serverRule.type == '4'}}" src="/images/mine/9.1常见问题@3x.png"></image>
       <image wx:elif="{{serverRule.type == '5'}}" src="/images/mine/9.3珠宝百科@3x.png"></image>
-    </block>
+    <!-- </block> -->
     <text>{{serverRule.state}}</text>
     <view class="goodsList clearfix">
       <repeat for="{{serverRule.dataList}}" key="index" index="index" item="item">
