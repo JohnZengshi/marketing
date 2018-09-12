@@ -160,6 +160,7 @@
         })
       },
       toBonusPointsForConsumption() {
+        return;
         wx.navigateTo({
           url: '/pages/my/view/BonusPointsForConsumption',
         })
