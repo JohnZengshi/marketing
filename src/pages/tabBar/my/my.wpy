@@ -135,8 +135,7 @@ export default class my extends wepy.page {
   async xjUserInfo () {
     let self = this
     let json = await api.xjUserInfo()
-    self.userInfo = json
-    self.$apply()
+    return json;
   }
 
   async _rportByWeChat (options) {
@@ -255,7 +254,7 @@ export default class my extends wepy.page {
    */
   async onShow () {
     // this.userInfo = this.$parent.globalData.userInfo
-    this.xjUserInfo()
+    this.userInfo =await this.xjUserInfo();
     // this.electronicBilling()
     this.serverList =await this.getServerList();
     this.serverList = this.resetPath(this.serverList);
