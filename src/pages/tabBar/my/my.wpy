@@ -39,7 +39,8 @@
         <view class="btn" @tap="hidePop">知道了</view>
       </view>
     </popup>
-<!--     <button wx:if="{{!userId}}" class="get-phone-number" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber"></button> -->
+    
+    <button wx:if="{{!userId}}" class="get-phone-number" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber"></button>
 
     <signInPopup :score.sync="score" :isSignInPopup.sync="isSignInPopup"></signInPopup>
 
