@@ -32,15 +32,25 @@
         this.inputVal = ""
       },
       async setEmail(val) {
-        console.log("设置邮箱");
-        let res =await this.infoModify("8",val.detail.value);
-        if (res) {
+        let RE = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
+        if(RE.test(val.detail.value)){
+          console.log("设置邮箱");
+          let res =await this.infoModify("8",val.detail.value);
+          if (res) {
+            wx.showToast({
+              title: '修改成功',
+              icon: 'none',
+              duration: 2000
+            })
+          }
+        }else{
           wx.showToast({
-            title: '修改成功',
+            title: '邮箱格式错误，请重新输入',
             icon: 'none',
             duration: 2000
           })
         }
+        
       }
     };
     // 修改个人资料
