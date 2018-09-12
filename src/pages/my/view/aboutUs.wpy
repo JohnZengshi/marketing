@@ -2,29 +2,29 @@
   <view class="AboutUs">
     <image src="/images/mine/6关于我们－背景@3x.png" mode="scaleToFill" lazy-load="false"></image>
     <view class="content">
-      <carouselSwiper></carouselSwiper>
+      <carouselSwiper wx:if="{{aboutUsData.picResList.length != 0}}" :picResList.async ="{{aboutUsData.picResList}}"></carouselSwiper>
       <view class="flex flex-v flex-align-center">
         <view class="shopName flex flex-r flex-align-center">
-          <image></image>
-          <text>香港金六福珠宝店</text>
+          <image src="{{aboutUsData.logo}}"></image>
+          <text>{{aboutUsData.fullName}}</text>
         </view>
         <view class="lable flex flex-r flex-pack-center flex-align-start">
           <text>店铺介绍</text>
           <view class="flex flex-r flex-align-center">
-              <text>香港金六福珠宝店于2002年在香港成立，是一家集首饰原料采购是一家集首饰原料采购是一家集首饰原料采购是一家集首饰原料采购是一家集首饰原料采购是一家集首饰原料采购是一家集首饰原料采购是一家集首饰原料采购是一家集首饰原料采购</text>
+              <text>{{aboutUsData.shopInfo}}</text>
           </view>
         </view>
         <view class="lable flex flex-r flex-pack-center flex-align-start">
           <text>店铺电话</text>
           <view class="flex flex-r flex-align-center">
-            <text>13612458458</text>
+            <text>{{aboutUsData.phone}}</text>
             <image src="/images/mine/6.1关于我们－电话@3x.png"></image>
           </view>
         </view>
         <view class="lable flex flex-r flex-pack-center flex-align-start">
           <text>店铺地址</text>
           <view class="flex flex-r flex-align-center">
-            <text>深圳市地址啊啊撒啊啊啊啊</text>
+            <text>{{aboutUsData.address}}</text>
             <image src="/images/mine/6.2关于我们－位置@3x.png"></image>
           </view>
         </view>
@@ -34,6 +34,7 @@
 </template>
 <script>
   import wepy from "wepy";
+  import api from "Api";
   import carouselSwiper from "../components/carouselSwiper";
   export default class AboutUs extends wepy.page {
     config = {
@@ -42,10 +43,19 @@
       backgroundTextStyle: "light"
     };
     data = {
-
+      aboutUsData: {}
     };
     components = {
       carouselSwiper,
+    };
+    
+    async onShow(){
+      this.getAboutUs();
+    }
+    // 获取关于我们
+    async getAboutUs() {
+      this.aboutUsData =await api.getAboutUs();
+      this.$apply();
     }
   }
 </script>
@@ -76,7 +86,7 @@
         >image {
           width: 60rpx;
           height: 60rpx;
-          background-color: #fb684c;
+          // background-color: #fb684c;
           border-radius: 50%;
           margin-right: 9rpx;
         }

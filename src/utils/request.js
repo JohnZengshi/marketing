@@ -18,7 +18,7 @@ const wxRequest = async (options, url, methodType = 'POST') => {
             "channel": 3,
             "OS": "web",
             "ip": "string",
-            "userId": wx.getStorageSync('userId')
+            "userId": wx.getStorageSync('userId'),
           }
         },
         header: { 'content-type': 'application/json' }, // 默认值
@@ -39,7 +39,7 @@ const wxRequest = async (options, url, methodType = 'POST') => {
           duration: 2000
         })
     }
-    wx.hideLoading()
+    // wx.hideLoading()
 };
 
 module.exports = {

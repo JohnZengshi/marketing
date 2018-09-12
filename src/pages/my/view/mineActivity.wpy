@@ -131,9 +131,11 @@ export default class MineActivity extends wepy.page {
     events = {
         "changeSwiper"(index) {
             this.currentIndex = index;
+            this.$apply();
         },
         "changeSliderLine"(index) {
             this.currentIndex = index;
+            this.$apply();
         },
         'refresh': (name,res) => {
           if (res === 'success') {
@@ -220,13 +222,8 @@ export default class MineActivity extends wepy.page {
           userId,
           memberId
         } = this.$parent.globalData;
-        let res =await api.getActivityList({shopId,userId,memberId,clazz,type,status})
-        return res
-        // if(res.msg == 'OK'){
-        //     return res.data;
-        // }else{
-        //     return []
-        // }
+        let res =await api.getActivityList({shopId,userId,memberId,clazz,type,status});
+        return res;
     }
 }
 </script>

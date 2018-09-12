@@ -2,7 +2,7 @@
   <view class="c-menu-main" id="menuTwoId">
     <view class="c-menu-wrap">
 
-      <navigator class="c-menu-btn" hover-class="none" open-type="reLaunch" url="/pages/tabBar/store/store">
+<!--       <navigator class="c-menu-btn" hover-class="none" open-type="reLaunch" url="/pages/tabBar/store/store">
         <view class="c-menu-img-wrap">
           <image wx:if="{{menu == 'A'}}" class="c-menu-img" mode='aspectFit' src="/images/tabBar/store-icon-actions.png"></image>
           <image wx:else class="c-menu-img" mode='aspectFit' src="/images/tabBar/store-icon.png"></image>
@@ -28,6 +28,26 @@
         <view class="c-menu-img-wrap">
           <image wx:if="{{menu == 'C'}}" class="c-menu-img" mode='aspectFit' src="/images/tabBar/my-icon-actions.png"></image>
           <image wx:else class="c-menu-img" mode='aspectFit' src="/images/tabBar/my-icon.png"></image>
+          <button class="get-phone-number" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber"></button> 
+        </view>
+      </view> -->
+
+      <view class="c-menu-btn" @tap="openShop">
+        <view class="c-menu-img-wrap">
+          <image class="c-menu-img" mode='aspectFit' src="/images/tabBar/store-icon.png"></image>
+        </view>
+      </view>
+
+      <view class="c-menu-btn" @tap="openShop">
+        <view class="c-menu-img-wrap">
+          <image class="c-menu-img" mode='aspectFit' src="/images/tabBar/integral-store-icon.png"></image>
+        </view>
+      </view>
+
+      
+      <view class="c-menu-btn">
+        <view class="c-menu-img-wrap">
+          <image class="c-menu-img" mode='aspectFit' src="/images/tabBar/my-icon-actions.png"></image>
           <button class="get-phone-number" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber"></button> 
         </view>
       </view>
@@ -97,6 +117,9 @@ export default class menu extends wepy.component {
   }
 
   methods = {
+    openShop () {
+      this.$emit('openShop')
+    },
     getPhoneNumber(e) {
       if (e.detail.encryptedData) {
         wx.login({

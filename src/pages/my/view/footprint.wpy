@@ -12,12 +12,13 @@
           :hasIconList.sync="hasIconList" 
           :moduleId.sync="'step1Canlendar'"></wepyCanlendar>
         <view class="footPrintGoodsList">
-          <Sticky>
-            <view slot="stickyContent" class="dateTitle flex flex-r flex-align-center flex-pack-justify">
-              <text>8月8日</text>
-              <view class="delBtn">删除</view>
-            </view>
-          </Sticky>
+          <!-- <Sticky> -->
+            <block>
+              <view slot="stickyContent" class="dateTitle flex flex-r flex-align-center flex-pack-justify">
+                <text>8月8日</text>
+                <view class="delBtn">删除</view>
+              </view>
+          <!-- </Sticky> -->
           <!-- <scroll-view 
               scroll-y="{{true}}" 
               class="refresh-scroll__container" 
@@ -35,6 +36,7 @@
                 </view>
               <!-- </GoodsListRefresh> -->
           <!-- </scroll-view> -->
+            </block>
         </view>
       </view>
   </scroll-view>
@@ -42,7 +44,7 @@
 <script>
   import wepy from "wepy";
   import wepyCanlendar from '../components/dateTag';
-  import Sticky from "@components/sticky";
+  // import Sticky from "@components/sticky";
   import api from "Api";
   // import Refresh from '@components/ScrollViewRefresh';
   export default class FootPrint extends wepy.page {
@@ -52,19 +54,20 @@
       backgroundTextStyle: "light"
     };
     data = {
-      currentDate: "2018-09-01",
+      currentDate: `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`,
       startDate: '2008-01-01',
       endDate: '2028-02-01',
-      hasIconList: ['2018-09-01', '2018-09-06', '2018-09-09', '2018-09-10', '2018-09-15'],
+      hasIconList: [],
       goodsList: [],
       requestData:{ //请求的数据
         beginTime: "",
-        endTime: "",
+        // ${new Date().getFullYear()}-${new Date().getMonth() + 1<10?'0':''}${new Date().getMonth()+1}-${new Date().getDate()<10?'0':''}${new Date().getDate()}
+        endTime: `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`,
       }
     };
     components = {
       wepyCanlendar,
-      Sticky,
+      // Sticky,
       // GoodsListRefresh:Refresh,
     };
     onLoad() {
@@ -91,12 +94,11 @@
         // }
       },
       "calChangeSelectedDay": (date, moduleId, e)=> {
-        console.log(date)
-        this.requestData.beginTime = val;
-        // (async()=>{
-        //   this.goodsList =await this.getVisitLogList();
-        //   this.$apply();
-        // })()
+        this.requestData.endTime = date;
+        (async()=>{
+          this.goodsList =await this.getVisitLogList();
+          this.$apply();
+        })()
       },
       'refresh': (name,res) => {
           if (res === 'success') {
@@ -115,17 +117,12 @@
     // 获取访问足迹
     async getVisitLogList() {
       let {
-        shopId,
-        userId,
-        memberId
-      } = this.$parent.globalData;
-      let {
         beginTime,
         endTime
       } = this.requestData;
-      let res =await api.getVisitLogList({shopId,userId,memberId,beginTime,endTime})
-      return res;
+      let res =await api.getVisitLogList({beginTime,endTime})
       console.log(res);
+      return res;
     }
   }
 </script>

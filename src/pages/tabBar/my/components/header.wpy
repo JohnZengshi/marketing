@@ -9,7 +9,7 @@
       <!-- 签到 -->
       <view class="sign-in-box {{userInfo.sign == 'Y' ? 'opacity-08' : ''}}" bindtap='_rportByWeChat'>
         <a class='sign-in-sort-icon mr-10'>
-          <image wx:if="currentFillter.orderBy" class="sign-in-sort-bg-one" src="/images/my/金币-3@2x.png"></image>
+          <image wx:if="currentFillter.orderBy" class="sign-in-sort-bg-one" src="/images/my/gold.png"></image>
         </a>
         <text class="text-tit">{{userInfo.sign == 'N' ? '签到' : '已签到'}}</text>
       </view>
@@ -112,7 +112,7 @@ export default class myHeader extends wepy.component {
       display: inline-block;
       vertical-align: top;
       height: 38rpx;
-      padding: 0 20rpx;
+      padding: 0 16rpx;
       background-color: #ae4c35;
       border-radius: 20rpx 0 0 20rpx;
       .sign-in-sort-icon{
@@ -140,8 +140,8 @@ export default class myHeader extends wepy.component {
     bottom: 46rpx;
     padding: 0 10rpx;
     height: 50rpx;
-    border-radius: 4rpx;
-    border: 1rpx solid #fff;
+    border-radius: 8rpx;
+    border: 1rpx solid #f4eeee;
     // background-color: #fb5a36;
     .shop-location-icon{
       display: inline-block;

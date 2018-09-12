@@ -14,6 +14,7 @@
 </template>
 <script>
   import wepy from "wepy";
+  import api from "Api";
   export default class AfterSaleCriterion extends wepy.page {
     config = {
       navigationBarTitleText: "售后准则",
@@ -34,6 +35,14 @@
         }, {
             name: "黄金"
         }]
+    };
+    async onShow() {
+        this.getServerRule();
+    }
+    // 获取售后准则数据
+    async getServerRule(){
+        let res =await api.getServerRule({dataType:"3"});
+        console.log(res);
     }
   }
 </script>

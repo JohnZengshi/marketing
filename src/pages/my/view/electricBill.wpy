@@ -82,13 +82,13 @@
         <text>新增购买记录</text>
         <view class="orderInput">
           <text>单据号</text>
-          <input type="text" placeholder="输入单据号" placeholder-style="font-size: 26rpx;margin-left: 31rpx;color:#D6D6D6;" adjust-position="true"></input>
+          <input type="text" value="{{requestData.orderNO}}" placeholder="输入单据号" @input="orderNOinputIng" placeholder-style="font-size: 26rpx;margin-left: 31rpx;color:#D6D6D6;" adjust-position="true"></input>
         </view>
         <view class="sumInput">
           <text>金额</text>
-          <input type="number" placeholder="输入金额" placeholder-style="font-size: 26rpx;margin-left: 31rpx;color:#D6D6D6;" adjust-position="true"></input>
+          <input type="number" value="{{requestData.money}}" placeholder="输入金额" @input="moneyInputIng" placeholder-style="font-size: 26rpx;margin-left: 31rpx;color:#D6D6D6;" adjust-position="true"></input>
         </view>
-        <view class="btn">
+        <view class="btn" @tap="setSales">
           确认
         </view>
       </view>
@@ -98,6 +98,7 @@
 <script>
   import wepy from "wepy";
   import Popup from '@components/popup';
+  import api from "Api";
   export default class ElectricBill extends wepy.page {
     config = {
       navigationBarTitleText: "电子账单",
@@ -110,33 +111,38 @@
     data = {
       isBill: false, // 是否有电子账单
       isHasProduct: false,
-      billList: [{
-        orderNo: "hFC273629767",
-        nyr: "2017.09.12",
-        sf: "12:34",
-        totalPrice: "4000",
-        productList: [{
-          price: "2000",
-          sellType: 1,
-          jewelryName: "千足银彩宝手镯",
-          barcode: "20237827778",
-          goldWeight: "12.330",
-          goldPrice: "265.30",
-          costPrice: "265.00",
-          discount: "98%",
+      billList: [],
+      requestData: {
+        money:"",
+        orderNO:"",
+      },
+      // {
+      //   orderNo: "hFC273629767",
+      //   nyr: "2017.09.12",
+      //   sf: "12:34",
+      //   totalPrice: "4000",
+      //   productList: [{
+      //     price: "2000",
+      //     sellType: 1,
+      //     jewelryName: "千足银彩宝手镯",
+      //     barcode: "20237827778",
+      //     goldWeight: "12.330",
+      //     goldPrice: "265.30",
+      //     costPrice: "265.00",
+      //     discount: "98%",
 
-        }, {
-          price: "2000",
-          sellType: 2,
-          jewelryName: "千足银彩宝饺子",
-          barcode: "20237827778",
-          goldWeight: "12.330",
-          goldPrice: "265.30",
-          costPrice: "265.00",
-          discount: "98%",
+      //   }, {
+      //     price: "2000",
+      //     sellType: 2,
+      //     jewelryName: "千足银彩宝饺子",
+      //     barcode: "20237827778",
+      //     goldWeight: "12.330",
+      //     goldPrice: "265.30",
+      //     costPrice: "265.00",
+      //     discount: "98%",
 
-        }]
-      }],
+      //   }]
+      // }
       isShow: false,
       showOverlay: true,
       type: "center"
@@ -147,8 +153,23 @@
       },
       hidePop() {
         this.isShow = false;
+      },
+      async setSales() { //点击新增购买记录按钮
+        let res =await this.getMemberSalesList();
+        if(res){
+          this.isShow = false;
+        }
+      },
+      orderNOinputIng(val){ //输入单据
+        this.requestData.orderNO = val.detail.value;
+      },
+      moneyInputIng(val){ //输入金额
+        this.requestData.money = val.detail.value;
       }
-    }
+    };
+    async onLoad() {
+      this.billList =await this.getElectronicBilling();
+    };
     // onLoad() {
     //   this.setData({
     //     isBill: options.isBill
@@ -187,6 +208,17 @@
     //       })
     //     })
     // };
+    // 获取电子账单
+    async getElectronicBilling() {
+      let res =await api.electronicBilling();
+      return res.dataList;
+    };
+    // 新增购买记录
+    async getMemberSalesList(){
+      let {money,orderNO} = this.requestData;
+      let res =await api.getMemberSalesList({money,orderNO});
+      return res;
+    }
   }
 </script>
 <style lang="less" scoped>

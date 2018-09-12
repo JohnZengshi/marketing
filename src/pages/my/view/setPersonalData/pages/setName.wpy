@@ -2,7 +2,7 @@
   <view class="setName">
       <view class="content">
           <view class="label flex flex-r flex-align-center">
-            <input value="{{inputVal}}" type="text" placeholder="设置姓名" @input="inputIng" placeholder-class="placeholder"></input>
+            <input value="{{inputVal}}" type="text" confirm-type="done" bindblur="setName" placeholder="设置姓名" @input="inputIng" placeholder-class="placeholder"></input>
             <image @tap="resetInput" src="/images/mine/删除@3x.png"></image>
           </view>
       </view>
@@ -10,6 +10,7 @@
 </template>
 <script>
   import wepy from "wepy";
+  import api from "Api";
   export default class setName extends wepy.page {
     config = {
       navigationBarTitleText: "设置姓名",
@@ -25,7 +26,25 @@
       },
       resetInput() {
         this.inputVal = ""
+      },
+      async setName(val) {
+        console.log("设置姓名");
+        let res =await this.infoModify("2",val.detail.value);
+        if (res) {
+          wx.showToast({
+            title: '修改成功',
+            icon: 'none',
+            duration: 2000
+          })
+        }
       }
+    };
+    async infoModify(type,data) {
+      let res =await api.infoModify({modifyList:[{
+        type,
+        data
+      }]});
+      return res;
     }
   }
 </script>

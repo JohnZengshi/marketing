@@ -20,7 +20,7 @@
               <block wx:for="{{item.shopList}}" wx:for-item="itemT" wx:key="{{itemT}}">
                 <view class="radio-item">
                   <label class="radio">
-                    <radio value="{{itemT.id}}" checked="{{shopId == itemT.id}}"/>
+                    <radio color="#fb684c" value="{{itemT.id}}" checked="{{shopId == itemT.id}}"/>
                     <text class="right-t"> {{itemT.fullName}}</text>
                   </label>
                   <view class="r-wrap" wx:if="{{itemT.gradeName}}">
@@ -115,127 +115,25 @@ export default class mCutShop extends wepy.component {
             shopinfo: '996996',
           }
         ]
-      },
-      {
-        groupName: '776',
-        integral: '776',
-        gradeName: '776',
-        shopList: [
-          {
-            integral: '996996',
-            gradeName: '',
-            fullName: '996996',
-            address: '996996',
-            longitude: '996996',
-            latitude: '996996',
-            id: 'id332',
-            logo: '996996',
-            shopinfo: '996996',
-          },
-          {
-            integral: '996996',
-            gradeName: '',
-            fullName: '996996',
-            address: '996996',
-            longitude: '996996',
-            latitude: '996996',
-            id: 'id456',
-            logo: '996996',
-            shopinfo: '996996',
-          }
-        ]
-      },
-      {
-        groupName: '776',
-        integral: '776',
-        gradeName: '776',
-        shopList: [
-          {
-            integral: '996996',
-            gradeName: '',
-            fullName: '996996',
-            address: '996996',
-            longitude: '996996',
-            latitude: '996996',
-            id: 'id002',
-            logo: '996996',
-            shopinfo: '996996',
-          },
-          {
-            integral: '996996',
-            gradeName: '',
-            fullName: '996996',
-            address: '996996',
-            longitude: '996996',
-            latitude: '996996',
-            id: 'id753',
-            logo: '996996',
-            shopinfo: '996996',
-          }
-        ]
-      },
-      {
-        groupName: '776',
-        integral: '776',
-        gradeName: '776',
-        shopList: [
-          {
-            integral: '996996',
-            gradeName: '',
-            fullName: '996996',
-            address: '996996',
-            longitude: '996996',
-            latitude: '996996',
-            id: 'id845',
-            logo: '996996',
-            shopinfo: '996996',
-          },
-          {
-            integral: '996996',
-            gradeName: '',
-            fullName: '996996',
-            address: '996996',
-            longitude: '996996',
-            latitude: '996996',
-            id: 'id336',
-            logo: '996996',
-            shopinfo: '996996',
-          }
-        ]
-      },
-      {
-        groupName: '776',
-        integral: '776',
-        gradeName: '776',
-        shopList: [
-          {
-            integral: '996996',
-            gradeName: '',
-            fullName: '996996',
-            address: '996996',
-            longitude: '996996',
-            latitude: '996996',
-            id: '996996',
-            logo: '996996',
-            shopinfo: '996996',
-          },
-          {
-            integral: '996996',
-            gradeName: '',
-            fullName: '996996',
-            address: '996996',
-            longitude: '996996',
-            latitude: '996996',
-            id: '996996',
-            logo: '996996',
-            shopinfo: '996996',
-          }
-        ]
       }
     ]
   }
+  async shopList () {
+    let json = await api.shopList()
+    this.shopDataList = json.dataList
+    this.$apply()
+  }
+  async changeShop (parm) {
+    let self = this
+    let json = await api.changeShop(parm)
+    wx.setStorageSync('shopId', parm.shopId)
+    if (json) {
+      self.$emit('updateData')
+    }
+  }
   methods = {
     open () {
+      this.shopList()
       this.$invoke('popupBottom', 'open')
     },
     close () {
@@ -244,8 +142,8 @@ export default class mCutShop extends wepy.component {
     // 选择店铺
     radioChange (e) {
       console.log('选择店铺', e)
-      this.userInfo.gender = e.detail.value
-      this.$emit('updateData')
+      // this.userInfo.gender = e.detail.value
+      this.changeShop({shopId: e.detail.value})
     },
   }
 }
@@ -279,6 +177,8 @@ export default class mCutShop extends wepy.component {
     }
     .group-name{
       height: 32rpx;
+      font-size: 24rpx;
+      color: #666;
       line-height: 32rpx;
       margin-bottom: 20rpx;
     }
@@ -289,6 +189,8 @@ export default class mCutShop extends wepy.component {
       .right-t{
         display: inline-block;
         vertical-align: top;
+        font-size: 28rpx;
+        color: #333;
         margin-left: 20rpx;
         line-height: 60rpx;
       }

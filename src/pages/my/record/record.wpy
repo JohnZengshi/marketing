@@ -348,9 +348,11 @@ import utils from '@/utils/util'
         let options = {
           page: this.page,
           pageSize: this.pageSize,
-          memberId: wx.getStorageSync('memberId')
+          // memberId: wx.getStorageSync('memberId')
         }
         let json = await api.memberIntegralLog(options)
+        console.log(json);
+        this.showList = json
         // let newData = json.dataList
 
         // for (let i of newData) {
@@ -388,51 +390,51 @@ import utils from '@/utils/util'
         //   }
         // }
 
-        let newData = [
-          {
-            yearMoon: '2018-09',
-            userItegralUse: '1000',
-            userItegralAdd: '2000',
-            pList: [
-              {
-                createTime: '08:00',
-                title: 'title',
-                itegral: '10'
-              },
-              {
-                createTime: '09-03',
-                title: 'title',
-                itegral: '10'
-              }
-            ]
-          },
-          {
-            yearMoon: '20180903000000',
-            userItegralUse: '1000',
-            userItegralAdd: '2000',
-            pList: [
-              {
-                createTime: '20180903000000',
-                title: 'title',
-                itegral: '10'
-              },
-              {
-                createTime: '20180903000000',
-                title: 'title',
-                itegral: '660'
-              }
-            ]
-          }
-        ]
+        // let newData = [
+        //   {
+        //     yearMoon: '2018-09',
+        //     userItegralUse: '1000',
+        //     userItegralAdd: '2000',
+        //     pList: [
+        //       {
+        //         createTime: '08:00',
+        //         title: 'title',
+        //         itegral: '10'
+        //       },
+        //       {
+        //         createTime: '09-03',
+        //         title: 'title',
+        //         itegral: '10'
+        //       }
+        //     ]
+        //   },
+        //   {
+        //     yearMoon: '20180903000000',
+        //     userItegralUse: '1000',
+        //     userItegralAdd: '2000',
+        //     pList: [
+        //       {
+        //         createTime: '20180903000000',
+        //         title: 'title',
+        //         itegral: '10'
+        //       },
+        //       {
+        //         createTime: '20180903000000',
+        //         title: 'title',
+        //         itegral: '660'
+        //       }
+        //     ]
+        //   }
+        // ]
 
-        let currentData = [...this.showList, ...newData]
+        // let currentData = [...this.showList, ...newData]
 
-        this.showList = currentData
+        // this.showList = currentData
         this.score = json.score
         this.page = this.page + 1
         this.allNum = json.totalNum
         this.loading = false
-        this.ending = currentData.length == json.totalNum
+        // this.ending = currentData.length == json.totalNum
 
         this.$apply()
       }

@@ -5,6 +5,7 @@
 </template>
 <script>
   import wepy from "wepy";
+  import api from "Api";
   import ExplainTemplate from "../components/explainTemplate";
   export default class DiscountExplain extends wepy.page {
     config = {
@@ -14,33 +15,59 @@
     };
     data = {
       explainList: [{
-        titleName: "赚积分",
+        titleName: "积分介绍",
         list: [{
-          listName: "签到赚积分",
+          listName: "",
           wordList: [{
-            word: "售后无明显质量问题，概不退货货售后无明显质量问题售后无明显质量问题，概不退货",
-          }, {
-            word: "售后无明显质量问题，概不退货货售后无明显质量问题",
+            word: "积分是店铺为广大会员提供的一项服务，会员可以在店铺消费，积分商城兑换商品，参加活动等获取和使用积分",
           }]
         }]
       }, {
-        titleName: "积分消耗",
+        titleName: "积分获取",
         list: [{
-          listName: "签到赚积分",
+          listName: "注册",
           wordList: [{
-            word: "售后无明显质量问题，概不退货货售后无明显质量问题售后无明显质量问题，概不退货货售后",
+            word: "注册会员成功后，获取积分",
+          }]
+        }, {
+          listName: "签到",
+          wordList: [{
+            word: "会员签到，获取积分",
+          }]
+        }, {
+          listName: "生日",
+          wordList: [{
+            word: "会员生日当天，获取积分",
+          }]
+        }, {
+          listName: "消费",
+          wordList: [{
+            word: "会员在店铺进行消费时，获取积分",
+          }]
+        }, {
+          listName: "活动",
+          wordList: [{
+            word: "会员参加特定活动时，获取积分",
           }, {
-            word: "售后无明显质量问题，概不退货货售后无明显质量问题",
+            word: "会员分享特定活动时，获取积分",
           }]
         }]
       }, {
-        titleName: "积分抵扣说明",
+        titleName: "积分使用",
         list: [{
-          listName: "签到赚积分",
+          listName: "消费",
           wordList: [{
-            word: "售后无明显质量问题，概不退货货售后无明显质量问题",
-          }, {
-            word: "售后无明显质量问题，概不退货货售后无明显质量问题",
+            word: "会员在店铺进行消费时，使用积分",
+          }]
+        }, {
+          listName: "兑换",
+          wordList: [{
+            word: "会员在积分商城中进行兑换商品时，使用积分",
+          }]
+        }, {
+          listName: "积分抵现",
+          wordList: [{
+            word: "会员在店铺进行消费时，使用积分抵扣现金",
           }]
         }]
       }]
@@ -48,6 +75,15 @@
     components = {
       ExplainTemplate,
     };
+    async onShow() {
+      this.getIntegralExplain();
+    }
+
+    // 获取积分说明
+    async getIntegralExplain() {
+      let res =await api.getIntegralExplain();
+      console.log(res);
+    }
   }
 </script>
 <style lang="less" scoped>

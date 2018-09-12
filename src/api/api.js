@@ -1,7 +1,7 @@
 import {wxRequest} from '@/utils/request'
 // const host = 'https://program.yunzhubao.com/yunzhubao/'
-// var host = 'https://uat.yunzhubao.com/'
-var host = 'http://192.168.100.116:8080/yunzhubao/'
+var host = 'https://uat.yunzhubao.com/'
+// var host = 'http://192.168.100.116:8080/yunzhubao/'
 
 // 商城店铺信息
 const mallsShopInfo = (params) => wxRequest(params, `${host}v1/weChat/mallsShopInfo`)
@@ -70,6 +70,25 @@ const getActivityList = (params) => wxRequest(params, `${host}v1/sem/user/activi
 const shopList = (params) => wxRequest(params, `${host}v1/sem/shop/shopList`)
 // 测试
 const openIdtext = (params) => wxRequest({}, params, 'GET')
+// 切换店铺
+const changeShop = (params) => wxRequest(params, `${host}v1/sem/user/changeShop`)
+
+
+
+// 积分说明
+const getIntegralExplain = (params) => wxRequest(params, `${host}v1/sem/shop/integralExplain`)
+// 会员等级说明
+const getGradeExplain = (params) => wxRequest(params, `${host}v1/sem/shop/gradeExplain`)
+// 3.6 店铺详情信息
+const getAboutUs = (params) => wxRequest(params, `${host}v1/sem/shop/about`)
+// 服务相关准则
+const getServerRule = (params) => wxRequest(params, `${host}v1/sem/shop/serverRule`)
+// 2.15 积分任务列表
+const getIntegralTaskList = (params) => wxRequest(params, `${host}v1/sem/user/integralTaskList`)
+// 新增购买记录
+const getMemberSalesList  = (params) => wxRequest(params, `${host}v1/member/memberSalesList`)
+// 会员资料修改
+const infoModify = (params) => wxRequest(params, `${host}v1/sem/user/infoModify`)
 
 export default {
     mallsShopInfo,
@@ -96,6 +115,7 @@ export default {
     findShopListByProductId,
     shopList,
     openIdtext,
+    changeShop,
 
     getGrade,
     getVisitLogList,
@@ -105,5 +125,12 @@ export default {
     getIntegralList,
     getTicketList,
     xjUserInfo,
-    getActivityList
+    getActivityList,
+    getIntegralExplain,
+    getGradeExplain,
+    getAboutUs,
+    getServerRule,
+    getIntegralTaskList,
+    getMemberSalesList,
+    infoModify
 }

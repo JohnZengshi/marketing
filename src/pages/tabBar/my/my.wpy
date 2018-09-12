@@ -5,8 +5,6 @@
     <myHeader
       :userInfo.sync="userInfo"
       @openShop.user="openShop"
-      @close.user="closeShop"
-      @updateData.user='updateData'
     ></myHeader>
     
     <!-- 数据集合 -->
@@ -22,10 +20,25 @@
     <serviceList></serviceList>
 
     <!-- 切换店铺 -->
-    <cutShop></cutShop>
+    <cutShop
+      @updateData.user='updateData'
+      @close.user="closeShop"
+    ></cutShop>
 
     <!-- 底部导航 -->
-    <menu :menu.sync="currentMenu" :userId.sync="userId"></menu>
+    <menu :menu.sync="currentMenu" :userId.sync="userId" @openShop.user="openShow"></menu>
+
+    <popup 
+      :isShow.sync="isShow" 
+      popUpType="center"
+      @hide.user="hidePop">
+      <view class="underConstruction flex flex-v flex-align-center">
+        <text>敬请期待</text>
+        <text>为了给你带来更好的体验，我们正在努力测试当中，敬请期待...</text>
+        <view class="btn" @tap="hidePop">知道了</view>
+      </view>
+    </popup>
+    <button wx:if="userId" class="get-phone-number" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber"></button> 
   </view>
 </template>
 
@@ -39,7 +52,7 @@ import applyList from './components/applyList';
 import activitySwiper from './components/activitySwiper';
 import serviceList from './components/serviceList';
 import cutShop from './components/cutShop';
-
+import popup from '@components/popup';
 //通过继承自wepy.page的类创建页面逻辑
 export default class my extends wepy.page {
   config = {
@@ -56,28 +69,30 @@ export default class my extends wepy.page {
     activitySwiper: activitySwiper,
     serviceList: serviceList,
     cutShop: cutShop,
+    popup
   }
   /**
    * 页面的初始数据
    */
   data = {
+    isShow: false,
     currentMenu: 'C',
     userId: wx.getStorageSync('userId'),
     popupBug: false,
     isBill: 'N',
     score: '2', // 签到成功加的分值
     userInfo: {
-      couponNum: 'couponNum',
-      integralNum: '1000',
-      balance: 'balance',
-      qcSrc: 'http://jzm-1252389350.cosgz.myqcloud.com/iconHeaded/%25QH74RAN7GT%5D%24%5DK%7DJ5RCVXM1535783933372.png',
-      nickName: '小华',
-      faceSrc: 'http://jzm-1252389350.cosgz.myqcloud.com/iconHeaded/%25QH74RAN7GT%5D%24%5DK%7DJ5RCVXM1535783933372.png',
-      gradeName: 'gradeName',
-      shopName: 'shopName',
-      member: '10000',
-      sex: '男',
-      phone: '1564654545'
+      couponNum: '',
+      integralNum: '',
+      balance: '',
+      qcSrc: '',
+      nickName: '',
+      faceSrc: '',
+      gradeName: '',
+      shopName: '',
+      member: '',
+      sex: '',
+      phone: ''
     },
     isSignInPopup: false, // 签到成功弹窗
     memberDetailPopup: false, // 会员详情弹窗
@@ -116,7 +131,24 @@ export default class my extends wepy.page {
     self.$apply()
   }
 
+  events = {
+    'openPopup'(){
+        this.isShow = true;
+        this.$apply();
+    }
+  }
+
   methods = {
+    hidePop() { //弹窗隐藏
+      this.isShow = false;
+      this.$apply();
+    },
+
+    openShow () {
+      this.isShow = true;
+      this.$apply();
+    },
+
     openShop () {
       this.$invoke('cutShop', 'open')
       this.popupBug = true
@@ -124,10 +156,13 @@ export default class my extends wepy.page {
 
     closeShop () {
       this.popupBug = false
+      this.$apply();
+      console.log('执行')
     },
 
     // 切换店铺后更新用户信息
     updateData () {
+      console.log('切换店铺后更新用户信息')
       this.xjUserInfo()
     },
 
@@ -183,6 +218,10 @@ export default class my extends wepy.page {
       this.setData({
         memberDetailPopup: !this.data.memberDetailPopup
       })
+    },
+
+    getPhoneNumber(e) {
+      this.$invoke('getPhoneNumber', e)
     }
   }
   /**
@@ -215,7 +254,60 @@ export default class my extends wepy.page {
 </script>
 <style lang="less">
 .my-main{
+  position: relative;
   background-color: #f4f4f4;
+  .get-phone-number{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    opacity: 0.01;
+  }
+}
+.underConstruction {
+  width: 519rpx;
+  height: 542rpx;
+  background-color: #FFF;
+  border-radius: 17rpx;
+
+  >text {
+    &:first-of-type {
+      margin-top: 76rpx;
+      font-size: 34rpx;
+      color: #333333;
+      font-weight: bold;
+      line-height: 34rpx;
+    }
+
+    &:last-of-type {
+      margin-top: 76rpx;
+      width: 442rpx;
+      font-size: 26rpx;
+      color: #999999;
+      line-height: 47rpx;
+    }
+  }
+
+  >view {
+    margin-top: 117rpx;
+    width: 400rpx;
+    height: 76rpx;
+    border-radius: 76rpx;
+    font-size: 34rpx;
+    line-height: 76rpx;
+    font-weight: bold;
+    text-align: center;
+    color: #fff;
+    background: -webkit-linear-gradient(left, #FC894F, #FB6F4D);
+    /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right, #FC894F, #FB6F4D);
+    /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right, #FC894F, #FB6F4D);
+    /* Firefox 3.6 - 15 */
+    background: linear-gradient(to right, #FC894F, #FB6F4D);
+    /* 标准的语法 */
+  }
 }
 /* 内容 */
 

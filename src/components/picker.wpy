@@ -29,9 +29,10 @@
     <block wx:if="{{type == 'date'}}">
       <picker 
         mode="date" 
+        fields="{{fields}}"
         value="{{date}}" 
-        start="2015-09-01" 
-        end="2017-09-01" 
+        start="2005-09-01" 
+        end="{{date}}" 
         bindchange="bindDateChange">
         <slot name="datePicker"></slot>
       </picker>
@@ -66,6 +67,9 @@
          * @param  {[String]} selectArray  [数组]
          */
         type: Array
+      },
+      fields: {
+        type: String
       }
     };
     data = {
@@ -135,7 +139,7 @@
         ]
       ],
       multiIndex: [0, 0, 0],
-      date: '2016-09-01',
+      date: `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`,
       time: '12:01',
       region: ['广东省', '广州市', '海珠区'],
       customItem: '全部'

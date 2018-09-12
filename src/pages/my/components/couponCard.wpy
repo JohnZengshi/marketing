@@ -20,17 +20,17 @@
                 <view class="{{ useStatus == '1'?'':'gray' }}">{{couponCardData.typeName}}</view>
             </block>
             <view class="flex flex-r flex-align-center {{ useStatus == '1'?'':'gray' }}">
-                <text>{{couponCardData.subTypeName}}</text>
+                <text>{{couponCardData.head}}</text>
                 <view>{{couponCardData.limitShopName}}</view>
             </view>
-            <view wx:if="{{couponCardData.limitProductName}}">{{couponCardData.limitProductName}}</view>
-            <view wx:if="{{couponCardData.validityDay && couponCardData.validityDay != -1}}">有效期:{{couponCardData.validityDay}}</view>
+            <view>{{couponCardData.limitProductType}}</view>
+            <view wx:if="{{couponCardData.validityDay && couponCardData.validityDay != -1}}">有效期:{{couponCardData.validityBeginDate}}~{{couponCardData.validityEndDate}}</view>
         </view>
         <view  class="{{ useStatus == '1'?'':'gray' }} rigth flex flex-v flex-pack-center flex-align-center">
             <block>
                 <view wx:if="{{couponCardData.couponValType == '0'}}" class="couponVal couponVal01">
                     <text>￥</text>
-                    <text>{{couponCardData.termMoney}}</text>
+                    <text>{{couponCardData.parseIntTermMoney}}</text>
                 </view>
                 <view wx:elif="{{couponCardData.couponValType == '1'}}" class="couponVal couponVal02">
                     <text>{{couponCardData.deduction}}</text>
@@ -44,8 +44,8 @@
                     <text>{{couponCardData.couponVal}}</text>
                 </view> -->
             </block>
-            <view wx:if="{{couponCardData.explain}}" class="explain">{{couponCardData.explain}}</view>
-            <view wx:if="{{couponCardData.tip}}" class="tip">{{couponCardData.tip}}</view>
+            <view wx:if="{{couponCardData.maxDeductionMoney}}" class="explain">满{{couponCardData.parseIntMaxDeductionMoney}}元可用</view>
+            <view wx:if="{{couponCardData.dataTip}}" class="tip">剩{{couponCardData.dataTip}}天</view>
         </view>
     </view>
   </view>
@@ -138,6 +138,8 @@
                     }
                 };
                 &:nth-of-type(3){
+                    // min-width: 416rpx;
+                    // height: 25rpx;
                     font-size: 22rpx;
                     margin-top: 24rpx;
                     word-break: break-all;

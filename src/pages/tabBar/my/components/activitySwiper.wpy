@@ -7,10 +7,14 @@
 
         <block wx:for="{{showList}}" wx:key="item">
           <swiper-item>
-            <navigator class="swiper-item {{item}}" hover-class="none" url="../../my/activity/activity">
+            <!-- <navigator class="swiper-item {{item}}" hover-class="none" url="../../my/activity/activity">
                 <image style="width: 100%;height:100%;"
                 mode="aspectFill" src="{{item.logoSrc}}"></image>
-            </navigator>
+            </navigator> -->
+            <view class="swiper-item {{item}}">
+                <image style="width: 100%;height:100%;"
+                mode="aspectFill" src="{{item.logoSrc}}"></image>
+            </view>
           </swiper-item>
         </block>
 

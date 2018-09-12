@@ -18,6 +18,7 @@
 </template>
 <script>
   import wepy from "wepy";
+  import api from "Api";
   export default class setGender extends wepy.page {
     config = {
       navigationBarTitleText: "选择性别",
@@ -29,9 +30,31 @@
       currentSelect: "男"
     };
     methods = {
-      changeSelect(val) {
-        this.currentSelect = val
+      async changeSelect(val) {
+        this.currentSelect = val;
+        console.log(123)
+        let tag;
+        if(val == '男'){
+          tag = "1"
+        }else{
+          tag = '2'
+        }
+        let res =await this.infoModify("3",tag);
+        if (res) {
+          wx.showToast({
+            title: '修改成功',
+            icon: 'none',
+            duration: 2000
+          })
+        }
       }
+    };
+    async infoModify(type,data) {
+      let res =await api.infoModify({modifyList:[{
+        type,
+        data
+      }]});
+      return res;
     }
   }
 </script>
