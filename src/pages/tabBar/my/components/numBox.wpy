@@ -6,12 +6,12 @@
     </navigator>
 
     <navigator class="item" url="/pages/my/view/coupon">
-      <text>{{userInfo.integralNum}}</text>
+      <text>{{userInfo.couponNum}}</text>
       <text>优惠券</text>
     </navigator>
 
     <view class="item" @tap="construction">
-      <text>{{userInfo.integralNum}}</text>
+      <text>{{userInfo.balance}}</text>
       <text>钱包</text>
     </view>
 

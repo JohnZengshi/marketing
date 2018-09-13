@@ -20,7 +20,7 @@
               <block wx:for="{{item.shopList}}" wx:for-item="itemT" wx:key="{{itemT}}">
                 <view class="radio-item">
                   <label class="radio">
-                    <radio color="#fb684c" value="{{itemT.id}}" checked="{{shopId == itemT.id}}"/>
+                    <radio color="#fb684c" value="{{itemT.id}}" checked="{{userInfo.shopId == itemT.id}}"/>
                     <text class="right-t"> {{itemT.fullName}}</text>
                   </label>
                   <view class="r-wrap" wx:if="{{itemT.gradeName}}">

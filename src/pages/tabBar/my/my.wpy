@@ -23,6 +23,7 @@
 
     <!-- 切换店铺 -->
     <cutShop
+      :userInfo.sync="userInfo"
       @updateData.user='updateData'
       @close.user="closeShop"
     ></cutShop>
@@ -105,7 +106,8 @@ export default class my extends wepy.page {
       member: '',
       sex: '',
       phone: '',
-      userId: ''
+      userId: '',
+      shopId: ''
     },
     isSignInPopup: false, // 签到成功弹窗
     memberDetailPopup: false, // 会员详情弹窗
@@ -147,6 +149,7 @@ export default class my extends wepy.page {
       wx.setStorageSync('userId', json.userId)
       wx.setStorageSync('memberId', json.memberId)
       self.userInfo = json
+      console.log( 'self.userInfo', self.userInfo)
       self.userId = json.userId
       self.getServerList();
       self.$apply()
@@ -162,7 +165,6 @@ export default class my extends wepy.page {
     self.isSignInPopup = !self.isSignInPopup
     setTimeout(() => {
       self.isSignInPopup = !self.isSignInPopup
-      self.userInfo = self.userInfo
       self.$apply()
     }, 3000)
     self.$apply()
