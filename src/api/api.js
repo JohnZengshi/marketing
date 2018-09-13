@@ -1,7 +1,7 @@
 import {wxRequest} from '@/utils/request'
 // const host = 'https://program.yunzhubao.com/yunzhubao/'
-// var host = 'https://uat.yunzhubao.com/'
-var host = 'http://192.168.100.116:8080/yunzhubao/'
+var host = 'https://uat.yunzhubao.com/'
+// var host = 'http://192.168.100.116:8080/yunzhubao/'
 
 // 商城店铺信息
 const mallsShopInfo = (params) => wxRequest(params, `${host}v1/weChat/mallsShopInfo`)
