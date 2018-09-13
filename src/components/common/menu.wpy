@@ -48,7 +48,7 @@
       <view class="c-menu-btn">
         <view class="c-menu-img-wrap">
           <image class="c-menu-img" mode='aspectFit' src="/images/tabBar/my-icon-actions.png"></image>
-          <button class="get-phone-number" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber"></button> 
+<!--           <button class="get-phone-number" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber"></button>  -->
         </view>
       </view>
 

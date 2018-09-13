@@ -31,106 +31,16 @@ import wepy from 'wepy';
 export default class shopList extends wepy.page {
   data = {
     showList: [
-      {
-        logo: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1758343206,1224786249&fm=58&bpow=1024&bpoh=1536',
-        shopName: 'shopName',
-        phone: '0775-88888888',
-        address: 'address',
-        longitude: 'longitude',
-        latitude: 22.530001,
-        id: 113.935364,
-        state: '店铺介绍'
-      },
-      {
-        logo: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1758343206,1224786249&fm=58&bpow=1024&bpoh=1536',
-        shopName: 'shopName',
-        phone: '0775-88888888',
-        address: 'address',
-        longitude: 'longitude',
-        latitude: 22.530001,
-        id: 113.935364,
-        state: '店铺介绍'
-      },
-      {
-        logo: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1758343206,1224786249&fm=58&bpow=1024&bpoh=1536',
-        shopName: 'shopName',
-        phone: '0775-88888888',
-        address: 'address',
-        longitude: 'longitude',
-        latitude: 22.530001,
-        id: 113.935364,
-        state: '店铺介绍'
-      },
-      {
-        logo: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1758343206,1224786249&fm=58&bpow=1024&bpoh=1536',
-        shopName: 'shopName',
-        phone: '0775-88888888',
-        address: 'address',
-        longitude: 'longitude',
-        latitude: 22.530001,
-        id: 113.935364,
-        state: '店铺介绍'
-      },
-      {
-        logo: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1758343206,1224786249&fm=58&bpow=1024&bpoh=1536',
-        shopName: 'shopName',
-        phone: '0775-88888888',
-        address: 'address',
-        longitude: 'longitude',
-        latitude: 22.530001,
-        id: 113.935364,
-        state: '店铺介绍'
-      },
-      {
-        logo: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1758343206,1224786249&fm=58&bpow=1024&bpoh=1536',
-        shopName: 'shopName',
-        phone: '0775-88888888',
-        address: 'address',
-        longitude: 'longitude',
-        latitude: 22.530001,
-        id: 113.935364,
-        state: '店铺介绍'
-      },
-      {
-        logo: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1758343206,1224786249&fm=58&bpow=1024&bpoh=1536',
-        shopName: 'shopName',
-        phone: '0775-88888888',
-        address: 'address',
-        longitude: 'longitude',
-        latitude: 22.530001,
-        id: 113.935364,
-        state: '店铺介绍'
-      },
-      {
-        logo: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1758343206,1224786249&fm=58&bpow=1024&bpoh=1536',
-        shopName: 'shopName',
-        phone: '0775-88888888',
-        address: 'address',
-        longitude: 'longitude',
-        latitude: 22.530001,
-        id: 113.935364,
-        state: '店铺介绍'
-      },
-      {
-        logo: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1758343206,1224786249&fm=58&bpow=1024&bpoh=1536',
-        shopName: 'shopName',
-        phone: '0775-88888888',
-        address: 'address',
-        longitude: 'longitude',
-        latitude: 22.530001,
-        id: 113.935364,
-        state: '店铺介绍'
-      },
-      {
-        logo: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1758343206,1224786249&fm=58&bpow=1024&bpoh=1536',
-        shopName: 'shopName',
-        phone: '0775-88888888',
-        address: 'address',
-        longitude: 'longitude',
-        latitude: 22.530001,
-        id: 113.935364,
-        state: '店铺介绍'
-      }
+      // {
+      //   logo: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1758343206,1224786249&fm=58&bpow=1024&bpoh=1536',
+      //   shopName: 'shopName',
+      //   phone: '0775-88888888',
+      //   address: 'address',
+      //   longitude: 'longitude',
+      //   latitude: 22.530001,
+      //   id: 113.935364,
+      //   state: '店铺介绍'
+      // }
     ]
   }
 
