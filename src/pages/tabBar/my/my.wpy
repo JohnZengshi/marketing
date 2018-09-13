@@ -95,9 +95,9 @@ export default class my extends wepy.page {
     isBill: 'N',
     score: '2', // 签到成功加的分值
     userInfo: {
-      couponNum: '',
-      integralNum: '',
-      balance: '',
+      couponNum: '0',
+      integralNum: '0',
+      balance: '0.00',
       qcSrc: '',
       nickName: '',
       faceSrc: '',

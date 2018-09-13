@@ -250,7 +250,7 @@
         }else if(val.deduction){ //折扣
           val.couponValType = "1"
         }
-
+        val.dataTip = 5;
         if(val.validityEndDate){ //计算还剩几天
           console.log(val.validityEndDate)
           // console.log(new Date(val.validityEndDate).getTime());

@@ -123,7 +123,7 @@
                     >text{
                         font-size: 36rpx;
                         line-height: 36rpx;
-                        margin-right: 4rpx;
+                        margin-right: 6rpx;
                         font-weight: bold;
                     }
                     >view{
@@ -169,7 +169,7 @@
         .rigth{
             // margin-top: 22rpx;
             margin-right: 11rpx;
-            height: 190rpx;
+            height: 196rpx;
             width: 175rpx;
             position: relative;
             overflow: hidden;
