@@ -9,12 +9,12 @@
 
           <view class="shop-name">{{item.fullName}}</view>
 
-          <view class="tit address-tit" wx:if="{{item.longitude}}">
+          <navigator class='tit address-tit' url="/pages/common/map/showMap?longitude={{item.longitude}}&latitude={{item.latitude}}">
             {{item.address}}
             <image mode="aspectFill" src="/images/my/location.png"></image>
-          </view>
+          </navigator>
 
-          <view class="tit phone-tit">
+          <view class="tit phone-tit" wx:key="{{item}}" data-id="{{item.phone}}" bindtap='phoneCall'>
             {{item.phone}}
             <image mode="aspectFill" src="/images/my/phone.png"></image>
           </view>
@@ -34,10 +34,10 @@ export default class shopList extends wepy.page {
       // {
       //   logo: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1758343206,1224786249&fm=58&bpow=1024&bpoh=1536',
       //   shopName: 'shopName',
-      //   phone: '0775-88888888',
+      //   phone: '18877542265',
       //   address: 'address',
-      //   longitude: 'longitude',
-      //   latitude: 22.530001,
+      //   longitude: '113.92049',
+      //   latitude: '22.53339',
       //   id: 113.935364,
       //   state: '店铺介绍'
       // }
@@ -55,6 +55,15 @@ export default class shopList extends wepy.page {
     this.showList = datas
     this.$apply()
     // this.showList = json.dataList
+  }
+
+  methods = {
+    // 打电话
+    phoneCall (e) {
+      wx.makePhoneCall({
+        phoneNumber: e.currentTarget.dataset.id
+      })
+    }
   }
 
   onLoad (options) {

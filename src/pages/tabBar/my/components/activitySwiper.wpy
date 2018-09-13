@@ -1,25 +1,18 @@
 <template>
   <view class="activity-swiper-box">
-    <swiper style="height: 120rpx;"
-        indicator-dots="true"
-        indicator-active-color="#2993f8"
-        autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
-
-        <block wx:for="{{showList}}" wx:key="item">
-          <swiper-item>
-            <!-- <navigator class="swiper-item {{item}}" hover-class="none" url="../../my/activity/activity">
+    <swiper style="height: 120rpx;" indicator-dots="true" indicator-active-color="#2993f8" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+      <block wx:for="{{showList}}" wx:key="item">
+        <swiper-item>
+          <!-- <navigator class="swiper-item {{item}}" hover-class="none" url="../../my/activity/activity">
                 <image style="width: 100%;height:100%;"
                 mode="aspectFill" src="{{item.logoSrc}}"></image>
             </navigator> -->
-            <view class="swiper-item {{item}}">
-                <image style="width: 100%;height:100%;"
-                mode="aspectFill" src="{{item.logoSrc}}"></image>
-            </view>
-          </swiper-item>
-        </block>
-
-      </swiper>
-    
+          <view class="swiper-item {{item}}">
+            <image style="width: 100%;height:100%;" mode="aspectFill" src="{{item.logoSrc}}"></image>
+          </view>
+        </swiper-item>
+      </block>
+    </swiper>
   </view>
 </template>
 <script>
@@ -35,36 +28,40 @@ export default class activitySwiper extends wepy.page {
     autoplay: true,
     interval: 4000,
     duration: 500,
-    showList: [
-      {
-        activityName: 'activityName',
-        activityId: 'activityId',
+    showList: [{
         logoSrc: 'http://jzm-1252389350.cosgz.myqcloud.com/iconHeaded/banner1%402x.png',
-        beginTime: 'beginTime',
-        endTime: 'endTime',
       },
       {
-        activityName: 'activityName',
-        activityId: 'activityId',
         logoSrc: 'http://jzm-1252389350.cosgz.myqcloud.com/iconHeaded/banner2%402x.png',
-        beginTime: 'beginTime',
-        endTime: 'endTime',
-      }
+      },
+      {
+        logoSrc: 'http://jzm-1252389350.cosgz.myqcloud.com/iconHeaded/banner3%402x.png'
+      },
+      {
+        logoSrc: 'http://jzm-1252389350.cosgz.myqcloud.com/iconHeaded/banner4%402x.png'
+      },
+      {
+        logoSrc: 'http://jzm-1252389350.cosgz.myqcloud.com/iconHeaded/banner5%402x.png'
+      },
+      {
+        logoSrc: 'http://jzm-1252389350.cosgz.myqcloud.com/iconHeaded/banner6%402x.png'
+      },
     ]
   }
 }
 
 </script>
 <style lang="less">
-.activity-swiper-box{
+.activity-swiper-box {
   height: 160rpx;
   padding: 0;
   padding: 20rpx 0;
   margin: 0 14rpx;
   box-sizing: border-box;
-  .swiper-item{
+  .swiper-item {
     display: block;
     height: 120rpx;
   }
 }
+
 </style>

@@ -95,6 +95,8 @@ export default class mCutShop extends wepy.component {
   flex: 1;
   padding: 0 26rpx;
   .item-wrap{
+    border-bottom: 1rpx solid #dedede;
+    margin-bottom: 30rpx;
     .r-wrap{
       float: right;
       display: inline-block;
@@ -110,9 +112,11 @@ export default class mCutShop extends wepy.component {
       }
       .r-t-o{
         background-color: #ffdfd9;
+        color: #fb684c;
       }
       .r-t-t{
         margin-left: 16rpx;
+        color: #fc8d4f;
         background-color: #ffeadf;
       }
     }

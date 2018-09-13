@@ -78,9 +78,14 @@ export default class numBox extends wepy.component {
     }
   }
   .right-item{
+    position: relative;
     width: 128rpx;
     height: 166rpx;
     text-align: center;
+    background-image: url(http://jzm-1252389350.cosgz.myqcloud.com/iconHeaded/AAA.png);
+    background-repeat: no-repeat;
+    background-size: 12rpx 90rpx;
+    background-position: center left;
     .img-box{
       display: inline-block;
       margin: 20rpx 0 30rpx 0;
