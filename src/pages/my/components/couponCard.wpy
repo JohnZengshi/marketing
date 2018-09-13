@@ -145,7 +145,7 @@
                 };
                 &:nth-of-type(3){
                     // min-width: 416rpx;
-                    height: 25rpx;
+                    height: 30rpx;
                     font-size: 22rpx;
                     margin-top: 24rpx;
                     word-break: break-all;
