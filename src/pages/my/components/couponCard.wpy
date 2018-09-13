@@ -11,7 +11,7 @@
         <image src="/images/mine/2.4优惠券－使用／过期@3x.png"></image>
     </view>
     <view class="content flex flex-r flex-pack-justify flex-align-center">
-        <view class="left flex flex-v flex-pack-center">
+        <view class="left flex flex-v">
             <block>
                 <!-- <view class="couponType01 {{ useStatus == '1'?'gray':'' }}" wx:if="{{couponType == '1'}}">购物券</view>
                 <view class="couponType02 {{ useStatus == '1'?'gray':'' }}" wx:elif="{{couponType == '2'}}">退货券</view>
@@ -24,7 +24,10 @@
                 <view>{{couponCardData.limitShopName}}</view>
             </view>
             <view>{{couponCardData.limitProductType}}</view>
-            <view wx:if="{{couponCardData.validityDay && couponCardData.validityDay != -1}}">有效期:{{couponCardData.validityBeginDate}}~{{couponCardData.validityEndDate}}</view>
+            <block>
+                <view wx:if="{{couponCardData.validityDay && couponCardData.validityDay != -1}}">有效期:{{couponCardData.validityBeginDate}}~{{couponCardData.validityEndDate}}</view>
+                <view wx:else>长期有效</view>
+            </block>
         </view>
         <view  class="{{ useStatus == '1'?'':'gray' }} rigth flex flex-v flex-pack-center flex-align-center">
             <block>
@@ -44,7 +47,7 @@
                     <text>{{couponCardData.couponVal}}</text>
                 </view> -->
             </block>
-            <view wx:if="{{couponCardData.maxDeductionMoney}}" class="explain">满{{couponCardData.parseIntMaxDeductionMoney}}元可用</view>
+            <view wx:if="{{couponCardData.termMoney}}" class="explain">满{{couponCardData.termMoney}}元可用</view>
             <view wx:if="{{couponCardData.dataTip}}" class="tip">剩{{couponCardData.dataTip}}天</view>
         </view>
     </view>
@@ -96,13 +99,15 @@
         .left{
             margin-left: 43rpx; 
             width: 417rpx;
+            height: 220rpx;
             >view{
                 color: #fff;
                 &:nth-of-type(1){
+                    margin-top: 36rpx;
                     font-size: 18rpx;
                     line-height: 28rpx;
                     text-align: center;
-                    border-radius: 28rpx 28rpx 28rpx 0;
+                    border-radius: 14rpx 14rpx 14rpx 0;
                     // font-weight: bold;
                     // margin-top: 56rpx;
                     width: 70rpx;
@@ -119,6 +124,7 @@
                         font-size: 36rpx;
                         line-height: 36rpx;
                         margin-right: 4rpx;
+                        font-weight: bold;
                     }
                     >view{
                         // width: 90rpx;
@@ -127,7 +133,7 @@
                         font-size: 16rpx;
                         text-align: center;
                         line-height: 28rpx;
-                        border-radius: 28rpx;
+                        border-radius: 14rpx;
                         color: #fb684c;
                         background-color: #fff;
                     }
@@ -139,7 +145,7 @@
                 };
                 &:nth-of-type(3){
                     // min-width: 416rpx;
-                    // height: 25rpx;
+                    height: 25rpx;
                     font-size: 22rpx;
                     margin-top: 24rpx;
                     word-break: break-all;

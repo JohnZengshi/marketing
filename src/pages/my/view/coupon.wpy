@@ -241,11 +241,11 @@
           val.parseIntMaxDeductionMoney = parseInt(val.maxDeductionMoney);
         }
 
-        if(val.termMoney){ //优惠券面额取整
-          val.parseIntTermMoney = parseInt(val.termMoney)
+        if(val.maxDeductionMoney){ //优惠券面额取整
+          val.parseIntTermMoney = parseInt(val.maxDeductionMoney);
         }
 
-        if(val.termMoney){ //优惠券面额
+        if(val.maxDeductionMoney){ //优惠券面额
           val.couponValType = "0"
         }else if(val.deduction){ //折扣
           val.couponValType = "1"
