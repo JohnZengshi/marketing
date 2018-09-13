@@ -6,7 +6,7 @@
         <image src="{{item}}" class="slide-image" />
       </swiper-item>
     </Swiper>
-    <view class="indicator flex flex-r flex-pack-center">
+    <view  wx:if="{{picResList.length > 1}}"class="indicator flex flex-r flex-pack-center">
       <view wx:for="{{picResList}}" wx:key="{{index}}" wx:for-index="index" wx:for-item="item" class="tag {{currentIndex == index?'currentTag':''}}"></view>
     </view>
   </block>
@@ -18,7 +18,6 @@
     props = {
       picResList:{
         type: Array,
-        default: [],
       }
     };
     data = {

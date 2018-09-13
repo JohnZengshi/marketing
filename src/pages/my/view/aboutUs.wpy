@@ -2,7 +2,7 @@
   <view class="AboutUs">
     <image src="/images/mine/AboutUs_back.png" mode="scaleToFill" lazy-load="false"></image>
     <view class="content">
-      <carouselSwiper wx:if="{{aboutUsData.picResList.length != 0}}" :picResList.async ="{{aboutUsData.picResList}}"></carouselSwiper>
+      <carouselSwiper :picResList.sync="picResList"></carouselSwiper>
       <view class="flex flex-v flex-align-center">
         <view class="shopName flex flex-r flex-align-center">
           <image src="{{aboutUsData.logo}}"></image>
@@ -43,7 +43,8 @@
       backgroundTextStyle: "light"
     };
     data = {
-      aboutUsData: {}
+      aboutUsData: {},
+      picResList:[]
     };
     components = {
       carouselSwiper,
@@ -55,6 +56,8 @@
     // 获取关于我们
     async getAboutUs() {
       this.aboutUsData =await api.getAboutUs();
+      this.picResList = this.aboutUsData.picResList;
+      // this.picResList = ['/images/mine/aboutUs.png'];
       this.$apply();
     }
   }
